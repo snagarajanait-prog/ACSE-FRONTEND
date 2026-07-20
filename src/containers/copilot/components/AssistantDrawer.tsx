@@ -241,6 +241,8 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
                     typing={typing}
                     otpPrompt={otpPrompt}
                     onSubmitOtp={submitOtp}
+                    customer={engine.customer}
+                    account={engine.account}
                   />
                 )}
               </div>

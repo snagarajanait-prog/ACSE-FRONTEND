@@ -7,6 +7,7 @@ export { default as AccountVerify } from '@/containers/copilot/components/Accoun
 export { default as AmbientBackdrop } from '@/containers/copilot/components/AmbientBackdrop'
 /** The drawer presentation — the feature's entry point for other screens. */
 export { default as AssistantDrawer } from '@/containers/copilot/components/AssistantDrawer'
+export { default as ChatActions } from '@/containers/copilot/components/ChatActions'
 export { default as ChatThread } from '@/containers/copilot/components/ChatThread'
 export { default as Composer } from '@/containers/copilot/components/Composer'
 export { default as CopilotHeader } from '@/containers/copilot/components/CopilotHeader'

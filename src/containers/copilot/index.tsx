@@ -138,6 +138,7 @@ export default function Copilot() {
                   otpPrompt={otpPrompt}
                   onSubmitOtp={submitOtp}
                   customer={customer}
+                  account={account}
                 />
               )}
             </div>

@@ -6,6 +6,7 @@
  */
 
 import { CheckCircle2, ClipboardCheck, KeyRound, Loader2, ShieldCheck } from 'lucide-react'
+import ChatActions from '@/containers/copilot/components/ChatActions'
 import OtpInput from '@/containers/copilot/components/OtpInput'
 import ReceiptMenu from '@/containers/copilot/components/ReceiptMenu'
 import {
@@ -15,14 +16,15 @@ import {
   type OtpPrompt,
 } from '@/containers/copilot/hooks/useChatEngine'
 import { splitReference } from '@/containers/copilot/utils/splitReference'
-import type { Customer } from '@/data/customers'
+import type { Account, Customer } from '@/data/customers'
 import type { ChatStep } from '@/data/scenarios'
+import type { DataSource } from '@/redux/dataSourceSlice'
 import { cn } from '@/utils/cn'
 import type { ReceiptCustomer } from '@/utils/receipt'
 
 interface ChatThreadProps {
   messages: Msg[]
-  source: string
+  source: DataSource
   playing: boolean
   thinking: string[] | null
   typing: boolean
@@ -30,6 +32,8 @@ interface ChatThreadProps {
   onSubmitOtp: (code: string) => void
   /** Stamped onto the PDF receipt so it identifies who the request was for. */
   customer?: Customer
+  /** Named in the exported transcript's context header. */
+  account?: Account
 }
 
 /**
@@ -55,6 +59,7 @@ export default function ChatThread({
   otpPrompt,
   onSubmitOtp,
   customer,
+  account,
 }: ChatThreadProps) {
   const receiptCustomer: ReceiptCustomer | undefined = customer && {
     name: customer.name,
@@ -62,6 +67,11 @@ export default function ChatThread({
     email: customer.email,
     phone: customer.phone,
   }
+
+  // Only offer the take-away bar once the thread is at rest. Mid-playback it
+  // would export half a conversation, and a row of controls sliding in under a
+  // live assistant turn reads as part of that turn.
+  const settled = !playing && !thinking && !typing && !otpPrompt
 
   return (
     <div className="relative mx-auto w-full max-w-2xl px-5 pb-10 pt-10 md:px-0">
@@ -82,6 +92,11 @@ export default function ChatThread({
         {thinking && <ThinkingNode phrases={thinking} />}
         {typing && <TypingNode />}
       </ol>
+
+      {/* Outside the <ol>: these are controls for the log, not an entry in it. */}
+      {settled && (
+        <ChatActions messages={messages} customer={customer} account={account} source={source} />
+      )}
     </div>
   )
 }
