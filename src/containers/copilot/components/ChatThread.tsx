@@ -7,6 +7,7 @@
 
 import { CheckCircle2, ClipboardCheck, KeyRound, Loader2, ShieldCheck } from 'lucide-react'
 import OtpInput from '@/containers/copilot/components/OtpInput'
+import ReceiptMenu from '@/containers/copilot/components/ReceiptMenu'
 import {
   OTP_DIGITS,
   useCyclingPhrase,
@@ -14,8 +15,10 @@ import {
   type OtpPrompt,
 } from '@/containers/copilot/hooks/useChatEngine'
 import { splitReference } from '@/containers/copilot/utils/splitReference'
+import type { Customer } from '@/data/customers'
 import type { ChatStep } from '@/data/scenarios'
 import { cn } from '@/utils/cn'
+import type { ReceiptCustomer } from '@/utils/receipt'
 
 interface ChatThreadProps {
   messages: Msg[]
@@ -25,6 +28,22 @@ interface ChatThreadProps {
   typing: boolean
   otpPrompt: OtpPrompt | null
   onSubmitOtp: (code: string) => void
+  /** Stamped onto the PDF receipt so it identifies who the request was for. */
+  customer?: Customer
+}
+
+/**
+ * The reference id belongs to the closing "done" line, not the summary card, but
+ * the receipt needs it. Look ahead from the card to the next `done` step and lift
+ * it from there — so a receipt downloaded mid-playback simply omits the reference,
+ * and the same card gains it once the storyboard finishes.
+ */
+function referenceAfter(messages: Msg[], index: number): string | null {
+  for (let i = index + 1; i < messages.length; i += 1) {
+    const step = messages[i].step
+    if (step.kind === 'done') return splitReference(step.text).ref
+  }
+  return null
 }
 
 export default function ChatThread({
@@ -35,7 +54,15 @@ export default function ChatThread({
   typing,
   otpPrompt,
   onSubmitOtp,
+  customer,
 }: ChatThreadProps) {
+  const receiptCustomer: ReceiptCustomer | undefined = customer && {
+    name: customer.name,
+    id: customer.id,
+    email: customer.email,
+    phone: customer.phone,
+  }
+
   return (
     <div className="relative mx-auto w-full max-w-2xl px-5 pb-10 pt-10 md:px-0">
       <Filament active={Boolean(thinking || typing)} />
@@ -47,6 +74,8 @@ export default function ChatThread({
             source={source}
             isLast={i === messages.length - 1}
             playing={playing}
+            customer={receiptCustomer}
+            reference={m.step.kind === 'summary' ? referenceAfter(messages, i) : null}
           />
         ))}
         {otpPrompt && <OtpChallengeNode prompt={otpPrompt} onSubmit={onSubmitOtp} />}
@@ -96,11 +125,15 @@ function Turn({
   source,
   isLast,
   playing,
+  customer,
+  reference,
 }: {
   msg: Msg
   source: string
   isLast: boolean
   playing: boolean
+  customer?: ReceiptCustomer
+  reference: string | null
 }) {
   const step = msg.step
   switch (step.kind) {
@@ -151,7 +184,7 @@ function Turn({
       return (
         <li className="relative pl-9 motion-safe:animate-rise-in">
           <Node />
-          <SummaryCard step={step} source={source} />
+          <SummaryCard step={step} source={source} customer={customer} reference={reference} />
         </li>
       )
     case 'done':
@@ -258,9 +291,13 @@ function OtpChallengeNode({
 function SummaryCard({
   step,
   source,
+  customer,
+  reference,
 }: {
   step: Extract<ChatStep, { kind: 'summary' }>
   source: string
+  customer?: ReceiptCustomer
+  reference: string | null
 }) {
   const success = step.tone === 'success'
   const Icon = success ? CheckCircle2 : ClipboardCheck
@@ -272,6 +309,12 @@ function SummaryCard({
           className={cn('h-4 w-4', success ? 'text-emerald-500 dark:text-emerald-300' : 'text-brand-cyan')}
         />
         {step.title}
+        <ReceiptMenu
+          title={step.title}
+          rows={step.rows}
+          reference={reference}
+          customer={customer}
+        />
       </div>
       <dl className="divide-y divide-slate-100 dark:divide-white/[0.06]">
         {step.rows.map(([k, v], i) => {

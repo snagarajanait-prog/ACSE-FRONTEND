@@ -10,10 +10,8 @@ import { FlaskConical, PanelLeft, RotateCcw } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import Logo from '@/components/Logo'
 import ThemeToggle from '@/components/ThemeToggle'
-import { ROUTE_PATHS } from '@/constants/constants'
+import { CLIENT_NAME, ROUTE_PATHS } from '@/constants/constants'
 import { cn } from '@/utils/cn'
-
-const CLIENT_NAME = 'XYZ Company'
 
 /** `shrink-0` keeps these square at 320px, where the header runs out of room. */
 const ICON_BUTTON_CLASS =
