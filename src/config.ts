@@ -1,17 +1,81 @@
 /**
  * SINGLE source of truth for env vars, URLs and feature flags.
  * Nothing else in the app reads `import.meta.env` directly.
+ *
+ * Which `.env` file backs these values is decided by Vite's MODE:
+ *
+ *   npm run dev        → .env.development
+ *   npm run build      → .env.production
+ *   npm run dev:prod   → .env.production   (prod config against a local dev server)
+ *   npm run build:dev  → .env.development  (dev build you can actually deploy)
+ *
+ * Missing or contradictory config throws at module load — i.e. on a blank page at
+ * boot, with the reason on screen. That is deliberate: the alternative is finding
+ * out via a 404 to `undefined/auth/login`, or worse, shipping plaintext because
+ * an encryption key was empty.
  */
 
 import { paths } from '@/constants/endPoints'
 
-const BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000'
+type AppEnv = 'development' | 'staging' | 'production'
 
-const url = (path: string): string => `${BASE_URL}${path}`
+/** Only this project's own vars — all typed `string` in `vite-env.d.ts`. */
+type EnvKey = keyof ImportMetaEnv
+
+function read(key: EnvKey): string {
+  return (import.meta.env[key] ?? '').trim()
+}
+
+function required(key: EnvKey): string {
+  const value = read(key)
+  if (!value) {
+    throw new Error(
+      `[config] Missing required env var ${key}. ` +
+        `Add it to .env.${import.meta.env.MODE} (or .env.${import.meta.env.MODE}.local) ` +
+        `— see .env.example for the full list.`,
+    )
+  }
+  return value
+}
+
+/** Env values are always strings; `VITE_X=false` is the string "false", which is truthy. */
+function bool(key: EnvKey, fallback: boolean): boolean {
+  const value = read(key).toLowerCase()
+  if (value === '') return fallback
+  return value === 'true' || value === '1'
+}
+
+const appEnv = (read('VITE_APP_ENV') || 'development') as AppEnv
+const baseUrl = required('VITE_API_BASE_URL').replace(/\/+$/, '')
+
+// Encryption defaults ON in production. Shipping prod with the layer silently off
+// should take an explicit `VITE_ENCRYPTION_ENABLED=false`, never an omission.
+const encryptionEnabled = bool('VITE_ENCRYPTION_ENABLED', appEnv === 'production')
+const rsaPublicKey = read('VITE_RSA_PUBLIC_KEY')
+
+if (encryptionEnabled && !rsaPublicKey) {
+  throw new Error(
+    '[config] VITE_ENCRYPTION_ENABLED is true but VITE_RSA_PUBLIC_KEY is empty. ' +
+      'Encryption cannot run without the backend public key. Either paste the key into ' +
+      `.env.${import.meta.env.MODE} (or .env.${import.meta.env.MODE}.local), ` +
+      'or set VITE_ENCRYPTION_ENABLED=false to run in plaintext.',
+  )
+}
+
+const url = (path: string): string => `${baseUrl}${path}`
 
 export const config = {
-  baseUrl: BASE_URL,
-  isDev: import.meta.env.DEV,
+  env: appEnv,
+  isDev: appEnv === 'development',
+  isProd: appEnv === 'production',
+
+  baseUrl,
+
+  encryption: {
+    enabled: encryptionEnabled,
+    /** Backend RSA public key — PEM block or bare base64 SPKI, `utils/crypto` handles both. */
+    publicKey: rsaPublicKey,
+  },
 
   auth: {
     login: url(paths.auth.login),

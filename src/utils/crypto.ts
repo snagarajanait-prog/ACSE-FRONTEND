@@ -1,30 +1,66 @@
 /**
- * Client-side AES-GCM using the Web Crypto API.
+ * Hybrid payload encryption — RSA-OAEP + AES-256-GCM. Implements `docs/image.png`.
+ *
+ * Per request, the browser:
+ *   1. generates a temporary 256-bit secret
+ *   2. derives a REQUEST key and a RESPONSE key from it (HKDF, different labels)
+ *   3. encrypts the payload with the request key (AES-256-GCM)
+ *   4. wraps the temporary secret with the backend's RSA-OAEP public key
+ *   5. sends both; keeps the response key in memory to decrypt the reply
+ *
+ * The backend unwraps the secret with its private key, derives the same two keys,
+ * decrypts the request, and encrypts its response with the response key.
+ *
+ * Why this beats a long-lived shared key: the secret is new for every request and
+ * never leaves this module in plaintext, so there is no session key sitting in
+ * memory for an XSS to lift and no single compromise that decrypts past traffic.
  *
  * ─────────────────────────────────────────────────────────────────────────────
- * CONTRACT WITH THE BACKEND — all four points must be confirmed before this works.
- * Every one of them is an assumption right now:
+ * CONTRACT WITH THE BACKEND — confirm each point; they are assumptions today.
  *
- *   1. Cipher      AES-256-GCM.
- *   2. Wire format base64( iv[12 bytes] || ciphertext || tag[16 bytes] ).
- *                  Web Crypto appends the GCM tag to the ciphertext automatically,
- *                  so the backend must do the same (most libraries do). If the
- *                  backend returns the tag separately, IV_BYTES/decrypt change.
- *   3. Plaintext   UTF-8 JSON.
- *   4. Key         base64 AES-256 key handed to the client at login.
+ *   1. Wrap        RSA-OAEP, SHA-256, no label.
+ *   2. Derivation  HKDF-SHA256, EMPTY salt, `info` = the HKDF_INFO strings below,
+ *                  output 32 bytes. Any mismatch fails as a GCM tag error, which
+ *                  reads like corruption rather than a config bug — check here first.
+ *   3. Wire format base64( iv[12] || ciphertext || tag[16] ). WebCrypto appends the
+ *                  tag automatically; most backend libraries do too. If yours
+ *                  returns the tag separately, that is the thing to fix.
+ *   4. Envelope    request body `{ "data": "<base64>" }`, wrapped secret in the
+ *                  `X-Encrypted-Key` header (see `lib/http.ts`). The header carries
+ *                  it so GET and DELETE — which have no body — still get encrypted
+ *                  responses.
+ *   5. Plaintext   UTF-8 JSON.
  * ─────────────────────────────────────────────────────────────────────────────
  *
- * The key is held in a module variable ONLY — never localStorage/sessionStorage,
- * which any XSS can read. That would defeat the entire point of this layer.
- *
- * Note: `crypto.subtle` exists only in secure contexts. HTTPS and localhost are
- * fine; a plain-http staging host is NOT and will fail at runtime.
+ * `crypto.subtle` only exists in secure contexts. HTTPS and localhost are fine;
+ * a plain-http staging host is NOT and will fail at runtime.
  */
 
-const ALGORITHM = 'AES-GCM'
-const IV_BYTES = 12
+import config from '@/config'
 
-let sessionKey: CryptoKey | null = null
+const AES = 'AES-GCM'
+const AES_KEY_BITS = 256
+const HASH = 'SHA-256'
+const IV_BYTES = 12
+const SECRET_BYTES = 32
+
+/** HKDF `info` labels. Must match the backend byte for byte. */
+const HKDF_INFO = {
+  request: 'acse:request',
+  response: 'acse:response',
+} as const
+
+type Direction = keyof typeof HKDF_INFO
+
+/** Result of encrypting one request. */
+export interface EncryptedRequest {
+  /** RSA-OAEP-wrapped temporary secret, base64. Travels in the header. */
+  wrappedSecret: string
+  /** base64( iv || ciphertext || tag ), or null when the request has no body. */
+  data: string | null
+  /** Non-extractable key for the matching response. Never transmitted. */
+  responseKey: CryptoKey
+}
 
 // Return type is pinned to Uint8Array<ArrayBuffer> — the bare `Uint8Array` alias
 // is backed by ArrayBufferLike, which Web Crypto's BufferSource won't accept.
@@ -41,49 +77,117 @@ function bytesToBase64(bytes: Uint8Array): string {
   return btoa(binary)
 }
 
-/** Call once at login, with the base64 data key issued by the backend. */
-export async function setSessionKey(base64Key: string): Promise<void> {
-  const raw = base64ToBytes(base64Key)
-  sessionKey = await crypto.subtle.importKey('raw', raw, ALGORITHM, false, [
-    'encrypt',
-    'decrypt',
-  ])
+/** Accepts a full PEM block or a bare one-line base64 SPKI body. */
+function toDer(key: string): Uint8Array<ArrayBuffer> {
+  return base64ToBytes(key.replace(/-----[^-]+-----/g, '').replace(/\s+/g, ''))
 }
 
-/** Call on logout. */
-export function clearSessionKey(): void {
-  sessionKey = null
+// Imported once and reused. A rejection is cached too — a malformed key is a build
+// config error, and retrying per request would just spam the same failure.
+let publicKeyPromise: Promise<CryptoKey> | null = null
+
+function getPublicKey(): Promise<CryptoKey> {
+  if (!publicKeyPromise) {
+    publicKeyPromise = (async () => {
+      if (!config.encryption.publicKey) {
+        throw new Error('[crypto] VITE_RSA_PUBLIC_KEY is empty — cannot encrypt.')
+      }
+      try {
+        return await crypto.subtle.importKey(
+          'spki',
+          toDer(config.encryption.publicKey),
+          { name: 'RSA-OAEP', hash: HASH },
+          false,
+          ['encrypt'],
+        )
+      } catch (cause) {
+        throw new Error(
+          '[crypto] VITE_RSA_PUBLIC_KEY is not a valid SPKI public key. ' +
+            'Expected the PEM that begins "-----BEGIN PUBLIC KEY-----" (SPKI), ' +
+            'not a PKCS#1 "BEGIN RSA PUBLIC KEY" block and not a certificate.',
+          { cause },
+        )
+      }
+    })()
+  }
+  return publicKeyPromise
 }
 
-export function hasSessionKey(): boolean {
-  return sessionKey !== null
+/** HKDF-SHA256 → one AES-256-GCM key. Same secret + same label = same key as the backend. */
+async function deriveAesKey(
+  secret: Uint8Array<ArrayBuffer>,
+  direction: Direction,
+): Promise<CryptoKey> {
+  const material = await crypto.subtle.importKey('raw', secret, 'HKDF', false, ['deriveKey'])
+
+  return crypto.subtle.deriveKey(
+    {
+      name: 'HKDF',
+      hash: HASH,
+      salt: new Uint8Array(0),
+      info: new TextEncoder().encode(HKDF_INFO[direction]),
+    },
+    material,
+    { name: AES, length: AES_KEY_BITS },
+    false,
+    ['encrypt', 'decrypt'],
+  )
 }
 
-/** Decrypts a base64 envelope back into the original JSON value. */
-export async function decryptPayload<T>(payload: string): Promise<T> {
-  if (!sessionKey) throw new Error('No session key — cannot decrypt. Was login completed?')
-
-  const bytes = base64ToBytes(payload)
-  const iv = bytes.slice(0, IV_BYTES)
-  const ciphertext = bytes.slice(IV_BYTES)
-
-  // Throws if the tag fails to verify — i.e. the payload was tampered with.
-  const plaintext = await crypto.subtle.decrypt({ name: ALGORITHM, iv }, sessionKey, ciphertext)
-
-  return JSON.parse(new TextDecoder().decode(plaintext)) as T
-}
-
-/** Encrypts a JSON-serializable value into a base64 envelope. */
-export async function encryptPayload(value: unknown): Promise<string> {
-  if (!sessionKey) throw new Error('No session key — cannot encrypt. Was login completed?')
-
+async function aesEncrypt(key: CryptoKey, value: unknown): Promise<string> {
   const iv = crypto.getRandomValues(new Uint8Array(IV_BYTES))
   const plaintext = new TextEncoder().encode(JSON.stringify(value))
-  const ciphertext = await crypto.subtle.encrypt({ name: ALGORITHM, iv }, sessionKey, plaintext)
+  const ciphertext = await crypto.subtle.encrypt({ name: AES, iv }, key, plaintext)
 
   const packed = new Uint8Array(iv.length + ciphertext.byteLength)
   packed.set(iv, 0)
   packed.set(new Uint8Array(ciphertext), iv.length)
 
   return bytesToBase64(packed)
+}
+
+/**
+ * Encrypts one request. Pass `undefined` for bodyless verbs (GET/DELETE) — you
+ * still get a wrapped secret and a response key, so the reply can come back encrypted.
+ */
+export async function encryptRequest(body: unknown): Promise<EncryptedRequest> {
+  const publicKey = await getPublicKey()
+  const secret = crypto.getRandomValues(new Uint8Array(SECRET_BYTES))
+
+  try {
+    const [requestKey, responseKey] = await Promise.all([
+      deriveAesKey(secret, 'request'),
+      deriveAesKey(secret, 'response'),
+    ])
+
+    const wrapped = await crypto.subtle.encrypt({ name: 'RSA-OAEP' }, publicKey, secret)
+
+    return {
+      wrappedSecret: bytesToBase64(new Uint8Array(wrapped)),
+      data: body === undefined ? null : await aesEncrypt(requestKey, body),
+      responseKey,
+    }
+  } finally {
+    // Best-effort scrub. The derived keys are non-extractable, so from here on the
+    // secret exists only inside WebCrypto.
+    secret.fill(0)
+  }
+}
+
+/** Decrypts a response envelope using the key kept from `encryptRequest`. */
+export async function decryptResponse<T>(responseKey: CryptoKey, payload: string): Promise<T> {
+  const bytes = base64ToBytes(payload)
+  const iv = bytes.slice(0, IV_BYTES)
+  const ciphertext = bytes.slice(IV_BYTES)
+
+  // Throws if the tag fails to verify — tampering, or a derivation mismatch (see
+  // point 2 of the contract above).
+  const plaintext = await crypto.subtle.decrypt({ name: AES, iv }, responseKey, ciphertext)
+
+  return JSON.parse(new TextDecoder().decode(plaintext)) as T
+}
+
+/** The `VITE_ENCRYPTION_ENABLED` switch, for code that needs to branch on it. */
+export function isEncryptionEnabled(): boolean {
+  return config.encryption.enabled
 }

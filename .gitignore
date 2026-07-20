@@ -12,6 +12,15 @@ dist
 dist-ssr
 *.local
 
+# Env: per-machine overrides stay local. `.env`, `.env.development` and
+# `.env.production` ARE committed — they hold no secrets, only public config.
+.env.local
+.env.*.local
+
+.env.example
+.env.development
+.env.production
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
