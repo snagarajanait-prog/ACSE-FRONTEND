@@ -1,0 +1,369 @@
+/**
+ * Orb lab — candidate treatments for the copilot hero sphere.
+ *
+ * DEMO SCOPE. Plain CSS in one file on purpose: when a variant is chosen its
+ * rules move into `index.css` (as `--animate-*` tokens plus keyframes, the
+ * project convention) and this whole folder is deleted. Nothing else imports it.
+ *
+ * Variants 3 (Orbit) and 4 (Particles) are deliberately absent — both were
+ * chosen, promoted to `index.css`, and the lab now renders the real shipping
+ * `AssistantOrb` / `AssistantOrbParticles` components for them rather than
+ * copies that could drift.
+ *
+ * Every orb sizes off `--orb-size`, so the same markup can be judged at the real
+ * hero size and blown up. Inner layers are all percentage-based.
+ *
+ * Brand: #7fd3f2 (highlight) / #2ca5d9 (cyan) / #0a1e35 (navy).
+ */
+
+.orb {
+  position: relative;
+  width: var(--orb-size, 64px);
+  height: var(--orb-size, 64px);
+  border-radius: 50%;
+  flex: none;
+}
+
+.orb-layer {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb *,
+  .orb {
+    animation: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 1 — Breathe (the original production orb, kept as the control)     */
+/* ------------------------------------------------------------------ */
+
+.orb-breathe-core {
+  background: radial-gradient(circle at 35% 30%, #7fd3f2, #2ca5d9 55%, #0a1e35);
+  box-shadow: 0 0 calc(var(--orb-size) * 0.94) calc(var(--orb-size) * -0.125) rgba(44, 165, 217, 0.7);
+  animation: orbx-breathe 4.5s ease-in-out infinite;
+}
+
+@keyframes orbx-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 2 — Plasma: churning light inside a glass shell                     */
+/* ------------------------------------------------------------------ */
+
+.orb-plasma {
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, #0d2c4a, #061422 70%);
+  box-shadow:
+    0 0 calc(var(--orb-size) * 0.9) calc(var(--orb-size) * -0.15) rgba(44, 165, 217, 0.75),
+    inset 0 0 calc(var(--orb-size) * 0.3) rgba(127, 211, 242, 0.25);
+}
+
+/* Three blobs of light, each on its own orbit and period. `screen` is what
+   makes overlaps bloom instead of stacking flat. */
+.orb-plasma-blob {
+  position: absolute;
+  width: 85%;
+  height: 85%;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  filter: blur(calc(var(--orb-size) * 0.06));
+}
+
+.orb-plasma-blob:nth-child(1) {
+  background: radial-gradient(circle, #7fd3f2 0%, rgba(127, 211, 242, 0) 65%);
+  animation: orbx-plasma-a 7s ease-in-out infinite;
+}
+
+.orb-plasma-blob:nth-child(2) {
+  background: radial-gradient(circle, #2ca5d9 0%, rgba(44, 165, 217, 0) 65%);
+  animation: orbx-plasma-b 9s ease-in-out infinite;
+}
+
+.orb-plasma-blob:nth-child(3) {
+  background: radial-gradient(circle, #b8ecff 0%, rgba(184, 236, 255, 0) 60%);
+  animation: orbx-plasma-c 5.5s ease-in-out infinite;
+}
+
+@keyframes orbx-plasma-a {
+  0%,
+  100% {
+    transform: translate(-18%, -12%) scale(1);
+  }
+  33% {
+    transform: translate(22%, 16%) scale(1.25);
+  }
+  66% {
+    transform: translate(4%, -22%) scale(0.9);
+  }
+}
+
+@keyframes orbx-plasma-b {
+  0%,
+  100% {
+    transform: translate(20%, 18%) scale(1.1);
+  }
+  40% {
+    transform: translate(-20%, 6%) scale(0.85);
+  }
+  70% {
+    transform: translate(-2%, 24%) scale(1.2);
+  }
+}
+
+@keyframes orbx-plasma-c {
+  0%,
+  100% {
+    transform: translate(6%, 20%) scale(0.75);
+  }
+  50% {
+    transform: translate(-14%, -18%) scale(1.05);
+  }
+}
+
+/* The glass on top: specular highlight + darkened lower rim. Sits above the
+   blobs so the churn reads as *inside* the sphere. */
+.orb-plasma-glass {
+  background:
+    radial-gradient(circle at 34% 26%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 42%),
+    radial-gradient(circle at 50% 118%, rgba(6, 20, 34, 0.85), rgba(6, 20, 34, 0) 55%);
+}
+
+/* ------------------------------------------------------------------ */
+/* 5 — Wireframe: latitude/longitude globe (SVG)                       */
+/* ------------------------------------------------------------------ */
+
+.orb-wire {
+  perspective: calc(var(--orb-size) * 5);
+}
+
+.orb-wire-glow {
+  background: radial-gradient(circle at 50% 50%, rgba(44, 165, 217, 0.35), rgba(44, 165, 217, 0) 70%);
+  box-shadow: 0 0 calc(var(--orb-size) * 0.8) calc(var(--orb-size) * -0.15) rgba(44, 165, 217, 0.7);
+  animation: orbx-breathe 4s ease-in-out infinite;
+}
+
+.orb-wire-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Meridians sweep by squashing on X: an ellipse scaled through zero width
+   traces exactly the silhouette a meridian makes as it turns past the limb,
+   and it stays crisp at 64px where a 3D-transformed ring goes soft. */
+.orb-wire-meridians {
+  transform-origin: 50% 50%;
+  animation: orbx-meridian-sweep 9s linear infinite;
+}
+
+@keyframes orbx-meridian-sweep {
+  from {
+    transform: scaleX(1);
+  }
+  25% {
+    transform: scaleX(0.05);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+  75% {
+    transform: scaleX(0.05);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.orb-wire-scan {
+  animation: orbx-scan 4s ease-in-out infinite;
+}
+
+@keyframes orbx-scan {
+  0%,
+  100% {
+    transform: translateY(-38%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(38%);
+  }
+  80% {
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 6 — Blob: organic morph, the "Siri" read                            */
+/* ------------------------------------------------------------------ */
+
+.orb-blob {
+  overflow: visible;
+}
+
+.orb-blob-body {
+  background: linear-gradient(135deg, #b8ecff, #2ca5d9 45%, #1b6ea8 75%, #0a1e35);
+  filter: blur(calc(var(--orb-size) * 0.008));
+  box-shadow: 0 0 calc(var(--orb-size) * 0.9) calc(var(--orb-size) * -0.16) rgba(44, 165, 217, 0.75);
+  animation:
+    orbx-morph 8s ease-in-out infinite,
+    orbx-tumble 14s linear infinite;
+}
+
+/* A second, offset body at lower opacity — the two morphs drift out of phase,
+   which is what reads as liquid rather than a pulsing balloon. */
+.orb-blob-echo {
+  background: linear-gradient(200deg, rgba(127, 211, 242, 0.75), rgba(44, 165, 217, 0.1) 70%);
+  mix-blend-mode: screen;
+  animation:
+    orbx-morph 6.5s ease-in-out infinite reverse,
+    orbx-tumble 11s linear infinite reverse;
+}
+
+.orb-blob-shine {
+  background: radial-gradient(circle at 34% 26%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 45%);
+  animation: orbx-morph 8s ease-in-out infinite;
+}
+
+@keyframes orbx-morph {
+  0%,
+  100% {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+  }
+  25% {
+    border-radius: 62% 38% 46% 54% / 58% 44% 56% 42%;
+  }
+  50% {
+    border-radius: 44% 56% 62% 38% / 42% 62% 38% 58%;
+  }
+  75% {
+    border-radius: 56% 44% 38% 62% / 46% 38% 62% 54%;
+  }
+}
+
+@keyframes orbx-tumble {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 7 — Sonar: crisp sphere emitting rings — reads as "listening"        */
+/* ------------------------------------------------------------------ */
+
+.orb-sonar-core {
+  background: radial-gradient(circle at 36% 28%, #e8f8ff, #2ca5d9 52%, #0a2740);
+  box-shadow:
+    0 0 calc(var(--orb-size) * 0.6) calc(var(--orb-size) * -0.1) rgba(44, 165, 217, 0.9),
+    inset 0 calc(var(--orb-size) * -0.08) calc(var(--orb-size) * 0.12) rgba(6, 20, 34, 0.55);
+  animation: orbx-sonar-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes orbx-sonar-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+.orb-sonar-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: calc(var(--orb-size) * 0.02) solid rgba(127, 211, 242, 0.9);
+  animation: orbx-sonar 2.8s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+
+/* Stagger of a third of the period each — a continuous emission rather than
+   three rings leaving together. */
+.orb-sonar-ring:nth-child(2) {
+  animation-delay: 0.93s;
+}
+
+.orb-sonar-ring:nth-child(3) {
+  animation-delay: 1.86s;
+}
+
+@keyframes orbx-sonar {
+  0% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 8 — Iridescent: glass bead with a sweeping conic sheen              */
+/* ------------------------------------------------------------------ */
+
+.orb-iris {
+  overflow: hidden;
+  background: #071a2c;
+  box-shadow:
+    0 0 calc(var(--orb-size) * 0.85) calc(var(--orb-size) * -0.18) rgba(44, 165, 217, 0.8),
+    inset 0 0 calc(var(--orb-size) * 0.22) rgba(127, 211, 242, 0.35);
+}
+
+.orb-iris-sheen {
+  background: conic-gradient(
+    from 0deg,
+    #2ca5d9,
+    #7fd3f2 18%,
+    #a78bfa 34%,
+    #2ca5d9 52%,
+    #34d399 68%,
+    #7fd3f2 84%,
+    #2ca5d9
+  );
+  filter: blur(calc(var(--orb-size) * 0.09));
+  opacity: 0.9;
+  animation: orbx-sheen 6s linear infinite;
+}
+
+@keyframes orbx-sheen {
+  from {
+    transform: rotate(0deg) scale(1.15);
+  }
+  to {
+    transform: rotate(360deg) scale(1.15);
+  }
+}
+
+/* Darkens the centre so the colour survives only as a rim — the difference
+   between a glass bead and a spinning colour wheel. */
+.orb-iris-vignette {
+  background: radial-gradient(circle at 50% 50%, rgba(7, 26, 44, 0.92) 28%, rgba(7, 26, 44, 0) 68%);
+}
+
+.orb-iris-shine {
+  background:
+    radial-gradient(circle at 33% 25%, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0) 38%),
+    radial-gradient(circle at 62% 82%, rgba(127, 211, 242, 0.45), rgba(127, 211, 242, 0) 34%);
+  animation: orbx-breathe 5s ease-in-out infinite;
+}

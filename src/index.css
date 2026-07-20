@@ -1,0 +1,757 @@
+/**
+ * The design system, CSS-first (Tailwind v4).
+ *
+ * Layout of this file:
+ *   1. `@custom-variant dark` — makes `dark:` a CLASS strategy, driven by the
+ *      `.dark` that ThemeProvider stamps on <html>. Without this, v4 defaults to
+ *      `prefers-color-scheme` and the theme switch would do nothing.
+ *   2. `:root` / `.dark` — semantic HSL channel triples. These are the ONLY
+ *      values that change between palettes.
+ *   3. `@theme inline` — maps those triples to Tailwind utilities. `inline` is
+ *      load-bearing: it resolves `var(--border)` at the use site rather than at
+ *      definition, which is what lets the `.dark` override reach the utilities.
+ *   4. Brand palette, radii, fonts, keyframes — static, palette-independent.
+ *
+ * Semantic tokens (`bg-background`, `text-muted-foreground`) are preferred over
+ * raw brand colours; reach for `brand-*` only for deliberate brand moments.
+ */
+
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 210 45% 12%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 210 45% 12%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 210 45% 12%;
+
+  /* ACSE brand red */
+  --primary: 1 76% 55%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 210 45% 14%;
+
+  --muted: 210 40% 96%;
+  --muted-foreground: 215 16% 47%;
+
+  --accent: 197 70% 95%;
+  --accent-foreground: 205 55% 20%;
+
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  /* ACSE brand cyan */
+  --ring: 198 69% 51%;
+
+  --radius: 0.65rem;
+
+  /**
+   * The neutral ink in the ACSE mark — the "SOLUTIONS" wordmark.
+   *
+   * The logo's blue and red are brand constants and are identical in both
+   * palettes (they already match --color-brand-cyan/red exactly). Only this
+   * grey moves: the artwork's #6D6E71 is legible on white but goes muddy on
+   * navy, so the dark palette lifts it instead of recolouring the whole mark.
+   */
+  --logo-muted: 225 2% 44%;
+}
+
+.dark {
+  --background: 209 54% 11%;
+  --foreground: 210 40% 98%;
+
+  --card: 210 45% 13%;
+  --card-foreground: 210 40% 98%;
+
+  --popover: 210 45% 13%;
+  --popover-foreground: 210 40% 98%;
+
+  /* Brand red is constant across palettes. */
+  --primary: 1 76% 55%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 210 40% 18%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 210 40% 18%;
+  --muted-foreground: 215 20% 65%;
+
+  --accent: 205 45% 20%;
+  --accent-foreground: 210 40% 98%;
+
+  --destructive: 0 62% 45%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 210 35% 22%;
+  --input: 210 35% 22%;
+  --ring: 198 69% 51%;
+
+  /* Lifted off the artwork's #6D6E71 so "SOLUTIONS" stays legible on navy. */
+  --logo-muted: 213 20% 82%;
+}
+
+@theme inline {
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+}
+
+@theme {
+  /* ACSE brand palette — fixed hexes, identical in both palettes. */
+  --color-brand-navy: #0a1e35;
+  --color-brand-navydeep: #0d1b2a;
+  --color-brand-cyan: #2ca5d9;
+  --color-brand-red: #e33935;
+
+  /* Theme-aware, unlike the brand hexes above — see --logo-muted. */
+  --color-logo-muted: hsl(var(--logo-muted));
+
+  --font-sans: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+
+  --animate-fade-in: fade-in 0.35s ease-out both;
+  --animate-typing-bounce: typing-bounce 1.2s infinite ease-in-out;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-aurora-drift: aurora-drift 24s ease-in-out infinite alternate;
+  --animate-spine-draw: spine-draw 0.6s ease-out both;
+  --animate-orb-breathe: orb-breathe 4.5s ease-in-out infinite;
+
+  /**
+   * The assistant orb — a lit core inside three rings, each spinning on its own
+   * plane. Periods are deliberately co-prime-ish (4.2 / 6.5 / 8.5s) so the three
+   * rings never resolve into a single readable shape and the loop never visibly
+   * repeats; matching them turns the orb into a mechanical gyroscope.
+   */
+  --animate-orb-core-pulse: orb-core-pulse 3s ease-in-out infinite;
+  --animate-orb-spin-x: orb-spin-x 4.2s linear infinite;
+  --animate-orb-spin-y: orb-spin-y 6.5s linear infinite reverse;
+  --animate-orb-spin-z: orb-spin-z 8.5s linear infinite;
+
+  /**
+   * The particle-cloud orb. The turn is slow (18s) on purpose: fast enough that
+   * the sphere is legibly rotating, slow enough that individual points stay
+   * trackable — past roughly 10s the cloud smears into a flickering ball. The
+   * twinkle runs off it at a co-prime-ish period so the two never lock.
+   */
+  --animate-orb-spin-globe: orb-spin-globe 18s linear infinite;
+  --animate-orb-twinkle: orb-twinkle 3s ease-in-out infinite;
+  --animate-filament-beam: filament-beam 1.2s linear infinite;
+  --animate-rise-in: rise-in 0.5s ease-out both;
+  --animate-row-reveal: row-reveal 0.4s ease-out both;
+  --animate-digit-pop: digit-pop 0.4s ease-out both;
+  --animate-ring-out: ring-out 0.9s ease-out forwards;
+
+  /**
+   * Global loader — the logo assembly.
+   *
+   * Every piece of the lockup flies in from its own direction and lands on the
+   * SAME resting transform (identity), which is what makes the set converge into
+   * a pixel-exact logo. Keeping identity as the `to` state is also what lets the
+   * reduced-motion rule below collapse the whole sequence to a static, correct
+   * lockup rather than stranding a piece mid-flight.
+   *
+   * Travel is expressed in vw/vh, not %, so a 55px letter and a 320px cloud both
+   * enter from genuinely off-screen instead of the small pieces barely nudging.
+   */
+  --animate-piece-drop: piece-drop 0.9s cubic-bezier(0.2, 1.16, 0.32, 1) both;
+  --animate-piece-in-top: piece-in-top 0.7s cubic-bezier(0.2, 1.24, 0.32, 1) both;
+  --animate-piece-in-bottom: piece-in-bottom 0.7s cubic-bezier(0.2, 1.24, 0.32, 1) both;
+  --animate-piece-in-left: piece-in-left 0.7s cubic-bezier(0.2, 1.24, 0.32, 1) both;
+  --animate-piece-in-right: piece-in-right 0.7s cubic-bezier(0.2, 1.24, 0.32, 1) both;
+  --animate-piece-rise: piece-rise 0.65s cubic-bezier(0.2, 1.18, 0.32, 1) both;
+  --animate-piece-trace: piece-trace 0.7s cubic-bezier(0.65, 0, 0.35, 1) both;
+  --animate-piece-rule: piece-rule 0.5s cubic-bezier(0.65, 0, 0.35, 1) both;
+
+  /**
+   * Loader ambience — these loop for as long as the load takes.
+   *
+   * All four are `both`, which for an infinite animation matters only at the
+   * front: each one starts on a delay (it waits for the assembly to land), and
+   * without a backwards fill the element paints its BASE style through that
+   * delay — a static sweep band sitting on the mark, a full-width progress rail
+   * — then snaps to the first keyframe. `both` holds 0% instead.
+   */
+  --animate-loader-glow: loader-glow 3.6s ease-in-out infinite both;
+  --animate-loader-sweep: loader-sweep 3s ease-in-out infinite both;
+  --animate-loader-rail: loader-rail 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite both;
+  --animate-loader-spark: loader-spark 2.4s ease-in-out infinite both;
+  --animate-loader-out: loader-out 0.45s ease-in forwards;
+}
+
+/**
+ * Piece entrances. Each ends at identity — see the note above.
+ * The slight rotation on the letters keeps four simultaneous arrivals from
+ * reading as a mechanical grid slide.
+ */
+@keyframes piece-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-62vh) scale(0.82);
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes piece-in-top {
+  from {
+    opacity: 0;
+    transform: translateY(-42vh) rotate(-8deg);
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes piece-in-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(42vh) rotate(8deg);
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+@keyframes piece-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-46vw) rotate(-10deg);
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+@keyframes piece-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(46vw) rotate(10deg);
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+/* SOLUTIONS settles up under the wordmark, widening as it lands. */
+@keyframes piece-rise {
+  from {
+    opacity: 0;
+    transform: translateY(140%) scaleX(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scaleX(1);
+  }
+}
+
+/* The circuit traces don't fly — they draw left-to-right, like a signal. */
+@keyframes piece-trace {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  30% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* The rule between the lockup and "AI" draws downward. */
+@keyframes piece-rule {
+  from {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@keyframes loader-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+/* A highlight travelling across the lockup. Masked to the logo ink by the
+   component, so it reads as light moving THROUGH the mark, not over its box.
+   Opacity is part of the keyframe, not a base style: the band has to be absent
+   between passes, and absent during the delay before the first one. */
+@keyframes loader-sweep {
+  0% {
+    opacity: 0;
+    background-position: -150% 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+    background-position: 250% 0;
+  }
+  58%,
+  100% {
+    opacity: 0;
+    background-position: 250% 0;
+  }
+}
+
+/* Indeterminate rail: a segment that accelerates across, never claiming a %. */
+@keyframes loader-rail {
+  0% {
+    transform: translateX(-100%) scaleX(0.35);
+  }
+  50% {
+    transform: translateX(60%) scaleX(0.62);
+  }
+  100% {
+    transform: translateX(240%) scaleX(0.35);
+  }
+}
+
+@keyframes loader-spark {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Exit: the whole overlay lifts and dissolves once loading resolves.
+   Deliberately no `visibility: hidden` here — it flips at the halfway mark, and
+   an unpainted element can stall its own animation, so `animationend` never
+   arrives and the overlay is never unmounted. The component drops itself on
+   animationend instead, and `pointer-events-none` covers the interim. */
+@keyframes loader-out {
+  to {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typing-bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+/* Sweeping highlight for the "thinking" status text. */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes aurora-drift {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(6%, -4%) scale(1.15);
+  }
+}
+
+@keyframes spine-draw {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes orb-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+/**
+ * Assistant orb. The rings hold their tilt across the whole keyframe and spin
+ * only on Z: rotating on X or Y instead would swing the ring's plane through
+ * the viewer and flatten it to a line twice per turn.
+ */
+@keyframes orb-core-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes orb-spin-x {
+  from {
+    transform: rotateX(72deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(72deg) rotateZ(360deg);
+  }
+}
+
+@keyframes orb-spin-y {
+  from {
+    transform: rotateY(70deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateY(70deg) rotateZ(360deg);
+  }
+}
+
+@keyframes orb-spin-z {
+  from {
+    transform: rotateX(28deg) rotateY(40deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(28deg) rotateY(40deg) rotateZ(360deg);
+  }
+}
+
+/* Particle orb. The stage turns on Y only — the lattice is symmetric about the
+   poles, so a tilted or compound spin adds no readable motion and only drags
+   points through the low-opacity limb where they disappear. */
+@keyframes orb-spin-globe {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+@keyframes orb-twinkle {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes filament-beam {
+  0% {
+    transform: translateY(-30%);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(340%);
+    opacity: 0;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes row-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes digit-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  70% {
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ring-out {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+/**
+ * v4 dropped the `container` theme config, so the centred page shell is a
+ * hand-rolled utility. Matches the reference: centred, 1.5rem gutter, 1200px cap.
+ */
+@utility container {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  max-width: 1200px;
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Offset in-page anchor targets for the sticky nav. */
+  section[id] {
+    scroll-margin-top: 88px;
+  }
+
+  /* Respect reduced-motion globally: neutralise any animation/transition that
+     isn't already gated behind Tailwind's motion-safe: variant (covers infinite
+     spinners, pings and shimmers as well). */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .brand-gradient-hero {
+    background-color: #0a1e35;
+    background-image:
+      radial-gradient(circle at 72% 45%, rgba(44, 165, 217, 0.16) 0%, transparent 55%),
+      radial-gradient(circle at 15% 85%, rgba(227, 57, 53, 0.1) 0%, transparent 50%);
+  }
+
+  .brand-dot-grid {
+    background-image: radial-gradient(circle, rgba(44, 165, 217, 0.18) 1px, transparent 1px);
+    background-size: 34px 34px;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /**
+   * Assistant orb geometry. Only the static shape lives here — the spins stay in
+   * the JSX as `motion-safe:animate-*`, per the convention the rest of the app
+   * follows.
+   *
+   * Everything sizes off `--orb-size`, set by the component, so one set of rules
+   * serves the 64px page hero and the 56px drawer without a second breakpoint.
+   * `perspective` on the shell is what gives the tilted rings depth; without it
+   * the rotateX/rotateY collapse to flat squashed ellipses.
+   */
+  .assistant-orb {
+    position: relative;
+    width: var(--orb-size);
+    height: var(--orb-size);
+    perspective: calc(var(--orb-size) * 6);
+    flex: none;
+  }
+
+  .assistant-orb-core {
+    position: absolute;
+    inset: 26%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 36% 30%, #d6f2ff, #2ca5d9 58%, #0a1e35);
+    box-shadow: 0 0 calc(var(--orb-size) * 0.55) rgba(44, 165, 217, 0.85);
+  }
+
+  /* A single lit edge per ring (`border-top-color`) is what makes a spin
+     legible — a uniformly coloured ring reads as motionless. */
+  .assistant-orb-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: calc(var(--orb-size) * 0.022) solid rgba(127, 211, 242, 0.55);
+    border-top-color: rgba(127, 211, 242, 0.95);
+    border-bottom-color: rgba(44, 165, 217, 0.15);
+  }
+
+  .assistant-orb-ring-faint {
+    border-color: rgba(44, 165, 217, 0.35);
+    border-top-color: rgba(214, 242, 255, 0.8);
+  }
+
+  /**
+   * Particle-cloud orb geometry (see `AssistantOrbParticles`). Same split as
+   * above: static shape here, spins in the JSX as `motion-safe:animate-*`.
+   *
+   * The `perspective` is deliberately shallow-ish (4x, against the ring orb's
+   * 6x) — the points sit on the sphere's surface rather than on tilted rings,
+   * so they need the stronger near/far size difference to read as a volume
+   * instead of a flat disc of dots.
+   */
+  .assistant-orb-particles {
+    position: relative;
+    width: var(--orb-size);
+    height: var(--orb-size);
+    perspective: calc(var(--orb-size) * 4);
+    flex: none;
+  }
+
+  /* A soft body behind the points so the sphere reads as solid, not hollow. */
+  .assistant-orb-particles-haze {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 42% 34%,
+      rgba(127, 211, 242, 0.38),
+      rgba(44, 165, 217, 0.22) 55%,
+      rgba(10, 30, 53, 0) 72%
+    );
+    box-shadow: 0 0 calc(var(--orb-size) * 0.85) calc(var(--orb-size) * -0.2) rgba(44, 165, 217, 0.8);
+  }
+
+  .assistant-orb-particles-stage {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+
+  /* Each point is positioned by a `translate3d` from the centre, so the offset
+     margin — not `translate(-50%, -50%)` — is what centres it: a percentage
+     translate here would be overwritten by that inline transform. */
+  .assistant-orb-particle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(var(--orb-size) * 0.045);
+    height: calc(var(--orb-size) * 0.045);
+    margin: calc(var(--orb-size) * -0.0225) 0 0 calc(var(--orb-size) * -0.0225);
+    border-radius: 50%;
+    background: #7fd3f2;
+    box-shadow: 0 0 calc(var(--orb-size) * 0.09) rgba(127, 211, 242, 0.9);
+  }
+
+  /* Thin scrollbars inside chat/panels. */
+  .scrollbar-slim::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 999px;
+  }
+
+  .scrollbar-slim::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
