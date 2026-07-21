@@ -67,11 +67,17 @@ export function useAdminAuth() {
     [dispatch, login],
   )
 
-  const signOut = useCallback(() => {
-    // Best-effort server logout; the local session is torn down regardless.
-    void logout()
-      .unwrap()
-      .catch(() => {})
+  const signOut = useCallback(async () => {
+    // Await the server logout BEFORE any local teardown. `resetApiState()` below
+    // aborts every in-flight request, so firing this fire-and-forget cancels the
+    // call itself (it showed as "(cancelled)" in the network tab). The refresh
+    // token is still in custody here, so the request carries it; it's cleared
+    // after. Best-effort: a rejected or unreachable server still logs out locally.
+    try {
+      await logout().unwrap()
+    } catch {
+      // Server said no or was unreachable — tear the local session down anyway.
+    }
     auth.clearToken()
     auth.clearRefreshToken()
     storage.remove(STORAGE_KEYS.session)
