@@ -10,4 +10,8 @@ export const paths = {
     refresh: '/auth/refresh',
     me: '/auth/me',
   },
+  pages: {
+    /** Page slugs the signed-in user may see — drives the admin sidebar. */
+    myPermissions: '/pages/my-permissions',
+  },
 } as const

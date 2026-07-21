@@ -47,11 +47,41 @@ function validateEnv(mode: string): Plugin {
 }
 
 // https://vite.dev/config/
-export default defineConfig(({ mode }) => ({
-  plugins: [react(), tailwindcss(), validateEnv(mode)],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), 'VITE_')
+  const apiBase = env.VITE_API_BASE_URL?.trim() ?? ''
+  const proxyTarget = env.VITE_DEV_PROXY_TARGET?.trim()
+
+  // Dev-only reverse proxy. When VITE_API_BASE_URL is a same-origin PATH (e.g.
+  // "/api/v1") and VITE_DEV_PROXY_TARGET names the real backend origin, the dev
+  // server forwards that path prefix there. Two things this fixes that a direct
+  // cross-origin fetch from the browser cannot:
+  //   1. CORS — the browser now talks same-origin to Vite, so there is no preflight
+  //      and the backend's Access-Control-Allow-* config stops mattering in dev.
+  //   2. ngrok's free-tier browser-warning interstitial (a text/html page with
+  //      Ngrok-Error-Code: ERR_NGROK_6024), which it serves for browser GETs. The
+  //      header below opts out of it — injected here on the server→backend hop so
+  //      it never rides on a browser request, where a custom header would itself
+  //      force a preflight the backend rejects.
+  const proxy =
+    proxyTarget && apiBase.startsWith('/')
+      ? {
+          [apiBase]: {
+            target: proxyTarget,
+            changeOrigin: true,
+            secure: true,
+            headers: { 'ngrok-skip-browser-warning': 'true' },
+          },
+        }
+      : undefined
+
+  return {
+    plugins: [react(), tailwindcss(), validateEnv(mode)],
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url)),
+      },
     },
-  },
-}))
+    server: { proxy },
+  }
+})

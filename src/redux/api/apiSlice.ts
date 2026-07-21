@@ -14,6 +14,6 @@ export const apiSlice = createApi({
   reducerPath: reduxName.api,
   baseQuery: httpBaseQuery,
   // Cache tags for invalidation; grow this as read/write endpoints are added.
-  tagTypes: ['CurrentUser'],
+  tagTypes: ['CurrentUser', 'Permissions'],
   endpoints: () => ({}),
 })

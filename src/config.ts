@@ -83,6 +83,10 @@ export const config = {
     refresh: url(paths.auth.refresh),
     me: url(paths.auth.me),
   },
+
+  pages: {
+    myPermissions: url(paths.pages.myPermissions),
+  },
 } as const
 
 export default config

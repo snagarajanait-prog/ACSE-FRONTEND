@@ -2,6 +2,13 @@
  * Top-level admin navigation. Two upload libraries (Document, Image) as separate
  * destinations, then Settings, then the signed-in identity card at the bottom.
  *
+ * Which of those actually render is decided by the backend: `/pages/my-permissions`
+ * returns the page slugs this user may see, and an item appears only when its
+ * `page` slug is in that list. The list is fetched here via `useMyPermissionsQuery`;
+ * while it loads we show a skeleton, and on error we render nothing (fail closed —
+ * never leak a link the backend hasn't granted). The slugs below MUST match the
+ * backend's vocabulary, or the item stays hidden.
+ *
  * Pure nav via `<Link>` — the library items carry `?lib=` so each is its own
  * linkable URL. Used by both the persistent desktop rail and the mobile drawer,
  * so it takes an `onNavigate` to let the drawer close after a pick.
@@ -18,20 +25,30 @@ import { Link } from 'react-router-dom'
 import { ROUTE_PATHS } from '@/constants/constants'
 import type { AdminSection } from '@/containers/admin/types'
 import { countBySection } from '@/containers/admin/utils/persistence'
+import { useMyPermissionsQuery } from '@/redux/api/pagesApi'
 import { cn } from '@/utils/cn'
 
 export type AdminNav = 'documents' | 'images' | 'settings'
 
+/**
+ * Backend page slug (see `/pages/my-permissions`) that gates each nav item.
+ * MUST match the backend's vocabulary exactly — the file libraries are SINGULAR
+ * (`document`/`image`, same as `AdminSection`), not the plural nav `id`s.
+ */
+type PageSlug = 'document' | 'image' | 'settings'
+
 interface LibraryItem {
   id: Extract<AdminNav, 'documents' | 'images'>
+  /** Slug the backend must return in `allowedPages` for this item to show. */
+  page: Extract<PageSlug, 'document' | 'image'>
   section: AdminSection
   label: string
   icon: LucideIcon
 }
 
 const LIBRARIES: LibraryItem[] = [
-  { id: 'documents', section: 'document', label: 'Document', icon: FileText },
-  { id: 'images', section: 'image', label: 'Image', icon: ImageIcon },
+  { id: 'documents', page: 'document', section: 'document', label: 'Document', icon: FileText },
+  { id: 'images', page: 'image', section: 'image', label: 'Image', icon: ImageIcon },
 ]
 
 interface AdminSidebarProps {
@@ -44,35 +61,67 @@ interface AdminSidebarProps {
 export default function AdminSidebar({ active, counts, onNavigate }: AdminSidebarProps) {
   const resolvedCounts = useMemo(() => counts ?? countBySection(), [counts])
 
+  // The backend decides what this user may navigate to. RTK Query dedupes across
+  // the desktop rail + mobile drawer (both mount this), so it's one request.
+  const { data, isLoading, isError } = useMyPermissionsQuery()
+
+  // Fail closed: on error, no page is allowed. `isLoading` (not `isFetching`)
+  // stays false once there's cached data, so a background refetch never flashes
+  // the skeleton back in.
+  const allowed = useMemo(() => new Set<string>(isError ? [] : (data ?? [])), [data, isError])
+
+  const libraries = LIBRARIES.filter((item) => allowed.has(item.page))
+  const canSeeSettings = allowed.has('settings')
+
   return (
     <nav aria-label="Admin navigation" className="flex h-full flex-col p-4">
       <p className="px-2 pb-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
         Navigation
       </p>
 
-      <ul className="space-y-1">
-        {LIBRARIES.map(({ id, section, label, icon }) => (
-          <NavRow
-            key={id}
-            to={`${ROUTE_PATHS.admin}?lib=${section}`}
-            label={label}
-            icon={icon}
-            active={active === id}
-            badge={resolvedCounts[section]}
-            onNavigate={onNavigate}
-          />
-        ))}
-        <NavRow
-          to={ROUTE_PATHS.adminSettings}
-          label="Settings"
-          icon={Settings}
-          active={active === 'settings'}
-          onNavigate={onNavigate}
-        />
-      </ul>
+      {isLoading ? (
+        <NavSkeleton />
+      ) : (
+        <ul className="space-y-1">
+          {libraries.map(({ id, section, label, icon }) => (
+            <NavRow
+              key={id}
+              to={`${ROUTE_PATHS.admin}?lib=${section}`}
+              label={label}
+              icon={icon}
+              active={active === id}
+              badge={resolvedCounts[section]}
+              onNavigate={onNavigate}
+            />
+          ))}
+          {canSeeSettings && (
+            <NavRow
+              to={ROUTE_PATHS.adminSettings}
+              label="Settings"
+              icon={Settings}
+              active={active === 'settings'}
+              onNavigate={onNavigate}
+            />
+          )}
+        </ul>
+      )}
 
       <UserCard />
     </nav>
+  )
+}
+
+/** Placeholder rows shown while `/pages/my-permissions` is in flight. */
+function NavSkeleton() {
+  return (
+    <ul className="space-y-1" aria-hidden>
+      {[0, 1, 2].map((i) => (
+        <li key={i} className="flex items-center gap-3 rounded-lg px-3 py-2.5">
+          <span className="h-4.5 w-4.5 shrink-0 animate-pulse rounded bg-slate-200 dark:bg-white/10" />
+          <span className="h-3 w-24 flex-1 animate-pulse rounded bg-slate-200 dark:bg-white/10" />
+        </li>
+      ))}
+    </ul>
   )
 }
 
