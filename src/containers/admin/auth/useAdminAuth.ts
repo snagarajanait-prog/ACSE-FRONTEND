@@ -73,6 +73,7 @@ export function useAdminAuth() {
       .unwrap()
       .catch(() => {})
     auth.clearToken()
+    auth.clearRefreshToken()
     storage.remove(STORAGE_KEYS.session)
     dispatch(clearUser())
     // Drop every cached query so the next user never sees the last one's data.

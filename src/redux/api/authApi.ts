@@ -30,9 +30,10 @@ interface ApiUser {
 }
 
 /**
- * The login payload. Only `accessToken` is persisted today; `refreshToken`,
- * `tokenType` and `expiresIn` (seconds) come along for the token-refresh flow that
- * `lib/http` already reserves a spot for — not wired up yet.
+ * The login payload. `accessToken` and `refreshToken` are persisted (the latter
+ * revokes the session at logout); `tokenType` and `expiresIn` (seconds) come
+ * along for the token-refresh flow that `lib/http` already reserves a spot for —
+ * not wired up yet.
  */
 interface LoginData {
   accessToken: string
@@ -66,12 +67,21 @@ export const authApi = apiSlice.injectEndpoints({
       query: (body) => ({ url: config.auth.login, method: 'POST', body, skipEncryption: true }),
       transformResponse: (res: ApiEnvelope<LoginData>) => {
         auth.setToken(res.data.accessToken)
+        auth.setRefreshToken(res.data.refreshToken)
         return toUser(res.data.user)
       },
     }),
 
+    // The backend revokes the session by refresh token, so the current token
+    // rides along in the body. Read at call time (not closed over) so it's always
+    // the live one; `null` if the session predates refresh-token custody — a
+    // best-effort logout that the local teardown in `useAdminAuth` covers anyway.
     logout: builder.mutation<void, void>({
-      query: () => ({ url: config.auth.logout, method: 'POST' }),
+      query: () => ({
+        url: config.auth.logout,
+        method: 'POST',
+        body: { refreshToken: auth.getRefreshToken() },
+      }),
     }),
 
     currentUser: builder.query<User, void>({

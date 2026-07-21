@@ -1,0 +1,28 @@
+{
+  "language": {
+    "label": "Bahasa"
+  },
+  "theme": {
+    "toLight": "Beralih ke tema terang",
+    "toDark": "Beralih ke tema gelap"
+  },
+  "loader": {
+    "preparing": "Menyiapkan ruang kerja Anda"
+  },
+  "actions": {
+    "save": "Simpan",
+    "saving": "Menyimpan…",
+    "cancel": "Batal",
+    "delete": "Hapus",
+    "close": "Tutup",
+    "confirm": "Konfirmasi",
+    "upload": "Unggah",
+    "edit": "Edit",
+    "back": "Kembali",
+    "retry": "Coba lagi",
+    "loading": "Memuat"
+  },
+  "brand": {
+    "poweredBy": "Didukung oleh {{vendor}}"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "header": {
+    "title": "Panel",
+    "signedInAs": "{{name}} olarak oturum açıldı"
+  },
+  "loading": "Yükleniyor…",
+  "metrics": {
+    "thousandsAbbrev": "{{value}} B",
+    "millionsAbbrev": "{{value}} Mn"
+  }
+}

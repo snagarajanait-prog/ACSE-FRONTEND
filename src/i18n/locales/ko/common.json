@@ -1,0 +1,28 @@
+{
+  "language": {
+    "label": "언어"
+  },
+  "theme": {
+    "toLight": "라이트 테마로 전환",
+    "toDark": "다크 테마로 전환"
+  },
+  "loader": {
+    "preparing": "작업 공간을 준비하는 중입니다"
+  },
+  "actions": {
+    "save": "저장",
+    "saving": "저장 중…",
+    "cancel": "취소",
+    "delete": "삭제",
+    "close": "닫기",
+    "confirm": "확인",
+    "upload": "업로드",
+    "edit": "편집",
+    "back": "뒤로",
+    "retry": "다시 시도",
+    "loading": "로딩 중"
+  },
+  "brand": {
+    "poweredBy": "{{vendor}} 제공"
+  }
+}

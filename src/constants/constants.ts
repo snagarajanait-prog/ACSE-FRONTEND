@@ -13,6 +13,8 @@ export const ROLES: Record<string, Role> = {
 
 export const STORAGE_KEYS = {
   token: 'acse.token',
+  /** Refresh token from login. Sent in the logout body to revoke the session server-side. */
+  refreshToken: 'acse.refreshToken',
   theme: 'acse.theme',
   /** Chosen UI language (a code from `i18n/config`). Seeds i18next on boot. */
   language: 'acse.lang',

@@ -1,0 +1,28 @@
+{
+  "language": {
+    "label": "言語"
+  },
+  "theme": {
+    "toLight": "ライトテーマに切り替える",
+    "toDark": "ダークテーマに切り替える"
+  },
+  "loader": {
+    "preparing": "ワークスペースを準備しています"
+  },
+  "actions": {
+    "save": "保存",
+    "saving": "保存しています…",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "close": "閉じる",
+    "confirm": "確認",
+    "upload": "アップロード",
+    "edit": "編集",
+    "back": "戻る",
+    "retry": "再試行",
+    "loading": "読み込み中"
+  },
+  "brand": {
+    "poweredBy": "{{vendor}} により提供"
+  }
+}

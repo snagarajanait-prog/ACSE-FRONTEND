@@ -1,0 +1,11 @@
+{
+  "header": {
+    "title": "Панель управления",
+    "signedInAs": "Вход выполнен как {{name}}"
+  },
+  "loading": "Загрузка…",
+  "metrics": {
+    "thousandsAbbrev": "{{value}} тыс.",
+    "millionsAbbrev": "{{value}} млн"
+  }
+}

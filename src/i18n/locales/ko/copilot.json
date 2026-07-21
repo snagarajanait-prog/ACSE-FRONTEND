@@ -1,0 +1,191 @@
+{
+  "poweredBy": "기술 제공",
+  "header": {
+    "assistantMode": "어시스턴트 모드: {{system}}",
+    "mode": "모드 · {{short}}",
+    "openAccountDetails": "계정 세부 정보 열기",
+    "newChat": "새 채팅",
+    "backHome": "acsesolutions.com으로 돌아가기"
+  },
+  "hero": {
+    "greetingFallback": "오늘 무엇을 도와드릴까요?",
+    "subtitle": "청구서에 대해 문의하거나, 서비스를 시작 또는 중지하거나, 누수를 신고하세요 — 제가 차근차근 안내해 드리겠습니다."
+  },
+  "greeting": {
+    "morning": "좋은 아침입니다",
+    "afternoon": "좋은 오후입니다",
+    "evening": "좋은 저녁입니다",
+    "line": "{{part}}, {{name}}님. 오늘 무엇을 도와드릴까요?"
+  },
+  "composer": {
+    "placeholder": "ACSE AI에게 서비스 시작, 청구서 설명, 누수 신고를 요청하세요…",
+    "shortPlaceholder": "ACSE AI에게 질문하기…",
+    "drawerPlaceholder": "ACSE AI에게 무엇이든 물어보세요…",
+    "responding": "어시스턴트가 응답하는 중…",
+    "send": "보내기",
+    "disclaimer": "예시 대화 · 비프로덕션 데이터 · {{source}} 읽기/쓰기"
+  },
+  "chat": {
+    "you": "나",
+    "youSaid": "내가 말함: ",
+    "assistantSaid": "어시스턴트가 말함: ",
+    "working": "어시스턴트가 작업 중입니다",
+    "freeReply": "도와드릴 수 있습니다. 지금 제가 할 수 있는 작업은 다음과 같습니다 — 하나를 선택하여 직접 확인해 보세요:"
+  },
+  "think": {
+    "analysing": "요청을 분석하는 중",
+    "intent": "의도를 파악하는 중",
+    "checkingAccount": "계정 {account} 확인 중",
+    "requesting": "{source}에서 데이터 요청 중",
+    "processing": "레코드 처리 중",
+    "compiling": "세부 정보 정리 중",
+    "summarising": "요약 중",
+    "matching": "워크플로우에 매칭 중"
+  },
+  "otp": {
+    "sms": "SMS",
+    "email": "이메일",
+    "identityVerified": "신원 확인됨 · {{channel}}",
+    "verifyIdentity": "신원 확인 · {{channel}}",
+    "codeLabel": "인증 코드 {{digits}}",
+    "digit": "{{total}}자리 중 {{index}}번째"
+  },
+  "actions": {
+    "copyLabel": "대화 내용 복사",
+    "copy": "복사",
+    "copied": "복사됨",
+    "copyFailed": "복사 실패",
+    "shareLabel": "대화 내용 공유",
+    "share": "공유",
+    "sharedCopied": "복사됨 — 붙여넣어 공유하세요",
+    "shareFailed": "공유할 수 없습니다",
+    "exportLabel": "대화 내용을 PDF로 내보내기",
+    "exportPdf": "PDF 내보내기",
+    "preparing": "준비 중…",
+    "downloaded": "다운로드됨",
+    "exportFailed": "내보내기 실패"
+  },
+  "drawer": {
+    "assistantLabel": "ACSE AI 어시스턴트",
+    "accountDetails": "계정 세부 정보",
+    "closeAccountDetails": "계정 세부 정보 닫기",
+    "expand": "어시스턴트 확장",
+    "shrink": "어시스턴트 축소",
+    "expandShort": "확장",
+    "shrinkShort": "축소",
+    "close": "어시스턴트 닫기",
+    "closeShort": "닫기",
+    "heroSubtitle": "청구서에 대해 문의하거나, 서비스를 시작 또는 중지하거나, 누수를 신고하세요."
+  },
+  "customerList": {
+    "title": "고객 선택",
+    "subtitle": "어시스턴트의 컨텍스트를 설정하려면 계정을 선택하세요. 이는 비프로덕션 고객 레코드입니다 — 일부는 여러 계정을 보유하고 있습니다.",
+    "searchLabel": "고객 검색",
+    "searchPlaceholder": "이름, 고객 번호 또는 계정 번호로 검색",
+    "since": "{{id}} · {{since}}부터",
+    "accountCount_one": "계정 {{count}}개",
+    "accountCount_other": "계정 {{count}}개",
+    "due": "미납",
+    "settled": "완납",
+    "noResults": "“{{query}}”와(과) 일치하는 고객이 없습니다."
+  },
+  "account": {
+    "detailsTitle": "계정 세부 정보",
+    "customerSince": "{{id}} · {{since}}부터 고객",
+    "email": "이메일",
+    "phone": "전화번호",
+    "serviceAddress": "서비스 주소",
+    "meter": "미터",
+    "balance": "잔액",
+    "due": "{{date}} 마감",
+    "nothingDue": "미납 없음",
+    "autopayOn": "자동 결제 켜짐",
+    "autopayOff": "자동 결제 꺼짐",
+    "usage": "사용량",
+    "thisYear": "올해",
+    "lastYear": "작년",
+    "avgMonthly": "월 평균",
+    "peakMonth": "최고 사용 월",
+    "notifications": "알림",
+    "noBaseline": "아직 전년도 기준값이 없습니다",
+    "yoy": "전년 대비"
+  },
+  "usage": {
+    "range": {
+      "6M": "6개월",
+      "1Y": "1년",
+      "2Y": "2년"
+    }
+  },
+  "verify": {
+    "title": "신원 확인",
+    "stepEmail": "2단계 중 1단계 · 이메일 주소",
+    "stepCode": "2단계 중 2단계 · 일회용 코드",
+    "emailLabel": "이메일 주소",
+    "emailError": "코드를 보내드릴 수 있도록 이메일 주소를 입력하세요.",
+    "emailHelp": "본인 확인을 위해 6자리 코드를 보내드립니다. 여기서는 어떤 주소든 허용되며 — 실제로는 아무것도 전송되지 않습니다.",
+    "sending": "코드 전송 중…",
+    "sendCode": "코드 보내기",
+    "backToCustomers": "고객 목록으로 돌아가기",
+    "codeSent": "<1>{{email}}</1>(으)로 6자리 코드를 보냈습니다. 아래에 입력하여 어시스턴트를 여세요.",
+    "anyDigits": "6자리 숫자는 무엇이든 허용됩니다.",
+    "differentEmail": "다른 이메일 사용",
+    "cancel": "취소"
+  },
+  "receiptMenu": {
+    "about": "\"{{title}}\" 정보 — PDF로 다운로드",
+    "trigger": "세부 정보 및 다운로드",
+    "dialogLabel": "요청 영수증",
+    "recordWithRef": "제출된 그대로의 이 요청 기록입니다 — 참조 번호 <1>{{reference}}</1>.",
+    "recordPlain": "제출된 그대로의 이 요청 기록입니다.",
+    "download": "영수증 다운로드 (PDF)",
+    "preparing": "준비 중…",
+    "error": "PDF를 생성할 수 없습니다. 다시 시도해 주세요."
+  },
+  "slideOver": {
+    "close": "{{title}} 닫기"
+  },
+  "pdf": {
+    "poweredBy": "{{vendor}} 제공",
+    "page": "{{total}}페이지 중 {{page}}페이지",
+    "illustrative": "예시 대화 · 비프로덕션 데이터",
+    "continued": "{{label}} (계속)"
+  },
+  "receipt": {
+    "kind": "서비스 영수증",
+    "issued": "발행 {{stamp}}",
+    "keep": "기록용으로 보관하세요.",
+    "customer": "고객",
+    "requestDetails": "요청 세부 정보",
+    "name": "이름",
+    "customerNumber": "고객 번호",
+    "email": "이메일",
+    "phone": "전화번호",
+    "disclaimer": "이 영수증은 요청이 기록되었음을 확인합니다. 청구서나 결제 확인서가 아닙니다."
+  },
+  "transcript": {
+    "title": "{{assistant}}와의 대화",
+    "you": "나",
+    "kind": "대화 기록",
+    "context": "컨텍스트",
+    "customer": "고객",
+    "account": "계정",
+    "serviceAddress": "서비스 주소",
+    "handledBy": "처리 담당",
+    "exported": "내보냄",
+    "identityVerifiedMd": "신원 확인됨 · {{channel}} — {{text}}",
+    "identityVerifiedPlain": "신원 확인됨 ({{channel}}) — {{text}}",
+    "disclaimer": "이 대화 기록은 논의된 내용의 기록입니다. 청구서나 결제 확인서가 아닙니다.",
+    "disclaimerFull": "예시 대화 · 비프로덕션 데이터. 이 대화 기록은 논의된 내용의 기록입니다. 청구서나 결제 확인서가 아닙니다."
+  },
+  "useCases": {
+    "start-service": "서비스 시작",
+    "stop-service": "서비스 중지",
+    "transfer-service": "서비스 이전",
+    "high-bill": "청구액이 왜 높은가요?",
+    "payment-arrangement": "납부 조정",
+    "report-outage": "서비스 중단 신고 / 확인",
+    "update-contact": "연락처 정보 업데이트",
+    "report-leak": "누수 신고"
+  }
+}

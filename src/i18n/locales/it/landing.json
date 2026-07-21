@@ -1,0 +1,220 @@
+{
+  "common": {
+    "askAcseAi": "Chiedi ad ACSE AI"
+  },
+  "nav": {
+    "platform": "Piattaforma",
+    "useCases": "Casi d'uso",
+    "billing": "Fatturazione",
+    "about": "Chi siamo",
+    "toggleMenu": "Attiva/disattiva menu"
+  },
+  "hero": {
+    "badge": "Creato per i servizi pubblici · Basato su AI",
+    "titleLine1": "Automatizza le tue",
+    "titleLine2": "operazioni dei servizi pubblici",
+    "titleLine3": "con l'AI",
+    "subtitle": "ACSE AI risolve le richieste di servizio, segnala le eccezioni di fatturazione e crea azioni sul campo, in modo completamente automatico, 24/7.",
+    "seePlatform": "Scopri la piattaforma",
+    "stats": {
+      "callVolume": "Volume di chiamate automatizzato",
+      "alwaysOn": "Sempre attivo",
+      "workflows": "Flussi di lavoro"
+    }
+  },
+  "platform": {
+    "eyebrow": "Cosa facciamo",
+    "heading": "Un'unica piattaforma AI per l'intera operatività dei servizi pubblici",
+    "subtitle": "ACSE AI si integra con i tuoi sistemi esistenti per automatizzare le richieste in entrata dei clienti, le eccezioni di fatturazione e gli ordini di servizio sul campo, riducendo il lavoro manuale in ogni reparto.",
+    "pillars": {
+      "customerService": {
+        "title": "AI per l'assistenza clienti",
+        "body": "Risolve attivazioni/cessazioni/trasferimenti, aggiornamenti dell'account e richieste sulle interruzioni end-to-end su qualsiasi canale."
+      },
+      "billing": {
+        "title": "Automazione della fatturazione",
+        "body": "Monitora costantemente la coda di fatturazione, segnala le anomalie e avvia flussi di lavoro per le eccezioni in tempo reale."
+      },
+      "field": {
+        "title": "Operazioni sul campo",
+        "body": "Crea e monitora letture dei contatori, verifiche e ordini di servizio, tenendo i clienti sempre aggiornati."
+      },
+      "integrations": {
+        "title": "Integrazioni",
+        "body": "Si collega alla tua applicazione C2M e ai sistemi di registrazione esistenti. Funziona su Oracle Cloud Infrastructure."
+      }
+    },
+    "promises": {
+      "handleService": "Gestisce l'attivazione, la cessazione e il trasferimento del servizio senza l'intervento di un operatore",
+      "autopay": "Contatta in modo proattivo i clienti con addebito automatico in scadenza prima di un'interruzione",
+      "fieldActivities": "Crea automaticamente attività sul campo per verifiche e letture dei contatori",
+      "billingAnomalies": "Monitora le anomalie di fatturazione e segnala le eccezioni in tempo reale"
+    }
+  },
+  "useCases": {
+    "eyebrow": "Assistenza clienti",
+    "heading": "Tutto ciò di cui i tuoi clienti hanno bisogno, gestito automaticamente",
+    "subtitle": "Dagli aggiornamenti di routine dell'account alle segnalazioni di emergenza, ACSE AI risolve le richieste end-to-end senza mettere i clienti in attesa.",
+    "runScenario": "Esegui questo scenario →",
+    "tryAll": "Prova uno qualsiasi di questi con l'assistente",
+    "cards": {
+      "startService": {
+        "title": "Attivazione / Cessazione / Trasferimento del servizio",
+        "body": "I clienti attivano, terminano o trasferiscono il servizio su qualsiasi canale, in modo completamente automatico."
+      },
+      "paymentArrangement": {
+        "title": "Proroga e piano di pagamento",
+        "body": "L'AI negozia e registra i piani di pagamento in base allo storico dell'account e alle regole di policy."
+      },
+      "updateContact": {
+        "title": "Aggiornamento dei dati dell'account",
+        "body": "Aggiorna i numeri di telefono, aggiunge intestatari dell'account e corregge gli indirizzi postali all'istante."
+      },
+      "reportOutage": {
+        "title": "Richieste sulle interruzioni",
+        "body": "Stato delle interruzioni in tempo reale fornito ai clienti senza escalation a un operatore."
+      },
+      "reportLeak": {
+        "title": "Perdita di emergenza e rottura della conduttura principale",
+        "body": "Acquisisce e instrada le segnalazioni di emergenza per acqua assente/scarsa, perdite e rotture della conduttura principale."
+      },
+      "highBill": {
+        "title": "Verifica di bolletta elevata",
+        "body": "L'AI esamina lo storico dei consumi e crea attività sul campo per le anomalie del contatore."
+      },
+      "meterRead": {
+        "title": "Creazione della lettura del contatore",
+        "body": "Crea automaticamente le letture del contatore quando gli account raggiungono la fine della finestra di fatturazione."
+      },
+      "autopayOutreach": {
+        "title": "Avviso di scadenza dell'addebito automatico",
+        "body": "Contatta in modo proattivo i clienti quando l'addebito automatico è in scadenza per evitare interruzioni."
+      },
+      "newService": {
+        "title": "Richiesta di nuovo servizio",
+        "body": "Guida i clienti nelle richieste di nuovo servizio e monitora lo stato dell'invio."
+      }
+    }
+  },
+  "billing": {
+    "eyebrow": "Automazione della fatturazione",
+    "heading": "Individua le eccezioni di fatturazione prima che diventino problemi",
+    "subtitle": "ACSE AI monitora costantemente la tua coda di fatturazione, segnala le anomalie e interviene, così nulla sfugge.",
+    "rows": {
+      "usageAlerts": {
+        "tag": "Rilevamento delle eccezioni",
+        "title": "Avvisi di consumo alto / basso",
+        "body": "Segnala automaticamente gli account con consumi al di fuori delle soglie previste e avvia i flussi di lavoro di verifica."
+      },
+      "maxBill": {
+        "tag": "Monitoraggio delle soglie",
+        "title": "Soglia di bolletta massima",
+        "body": "Previene gli errori di fatturazione individuando gli account che superano i limiti massimi di bolletta prima dell'emissione degli estratti conto."
+      },
+      "zeroReads": {
+        "tag": "Controllo dei consumi",
+        "title": "3 letture a zero consecutive",
+        "body": "Rileva tre letture consecutive a consumo zero e crea un ordine di servizio per la verifica sul campo."
+      },
+      "schedule": {
+        "tag": "Pianificazione",
+        "title": "Calendario di lettura e fatturazione",
+        "body": "Crea e gestisce i calendari di lettura dei contatori e di fatturazione, garantendo che gli account vengano fatturati puntualmente a ogni ciclo."
+      },
+      "orderStatus": {
+        "tag": "Operazioni sul campo",
+        "title": "Stato degli ordini di servizio e di lavoro",
+        "body": "Monitora gli ordini aperti e aggiorna automaticamente clienti e addetti allo smistamento al variare dello stato."
+      }
+    },
+    "cta": {
+      "heading": "Pronto a modernizzare le tue operazioni dei servizi pubblici?",
+      "subtitle": "Unisciti alle utility idriche che già utilizzano ACSE AI per ridurre il volume delle chiamate, eliminare gli errori di fatturazione e offrire un servizio più rapido.",
+      "seeItInAction": "Guardalo in azione",
+      "talkToUs": "Parla con noi"
+    }
+  },
+  "contact": {
+    "eyebrow": "Mettiti in contatto",
+    "heading": "Guarda ACSE AI in azione",
+    "subtitle": "Collaboriamo con fornitori di servizi idrici e di pubblica utilità di ogni dimensione. Raccontaci della tua attività e ti mostreremo esattamente come si inserisce ACSE AI.",
+    "info": {
+      "emailLabel": "Email",
+      "emailValue": "info@acsesolutions.com",
+      "coverageLabel": "Copertura",
+      "coverageValue": "Al servizio delle utility in tutto il Nord America",
+      "responseLabel": "Tempo di risposta",
+      "responseValue": "Entro 1 giorno lavorativo"
+    },
+    "form": {
+      "firstName": "Nome",
+      "firstNamePlaceholder": "Jordan",
+      "lastName": "Cognome",
+      "lastNamePlaceholder": "Rivera",
+      "workEmail": "Email di lavoro",
+      "workEmailPlaceholder": "jordan@utility.gov",
+      "organization": "Organizzazione",
+      "organizationPlaceholder": "Metro Water District",
+      "interest": "Mi interessa",
+      "notes": "Raccontaci della tua configurazione attuale",
+      "notesPlaceholder": "Sistemi che usi oggi, volume di chiamate, criticità…",
+      "submit": "Invia messaggio"
+    },
+    "interests": {
+      "customerService": "Automazione dell'assistenza clienti",
+      "billing": "Flussi di lavoro per le eccezioni di fatturazione",
+      "both": "Entrambi: piattaforma completa",
+      "walkthrough": "Una dimostrazione / prezzi"
+    },
+    "sentMessage": "Grazie: abbiamo ricevuto i tuoi dati. Per una risposta diretta, scrivici a<1> info@acsesolutions.com</1>."
+  },
+  "footer": {
+    "tagline": "Automazione basata su AI per l'assistenza clienti, le eccezioni di fatturazione e le operazioni sul campo dei servizi pubblici.",
+    "groups": {
+      "platform": "Piattaforma",
+      "company": "Azienda",
+      "tryIt": "Provalo"
+    },
+    "links": {
+      "customerServiceAi": "AI per l'assistenza clienti",
+      "billingAutomation": "Automazione della fatturazione",
+      "fieldOperations": "Operazioni sul campo",
+      "integrations": "Integrazioni",
+      "aboutAcse": "Informazioni su ACSE",
+      "caseStudies": "Casi di studio",
+      "contact": "Contatti",
+      "useCases": "Casi d'uso",
+      "platform": "Piattaforma"
+    },
+    "copyright": "© 2026 ACSE Solutions · Anteprima del prodotto: tutti i dati mostrati non sono di produzione.",
+    "runsOn": "Funziona su Oracle Cloud Infrastructure"
+  },
+  "preview": {
+    "chips": {
+      "resolvePayment": "Risolvi richiesta di pagamento",
+      "scheduleAppointment": "Pianifica appuntamento",
+      "fieldVisit": "Contatto per visita sul campo"
+    },
+    "agentName": "ACSE AI <1>— Agente dal vivo</1>",
+    "active": "Attivo",
+    "userMessage": "La mia bolletta con addebito automatico di questo mese sembra troppo alta.",
+    "agentMessage": "Vedo che il tuo consumo è aumentato del 148% rispetto al valore di riferimento del mese scorso nella stessa finestra di fatturazione. Creerò una verifica sul campo per un controllo del contatore.",
+    "workOrder": "Ordine di lavoro sul campo {{order}} · Assegnato al Team {{team}}",
+    "steps": {
+      "identity": {
+        "label": "Identità verificata",
+        "status": "Account corrispondente"
+      },
+      "analysis": {
+        "label": "Analisi delle eccezioni di bolletta",
+        "status": "Anomalia rilevata"
+      },
+      "escalation": {
+        "label": "Escalation automatica creata",
+        "status": "In coda"
+      }
+    },
+    "live": "Dal vivo",
+    "requestsResolved": "{{value}} richieste risolte oggi"
+  }
+}

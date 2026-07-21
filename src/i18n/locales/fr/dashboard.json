@@ -1,0 +1,11 @@
+{
+  "header": {
+    "title": "Tableau de bord",
+    "signedInAs": "Connecté en tant que {{name}}"
+  },
+  "loading": "Chargement…",
+  "metrics": {
+    "thousandsAbbrev": "{{value}} k",
+    "millionsAbbrev": "{{value}} M"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "header": {
+    "title": "Pannello di controllo",
+    "signedInAs": "Accesso effettuato come {{name}}"
+  },
+  "loading": "Caricamento…",
+  "metrics": {
+    "thousandsAbbrev": "{{value}} mila",
+    "millionsAbbrev": "{{value}} Mln"
+  }
+}

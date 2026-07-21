@@ -1,0 +1,157 @@
+{
+  "login": {
+    "welcome": "Willkommen zurück!",
+    "identifierLabel": "E-Mail oder Benutzername",
+    "identifierPlaceholder": "sie@unternehmen.com",
+    "passwordLabel": "Passwort",
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen",
+    "signingIn": "Anmeldung läuft…",
+    "submit": "Anmelden",
+    "rememberMe": "Angemeldet bleiben",
+    "heroTitle": "Wir stärken das <1>Versorgungsmanagement</1>",
+    "heroSubtitle": "Verwalten Sie Kundenkonten, Serviceanfragen, Abrechnung, Ausfälle, Außendiensteinsätze und Analysen über eine sichere, zentrale Plattform, die für moderne Versorgungsunternehmen entwickelt wurde."
+  },
+  "auth": {
+    "signedInTitle": "Angemeldet",
+    "signedInDesc": "Willkommen zurück, {{name}}.",
+    "signInFailedTitle": "Anmeldung fehlgeschlagen",
+    "signInFailedDesc": "Anmeldung nicht möglich. Bitte versuchen Sie es erneut.",
+    "signedOut": "Abgemeldet"
+  },
+  "shell": {
+    "adminNav": "Administrationsnavigation",
+    "openNav": "Navigation öffnen",
+    "closeNav": "Navigation schließen",
+    "closeDialog": "Dialog schließen",
+    "navigation": "Navigation",
+    "nav": {
+      "document": "Dokument",
+      "image": "Bild",
+      "settings": "Einstellungen"
+    },
+    "signOut": "Abmelden",
+    "online": "Online",
+    "poweredBy": "Bereitgestellt von",
+    "backTo": "Zurück zu acsesolutions.com",
+    "userCard": {
+      "name": "Administrationskonsole",
+      "role": "Systemadministrator"
+    },
+    "fileUploadTitle": "Datei-Upload",
+    "settingsTitle": "Profil & Einstellungen"
+  },
+  "files": {
+    "heading": "Interner Datei-Upload",
+    "subtitle": {
+      "document": "Hochgeladene Unternehmensdokumente verwalten und organisieren",
+      "image": "Hochgeladene Unternehmensbilder verwalten und organisieren"
+    },
+    "searchLabel": "Dateien durchsuchen",
+    "searchPlaceholder": "Dateien durchsuchen…",
+    "clearSearch": "Suche zurücksetzen",
+    "uploadFile": "Datei hochladen",
+    "columns": {
+      "uploadedAt": "Hochladedatum",
+      "uploadedBy": "Hochgeladen von",
+      "fileName": "Hochgeladene Dateien",
+      "category": "Hochgeladener Typ",
+      "notes": "Notizen",
+      "download": "Herunterladen",
+      "action": "Aktion"
+    },
+    "sortBy": "Sortieren nach {{label}}",
+    "fileFallback": "Datei",
+    "downloadFile": "{{name}} herunterladen",
+    "downloadTitle": "Herunterladen",
+    "deleteFile": "{{name}} löschen",
+    "deleteTitle": "Löschen",
+    "summary": {
+      "showing": "<1>{{shown}}</1> von {{total}} werden angezeigt",
+      "total_one": "<1>{{count}}</1> Datei",
+      "total_other": "<1>{{count}}</1> Dateien"
+    },
+    "stub": {
+      "file": "Datei: {{name}}",
+      "category": "Kategorie: {{category}}",
+      "uploadedBy": "Hochgeladen von: {{name}}",
+      "uploadedAt": "Hochgeladen am: {{date}}",
+      "notes": "Notizen: {{notes}}",
+      "placeholder": "Dies ist ein Demo-Platzhalter – die Originaldatei wurde nicht im Browser gespeichert."
+    }
+  },
+  "upload": {
+    "title": {
+      "document": "Dokument hochladen",
+      "image": "Bild hochladen"
+    },
+    "description": {
+      "document": "Fügen Sie Dokumente zur internen Bibliothek hinzu.",
+      "image": "Fügen Sie Bilder zur internen Bibliothek hinzu."
+    },
+    "hint": {
+      "document": "PDF, DOC, XLS, PPT, CSV, HTML – bis zu {{max}} Dateien",
+      "image": "PNG, JPG, WEBP, GIF, SVG – bis zu {{max}} Dateien"
+    },
+    "fileFieldLabel": "Datei hochladen",
+    "dropIdle": "Ziehen Sie Ihre Datei hierher",
+    "dropActive": "Loslassen, um Dateien hinzuzufügen",
+    "browsePrompt": "oder <1>durchsuchen</1>",
+    "errorNoFiles": "Fügen Sie mindestens eine Datei zum Hochladen hinzu.",
+    "removeFile": "{{name}} entfernen",
+    "uploadedByLabel": "Hochgeladen von",
+    "uploadedByPlaceholder": "z. B. John Doe",
+    "categoryLabel": "Kategorie",
+    "uncategorized": "Nicht kategorisiert",
+    "notesLabel": "Notizen",
+    "optional": "(optional)",
+    "notesPlaceholder": "Fügen Sie hier relevante Notizen hinzu…",
+    "cancel": "Abbrechen",
+    "submit": "Datei hochladen",
+    "submitWithCount": "Hochladen ({{count}})"
+  },
+  "confirmDelete": {
+    "title": "Datei löschen",
+    "body": "<1>{{name}}</1> aus der Bibliothek entfernen? Dies kann nicht rückgängig gemacht werden.",
+    "cancel": "Abbrechen",
+    "confirm": "Löschen"
+  },
+  "emptyState": {
+    "searchTitle": "Keine Dateien entsprechen Ihrer Suche",
+    "emptyTitle": "Noch keine Dateien hochgeladen",
+    "searchDesc": "Versuchen Sie einen anderen Namen, Hochladenden oder eine andere Kategorie.",
+    "emptyDesc": "Laden Sie Ihre erste Datei hoch, um sie hier aufgelistet zu sehen.",
+    "clearSearch": "Suche zurücksetzen",
+    "uploadFile": "Datei hochladen"
+  },
+  "settings": {
+    "heading": "Profileinstellungen",
+    "subtitle": "Organisationseinstellungen und Erscheinungsbild verwalten",
+    "changesSaved": "Änderungen gespeichert",
+    "cancel": "Abbrechen",
+    "save": "Änderungen speichern",
+    "logoErrorType": "Verwenden Sie ein PNG- oder JPG-Bild.",
+    "logoErrorSize": "Das Bild muss kleiner als 1 MB sein.",
+    "logoErrorRead": "Dieses Bild konnte nicht gelesen werden.",
+    "profilePicture": {
+      "title": "Profilbild",
+      "description": "Laden Sie ein Logo oder einen Avatar für Ihre Organisation hoch",
+      "change": "Bild ändern",
+      "remove": "Bild entfernen",
+      "dropIdle": "Zum Hochladen klicken oder ziehen",
+      "dropActive": "Zum Hochladen loslassen",
+      "hint": "PNG oder JPG · bis zu 1 MB"
+    },
+    "company": {
+      "title": "Unternehmensinformationen",
+      "description": "Aktualisieren Sie den Anzeigenamen Ihrer Organisation",
+      "nameLabel": "Firmenname",
+      "namePlaceholder": "z. B. XYZ Company"
+    },
+    "appMode": {
+      "title": "Anwendungsmodus",
+      "description": "Zwischen den Betriebsmodi ATP und C2M wechseln",
+      "ariaLabel": "Anwendungsmodus"
+    }
+  }
+}

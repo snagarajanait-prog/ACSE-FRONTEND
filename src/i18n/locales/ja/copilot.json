@@ -1,0 +1,191 @@
+{
+  "poweredBy": "提供元",
+  "header": {
+    "assistantMode": "アシスタントモード: {{system}}",
+    "mode": "モード · {{short}}",
+    "openAccountDetails": "アカウント詳細を開く",
+    "newChat": "新しいチャット",
+    "backHome": "acsesolutions.com に戻る"
+  },
+  "hero": {
+    "greetingFallback": "本日はどのようなご用件でしょうか？",
+    "subtitle": "請求についてのご質問、サービスの開始・停止、漏水の報告など、順を追ってご案内します。"
+  },
+  "greeting": {
+    "morning": "おはようございます",
+    "afternoon": "こんにちは",
+    "evening": "こんばんは",
+    "line": "{{part}}、{{name}} さん。本日はどのようなご用件でしょうか？"
+  },
+  "composer": {
+    "placeholder": "サービスの開始、請求の説明、漏水の報告などを ACSE AI にお尋ねください…",
+    "shortPlaceholder": "ACSE AI に質問…",
+    "drawerPlaceholder": "ACSE AI に何でも質問…",
+    "responding": "アシスタントが応答しています…",
+    "send": "送信",
+    "disclaimer": "説明用の会話 · 非本番データ · {{source}} を読み書き"
+  },
+  "chat": {
+    "you": "あなた",
+    "youSaid": "あなたの発言: ",
+    "assistantSaid": "アシスタントの発言: ",
+    "working": "アシスタントが処理中です",
+    "freeReply": "お手伝いできます。現在対応できる内容は次のとおりです。実際の動作を見るには 1 つ選択してください。"
+  },
+  "think": {
+    "analysing": "リクエストを分析しています",
+    "intent": "意図を理解しています",
+    "checkingAccount": "アカウント {account} を確認しています",
+    "requesting": "{source} からデータを取得しています",
+    "processing": "レコードを処理しています",
+    "compiling": "詳細をまとめています",
+    "summarising": "要約しています",
+    "matching": "ワークフローを照合しています"
+  },
+  "otp": {
+    "sms": "SMS",
+    "email": "メール",
+    "identityVerified": "本人確認済み · {{channel}}",
+    "verifyIdentity": "本人確認 · {{channel}}",
+    "codeLabel": "確認コード {{digits}}",
+    "digit": "{{total}} 桁中 {{index}} 桁目"
+  },
+  "actions": {
+    "copyLabel": "会話履歴をコピー",
+    "copy": "コピー",
+    "copied": "コピーしました",
+    "copyFailed": "コピーに失敗しました",
+    "shareLabel": "会話履歴を共有",
+    "share": "共有",
+    "sharedCopied": "コピーしました — 貼り付けて共有できます",
+    "shareFailed": "共有できませんでした",
+    "exportLabel": "会話履歴を PDF として書き出す",
+    "exportPdf": "PDF を書き出す",
+    "preparing": "準備しています…",
+    "downloaded": "ダウンロードしました",
+    "exportFailed": "書き出しに失敗しました"
+  },
+  "drawer": {
+    "assistantLabel": "ACSE AI アシスタント",
+    "accountDetails": "アカウント詳細",
+    "closeAccountDetails": "アカウント詳細を閉じる",
+    "expand": "アシスタントを拡大",
+    "shrink": "アシスタントを縮小",
+    "expandShort": "拡大",
+    "shrinkShort": "縮小",
+    "close": "アシスタントを閉じる",
+    "closeShort": "閉じる",
+    "heroSubtitle": "請求についてのご質問、サービスの開始・停止、漏水の報告などをどうぞ。"
+  },
+  "customerList": {
+    "title": "顧客を選択",
+    "subtitle": "アシスタントのコンテキストを設定するアカウントを選択してください。これらは非本番の顧客レコードで、複数のアカウントを持つものもあります。",
+    "searchLabel": "顧客を検索",
+    "searchPlaceholder": "名前、顧客番号、またはアカウント番号で検索",
+    "since": "{{id}} · {{since}} から",
+    "accountCount_one": "{{count}} 件のアカウント",
+    "accountCount_other": "{{count}} 件のアカウント",
+    "due": "未払い",
+    "settled": "支払い済み",
+    "noResults": "「{{query}}」に一致する顧客がいません。"
+  },
+  "account": {
+    "detailsTitle": "アカウント詳細",
+    "customerSince": "{{id}} · {{since}} からのお客様",
+    "email": "メール",
+    "phone": "電話",
+    "serviceAddress": "サービス住所",
+    "meter": "メーター",
+    "balance": "残高",
+    "due": "{{date}} 期限",
+    "nothingDue": "未払いなし",
+    "autopayOn": "自動支払い オン",
+    "autopayOff": "自動支払い オフ",
+    "usage": "使用量",
+    "thisYear": "今年",
+    "lastYear": "昨年",
+    "avgMonthly": "月平均",
+    "peakMonth": "ピーク月",
+    "notifications": "通知",
+    "noBaseline": "前年の基準値はまだありません",
+    "yoy": "前年比"
+  },
+  "usage": {
+    "range": {
+      "6M": "6 か月",
+      "1Y": "1 年",
+      "2Y": "2 年"
+    }
+  },
+  "verify": {
+    "title": "本人確認",
+    "stepEmail": "ステップ 1 / 2 · メールアドレス",
+    "stepCode": "ステップ 2 / 2 · ワンタイムコード",
+    "emailLabel": "メールアドレス",
+    "emailError": "コードをお送りできるよう、メールアドレスを入力してください。",
+    "emailHelp": "ご本人確認のため、6 桁のコードをお送りします。ここではどのアドレスでも受け付けられ、実際には何も送信されません。",
+    "sending": "コードを送信しています…",
+    "sendCode": "コードを送信",
+    "backToCustomers": "顧客一覧に戻る",
+    "codeSent": "6 桁のコードを <1>{{email}}</1> に送信しました。下に入力してアシスタントを開いてください。",
+    "anyDigits": "任意の 6 桁が受け付けられます。",
+    "differentEmail": "別のメールアドレスを使用",
+    "cancel": "キャンセル"
+  },
+  "receiptMenu": {
+    "about": "「{{title}}」について — PDF としてダウンロード",
+    "trigger": "詳細とダウンロード",
+    "dialogLabel": "リクエストの受領書",
+    "recordWithRef": "送信されたとおりのこのリクエストの記録です — 参照番号 <1>{{reference}}</1>。",
+    "recordPlain": "送信されたとおりのこのリクエストの記録です。",
+    "download": "受領書をダウンロード（PDF）",
+    "preparing": "準備しています…",
+    "error": "PDF を生成できませんでした。もう一度お試しください。"
+  },
+  "slideOver": {
+    "close": "{{title}} を閉じる"
+  },
+  "pdf": {
+    "poweredBy": "{{vendor}} により提供",
+    "page": "{{total}} ページ中 {{page}} ページ",
+    "illustrative": "説明用の会話 · 非本番データ",
+    "continued": "{{label}}（続き）"
+  },
+  "receipt": {
+    "kind": "サービス受領書",
+    "issued": "発行 {{stamp}}",
+    "keep": "記録用に保管してください。",
+    "customer": "お客様",
+    "requestDetails": "リクエストの詳細",
+    "name": "名前",
+    "customerNumber": "顧客番号",
+    "email": "メール",
+    "phone": "電話",
+    "disclaimer": "この受領書はリクエストが記録されたことを確認するものです。請求書や支払いの確認ではありません。"
+  },
+  "transcript": {
+    "title": "{{assistant}} との会話",
+    "you": "あなた",
+    "kind": "会話の記録",
+    "context": "コンテキスト",
+    "customer": "お客様",
+    "account": "アカウント",
+    "serviceAddress": "サービス住所",
+    "handledBy": "対応者",
+    "exported": "書き出し",
+    "identityVerifiedMd": "本人確認済み · {{channel}} — {{text}}",
+    "identityVerifiedPlain": "本人確認済み（{{channel}}） — {{text}}",
+    "disclaimer": "この記録は話し合われた内容の記録です。請求書や支払いの確認ではありません。",
+    "disclaimerFull": "説明用の会話 · 非本番データ。この記録は話し合われた内容の記録です。請求書や支払いの確認ではありません。"
+  },
+  "useCases": {
+    "start-service": "サービスを開始",
+    "stop-service": "サービスを停止",
+    "transfer-service": "サービスを移転",
+    "high-bill": "請求額が高いのはなぜですか？",
+    "payment-arrangement": "支払いの取り決め",
+    "report-outage": "供給停止の報告／確認",
+    "update-contact": "連絡先情報を更新",
+    "report-leak": "漏水を報告"
+  }
+}

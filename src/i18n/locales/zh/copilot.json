@@ -1,0 +1,191 @@
+{
+  "poweredBy": "技术支持",
+  "header": {
+    "assistantMode": "助手模式：{{system}}",
+    "mode": "模式 · {{short}}",
+    "openAccountDetails": "打开账户详情",
+    "newChat": "新对话",
+    "backHome": "返回 acsesolutions.com"
+  },
+  "hero": {
+    "greetingFallback": "今天我能为您做些什么？",
+    "subtitle": "询问账单、开通或停止服务，或报告漏水 — 我会一步步为您引导。"
+  },
+  "greeting": {
+    "morning": "早上好",
+    "afternoon": "下午好",
+    "evening": "晚上好",
+    "line": "{{part}}，{{name}}。今天我能为您做些什么？"
+  },
+  "composer": {
+    "placeholder": "让 ACSE AI 开通服务、解释账单或报告漏水…",
+    "shortPlaceholder": "询问 ACSE AI…",
+    "drawerPlaceholder": "向 ACSE AI 询问任何问题…",
+    "responding": "助手正在回复…",
+    "send": "发送",
+    "disclaimer": "示例对话 · 非生产数据 · 读取/写入 {{source}}"
+  },
+  "chat": {
+    "you": "您",
+    "youSaid": "您说： ",
+    "assistantSaid": "助手说： ",
+    "working": "助手正在处理",
+    "freeReply": "我可以帮您处理。以下是我现在能做的事情 — 选择一项查看实际效果："
+  },
+  "think": {
+    "analysing": "正在分析您的请求",
+    "intent": "正在理解意图",
+    "checkingAccount": "正在检查账户 {account}",
+    "requesting": "正在从 {source} 请求数据",
+    "processing": "正在处理记录",
+    "compiling": "正在汇总详情",
+    "summarising": "正在总结",
+    "matching": "正在匹配工作流"
+  },
+  "otp": {
+    "sms": "短信",
+    "email": "电子邮箱",
+    "identityVerified": "身份已验证 · {{channel}}",
+    "verifyIdentity": "验证您的身份 · {{channel}}",
+    "codeLabel": "验证码 {{digits}}",
+    "digit": "第 {{index}} 位，共 {{total}} 位"
+  },
+  "actions": {
+    "copyLabel": "复制记录",
+    "copy": "复制",
+    "copied": "已复制",
+    "copyFailed": "复制失败",
+    "shareLabel": "分享记录",
+    "share": "分享",
+    "sharedCopied": "已复制 — 粘贴即可分享",
+    "shareFailed": "无法分享",
+    "exportLabel": "将记录导出为 PDF",
+    "exportPdf": "导出 PDF",
+    "preparing": "正在准备…",
+    "downloaded": "已下载",
+    "exportFailed": "导出失败"
+  },
+  "drawer": {
+    "assistantLabel": "ACSE AI 助手",
+    "accountDetails": "账户详情",
+    "closeAccountDetails": "关闭账户详情",
+    "expand": "展开助手",
+    "shrink": "收起助手",
+    "expandShort": "展开",
+    "shrinkShort": "收起",
+    "close": "关闭助手",
+    "closeShort": "关闭",
+    "heroSubtitle": "询问账单、开通或停止服务，或报告漏水。"
+  },
+  "customerList": {
+    "title": "选择客户",
+    "subtitle": "选择一个账户以设置助手的上下文。这些是非生产客户记录 — 其中有几个拥有多个账户。",
+    "searchLabel": "搜索客户",
+    "searchPlaceholder": "按姓名、客户编号或账户编号搜索。",
+    "since": "{{id}} · 自 {{since}} 起",
+    "accountCount_one": "{{count}} 个账户",
+    "accountCount_other": "{{count}} 个账户",
+    "due": "待付",
+    "settled": "已结清",
+    "noResults": "没有客户与 “{{query}}” 匹配。"
+  },
+  "account": {
+    "detailsTitle": "账户详情",
+    "customerSince": "{{id}} · 客户自 {{since}} 起",
+    "email": "电子邮箱",
+    "phone": "电话",
+    "serviceAddress": "服务地址",
+    "meter": "表计",
+    "balance": "余额",
+    "due": "{{date}} 到期",
+    "nothingDue": "无待付款项",
+    "autopayOn": "自动扣款已开启",
+    "autopayOff": "自动扣款已关闭",
+    "usage": "用量",
+    "thisYear": "今年",
+    "lastYear": "去年",
+    "avgMonthly": "月均",
+    "peakMonth": "用量峰值月",
+    "notifications": "通知",
+    "noBaseline": "尚无上一年度基准",
+    "yoy": "同比"
+  },
+  "usage": {
+    "range": {
+      "6M": "6 个月",
+      "1Y": "1 年",
+      "2Y": "2 年"
+    }
+  },
+  "verify": {
+    "title": "验证您的身份",
+    "stepEmail": "第 1 步，共 2 步 · 电子邮箱地址",
+    "stepCode": "第 2 步，共 2 步 · 一次性验证码",
+    "emailLabel": "电子邮箱地址",
+    "emailError": "请输入电子邮箱地址，以便我们发送验证码。",
+    "emailHelp": "我们将发送一个 6 位验证码以确认是您本人。此处接受任何地址 — 实际上不会真正发送任何内容。",
+    "sending": "正在发送验证码…",
+    "sendCode": "发送验证码",
+    "backToCustomers": "返回客户列表",
+    "codeSent": "我们已向 <1>{{email}}</1> 发送了一个 6 位验证码。在下方输入即可打开助手。",
+    "anyDigits": "接受任意 6 位数字。",
+    "differentEmail": "使用其他电子邮箱",
+    "cancel": "取消"
+  },
+  "receiptMenu": {
+    "about": "关于 \"{{title}}\" — 并下载为 PDF",
+    "trigger": "详情与下载",
+    "dialogLabel": "请求回执",
+    "recordWithRef": "此请求按提交时的原样记录 — 参考编号 <1>{{reference}}</1>。",
+    "recordPlain": "此请求按提交时的原样记录。",
+    "download": "下载回执（PDF）",
+    "preparing": "正在准备…",
+    "error": "无法生成 PDF，请重试。"
+  },
+  "slideOver": {
+    "close": "关闭 {{title}}"
+  },
+  "pdf": {
+    "poweredBy": "由 {{vendor}} 提供技术支持",
+    "page": "第 {{page}} 页，共 {{total}} 页",
+    "illustrative": "示例对话 · 非生产数据",
+    "continued": "{{label}}（续）"
+  },
+  "receipt": {
+    "kind": "服务回执",
+    "issued": "开具于 {{stamp}}",
+    "keep": "请妥善保存以备存档。",
+    "customer": "客户",
+    "requestDetails": "请求详情",
+    "name": "姓名",
+    "customerNumber": "客户编号",
+    "email": "电子邮箱",
+    "phone": "电话",
+    "disclaimer": "此回执确认已记录一项请求。它不是账单，也不是付款确认。"
+  },
+  "transcript": {
+    "title": "与 {{assistant}} 的对话",
+    "you": "您",
+    "kind": "对话记录",
+    "context": "上下文",
+    "customer": "客户",
+    "account": "账户",
+    "serviceAddress": "服务地址",
+    "handledBy": "处理人",
+    "exported": "已导出",
+    "identityVerifiedMd": "身份已验证 · {{channel}} — {{text}}",
+    "identityVerifiedPlain": "身份已验证（{{channel}}） — {{text}}",
+    "disclaimer": "此记录是所讨论内容的存档。它不是账单，也不是付款确认。",
+    "disclaimerFull": "示例对话 · 非生产数据。此记录是所讨论内容的存档。它不是账单，也不是付款确认。"
+  },
+  "useCases": {
+    "start-service": "开通服务",
+    "stop-service": "停止服务",
+    "transfer-service": "转移服务",
+    "high-bill": "我的账单为什么这么高？",
+    "payment-arrangement": "付款安排",
+    "report-outage": "报告 / 查询服务中断",
+    "update-contact": "更新联系信息",
+    "report-leak": "报告漏水"
+  }
+}

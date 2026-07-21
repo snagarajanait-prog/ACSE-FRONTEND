@@ -1,0 +1,11 @@
+{
+  "header": {
+    "title": "Painel",
+    "signedInAs": "Sessão iniciada como {{name}}"
+  },
+  "loading": "Carregando…",
+  "metrics": {
+    "thousandsAbbrev": "{{value}} mil",
+    "millionsAbbrev": "{{value}} mi"
+  }
+}

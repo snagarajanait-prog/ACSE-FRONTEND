@@ -43,7 +43,11 @@
     -->
     <script>
       try {
-        var dirs = { en: 'ltr', es: 'ltr', ar: 'rtl', ta: 'ltr', hi: 'ltr' }
+        var dirs = {
+          en: 'ltr', es: 'ltr', ar: 'rtl', ta: 'ltr', hi: 'ltr',
+          fr: 'ltr', de: 'ltr', pt: 'ltr', zh: 'ltr', ru: 'ltr',
+          ja: 'ltr', ko: 'ltr', it: 'ltr', id: 'ltr', tr: 'ltr'
+        }
         var savedLng = localStorage.getItem('acse.lang')
         var lng = savedLng ? JSON.parse(savedLng) : null
         if (!lng || !dirs[lng]) {

@@ -1,0 +1,191 @@
+{
+  "poweredBy": "Propulsé par",
+  "header": {
+    "assistantMode": "Mode de l'assistant : {{system}}",
+    "mode": "Mode · {{short}}",
+    "openAccountDetails": "Ouvrir les détails du compte",
+    "newChat": "Nouvelle conversation",
+    "backHome": "Retour à acsesolutions.com"
+  },
+  "hero": {
+    "greetingFallback": "Comment puis-je vous aider aujourd'hui ?",
+    "subtitle": "Posez une question sur une facture, ouvrez ou fermez un service, ou signalez une fuite — je vous guide pas à pas."
+  },
+  "greeting": {
+    "morning": "Bonjour",
+    "afternoon": "Bon après-midi",
+    "evening": "Bonsoir",
+    "line": "{{part}}, {{name}}. Comment puis-je vous aider aujourd'hui ?"
+  },
+  "composer": {
+    "placeholder": "Demandez à ACSE AI d'ouvrir un service, d'expliquer une facture, de signaler une fuite…",
+    "shortPlaceholder": "Demandez à ACSE AI…",
+    "drawerPlaceholder": "Demandez ce que vous voulez à ACSE AI…",
+    "responding": "L'assistant répond…",
+    "send": "Envoyer",
+    "disclaimer": "Conversation illustrative · données non productives · lecture/écriture dans {{source}}"
+  },
+  "chat": {
+    "you": "Vous",
+    "youSaid": "Vous avez dit : ",
+    "assistantSaid": "L'assistant a dit : ",
+    "working": "L'assistant travaille",
+    "freeReply": "Je peux vous aider. Voici ce que je peux faire dès maintenant — choisissez une option pour la voir en action :"
+  },
+  "think": {
+    "analysing": "Analyse de votre demande",
+    "intent": "Compréhension de l'intention",
+    "checkingAccount": "Vérification du compte {account}",
+    "requesting": "Demande de données à {source}",
+    "processing": "Traitement des enregistrements",
+    "compiling": "Compilation des détails",
+    "summarising": "Synthèse",
+    "matching": "Association à un flux de travail"
+  },
+  "otp": {
+    "sms": "SMS",
+    "email": "E-mail",
+    "identityVerified": "Identité vérifiée · {{channel}}",
+    "verifyIdentity": "Vérifiez votre identité · {{channel}}",
+    "codeLabel": "Code de vérification {{digits}}",
+    "digit": "Chiffre {{index}} sur {{total}}"
+  },
+  "actions": {
+    "copyLabel": "Copier la transcription",
+    "copy": "Copier",
+    "copied": "Copié",
+    "copyFailed": "Échec de la copie",
+    "shareLabel": "Partager la transcription",
+    "share": "Partager",
+    "sharedCopied": "Copié — collez pour partager",
+    "shareFailed": "Impossible de partager",
+    "exportLabel": "Exporter la transcription au format PDF",
+    "exportPdf": "Exporter en PDF",
+    "preparing": "Préparation…",
+    "downloaded": "Téléchargé",
+    "exportFailed": "Échec de l'exportation"
+  },
+  "drawer": {
+    "assistantLabel": "Assistant ACSE AI",
+    "accountDetails": "Détails du compte",
+    "closeAccountDetails": "Fermer les détails du compte",
+    "expand": "Agrandir l'assistant",
+    "shrink": "Réduire l'assistant",
+    "expandShort": "Agrandir",
+    "shrinkShort": "Réduire",
+    "close": "Fermer l'assistant",
+    "closeShort": "Fermer",
+    "heroSubtitle": "Posez une question sur une facture, ouvrez ou fermez un service, ou signalez une fuite."
+  },
+  "customerList": {
+    "title": "Sélectionnez un client",
+    "subtitle": "Choisissez un compte pour définir le contexte de l'assistant. Ce sont des enregistrements clients non productifs — plusieurs possèdent plusieurs comptes.",
+    "searchLabel": "Rechercher des clients",
+    "searchPlaceholder": "Rechercher par nom, n° de client ou n° de compte.",
+    "since": "{{id}} · depuis {{since}}",
+    "accountCount_one": "{{count}} compte",
+    "accountCount_other": "{{count}} comptes",
+    "due": "à payer",
+    "settled": "réglé",
+    "noResults": "Aucun client ne correspond à « {{query}} »."
+  },
+  "account": {
+    "detailsTitle": "Détails du compte",
+    "customerSince": "{{id}} · Client depuis {{since}}",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "serviceAddress": "Adresse de service",
+    "meter": "Compteur",
+    "balance": "Solde",
+    "due": "Échéance {{date}}",
+    "nothingDue": "Rien à payer",
+    "autopayOn": "Paiement automatique activé",
+    "autopayOff": "Paiement automatique désactivé",
+    "usage": "Consommation",
+    "thisYear": "Cette année",
+    "lastYear": "L'an dernier",
+    "avgMonthly": "Moy. / mois",
+    "peakMonth": "Mois de pointe",
+    "notifications": "Notifications",
+    "noBaseline": "Aucune référence de l'année précédente pour l'instant",
+    "yoy": "d'une année sur l'autre"
+  },
+  "usage": {
+    "range": {
+      "6M": "6 mois",
+      "1Y": "1 an",
+      "2Y": "2 ans"
+    }
+  },
+  "verify": {
+    "title": "Vérifiez votre identité",
+    "stepEmail": "Étape 1 sur 2 · Adresse e-mail",
+    "stepCode": "Étape 2 sur 2 · Code à usage unique",
+    "emailLabel": "Adresse e-mail",
+    "emailError": "Saisissez une adresse e-mail pour que nous puissions vous envoyer votre code.",
+    "emailHelp": "Nous enverrons un code à 6 chiffres pour confirmer que c'est bien vous. Toute adresse est acceptée ici — rien n'est réellement envoyé.",
+    "sending": "Envoi du code…",
+    "sendCode": "Envoyer le code",
+    "backToCustomers": "Retour aux clients",
+    "codeSent": "Nous avons envoyé un code à 6 chiffres à <1>{{email}}</1>. Saisissez-le ci-dessous pour ouvrir l'assistant.",
+    "anyDigits": "N'importe quels 6 chiffres sont acceptés.",
+    "differentEmail": "Utiliser une autre adresse e-mail",
+    "cancel": "Annuler"
+  },
+  "receiptMenu": {
+    "about": "À propos de « {{title}} » — et télécharger au format PDF",
+    "trigger": "Détails et téléchargement",
+    "dialogLabel": "Reçu de la demande",
+    "recordWithRef": "Un enregistrement de cette demande exactement telle qu'elle a été soumise — référence <1>{{reference}}</1>.",
+    "recordPlain": "Un enregistrement de cette demande exactement telle qu'elle a été soumise.",
+    "download": "Télécharger le reçu (PDF)",
+    "preparing": "Préparation…",
+    "error": "Impossible de générer le PDF. Veuillez réessayer."
+  },
+  "slideOver": {
+    "close": "Fermer {{title}}"
+  },
+  "pdf": {
+    "poweredBy": "Propulsé par {{vendor}}",
+    "page": "Page {{page}} sur {{total}}",
+    "illustrative": "Conversation illustrative · données non productives",
+    "continued": "{{label}} (suite)"
+  },
+  "receipt": {
+    "kind": "Reçu de service",
+    "issued": "Émis le {{stamp}}",
+    "keep": "Conservez ceci pour vos dossiers.",
+    "customer": "Client",
+    "requestDetails": "Détails de la demande",
+    "name": "Nom",
+    "customerNumber": "Numéro de client",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "disclaimer": "Ce reçu confirme qu'une demande a été enregistrée. Il ne s'agit ni d'une facture ni d'une confirmation de paiement."
+  },
+  "transcript": {
+    "title": "Conversation avec {{assistant}}",
+    "you": "Vous",
+    "kind": "Transcription de la conversation",
+    "context": "Contexte",
+    "customer": "Client",
+    "account": "Compte",
+    "serviceAddress": "Adresse de service",
+    "handledBy": "Traité par",
+    "exported": "Exporté",
+    "identityVerifiedMd": "Identité vérifiée · {{channel}} — {{text}}",
+    "identityVerifiedPlain": "Identité vérifiée ({{channel}}) — {{text}}",
+    "disclaimer": "Cette transcription est un enregistrement de ce qui a été discuté. Il ne s'agit ni d'une facture ni d'une confirmation de paiement.",
+    "disclaimerFull": "Conversation illustrative · données non productives. Cette transcription est un enregistrement de ce qui a été discuté. Il ne s'agit ni d'une facture ni d'une confirmation de paiement."
+  },
+  "useCases": {
+    "start-service": "Ouvrir un service",
+    "stop-service": "Fermer un service",
+    "transfer-service": "Transférer un service",
+    "high-bill": "Pourquoi ma facture est-elle élevée ?",
+    "payment-arrangement": "Échéancier de paiement",
+    "report-outage": "Signaler / vérifier une panne",
+    "update-contact": "Mettre à jour les coordonnées",
+    "report-leak": "Signaler une fuite"
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "login": {
+    "welcome": "Content de vous revoir !",
+    "identifierLabel": "E-mail ou nom d'utilisateur",
+    "identifierPlaceholder": "vous@entreprise.com",
+    "passwordLabel": "Mot de passe",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe",
+    "signingIn": "Connexion…",
+    "submit": "Se connecter",
+    "rememberMe": "Se souvenir de moi",
+    "heroTitle": "Optimiser la <1>gestion des services publics</1>",
+    "heroSubtitle": "Gérez les comptes clients, les demandes de service, la facturation, les pannes, les opérations de terrain et les analyses depuis une plateforme sécurisée et centralisée, conçue pour les fournisseurs de services publics modernes."
+  },
+  "auth": {
+    "signedInTitle": "Connecté",
+    "signedInDesc": "Content de vous revoir, {{name}}.",
+    "signInFailedTitle": "Échec de la connexion",
+    "signInFailedDesc": "Impossible de se connecter. Veuillez réessayer.",
+    "signedOut": "Déconnecté"
+  },
+  "shell": {
+    "adminNav": "Navigation d'administration",
+    "openNav": "Ouvrir la navigation",
+    "closeNav": "Fermer la navigation",
+    "closeDialog": "Fermer la boîte de dialogue",
+    "navigation": "Navigation",
+    "nav": {
+      "document": "Document",
+      "image": "Image",
+      "settings": "Paramètres"
+    },
+    "signOut": "Se déconnecter",
+    "online": "En ligne",
+    "poweredBy": "Propulsé par",
+    "backTo": "Retour à acsesolutions.com",
+    "userCard": {
+      "name": "Console d'administration",
+      "role": "Administrateur système"
+    },
+    "fileUploadTitle": "Téléversement de fichiers",
+    "settingsTitle": "Profil et paramètres"
+  },
+  "files": {
+    "heading": "Téléversement de fichiers internes",
+    "subtitle": {
+      "document": "Gérez et organisez les documents téléversés de l'entreprise",
+      "image": "Gérez et organisez les images téléversées de l'entreprise"
+    },
+    "searchLabel": "Rechercher des fichiers",
+    "searchPlaceholder": "Rechercher des fichiers…",
+    "clearSearch": "Effacer la recherche",
+    "uploadFile": "Téléverser un fichier",
+    "columns": {
+      "uploadedAt": "Date de téléversement",
+      "uploadedBy": "Téléversé par",
+      "fileName": "Fichiers téléversés",
+      "category": "Type téléversé",
+      "notes": "Notes",
+      "download": "Télécharger",
+      "action": "Action"
+    },
+    "sortBy": "Trier par {{label}}",
+    "fileFallback": "fichier",
+    "downloadFile": "Télécharger {{name}}",
+    "downloadTitle": "Télécharger",
+    "deleteFile": "Supprimer {{name}}",
+    "deleteTitle": "Supprimer",
+    "summary": {
+      "showing": "Affichage de <1>{{shown}}</1> sur {{total}}",
+      "total_one": "<1>{{count}}</1> fichier",
+      "total_other": "<1>{{count}}</1> fichiers"
+    },
+    "stub": {
+      "file": "Fichier : {{name}}",
+      "category": "Catégorie : {{category}}",
+      "uploadedBy": "Téléversé par : {{name}}",
+      "uploadedAt": "Téléversé le : {{date}}",
+      "notes": "Notes : {{notes}}",
+      "placeholder": "Ceci est un espace réservé de démonstration : le fichier original n'a pas été enregistré dans le navigateur."
+    }
+  },
+  "upload": {
+    "title": {
+      "document": "Téléverser un document",
+      "image": "Téléverser une image"
+    },
+    "description": {
+      "document": "Ajoutez des documents à la bibliothèque interne.",
+      "image": "Ajoutez des images à la bibliothèque interne."
+    },
+    "hint": {
+      "document": "PDF, DOC, XLS, PPT, CSV, HTML — jusqu'à {{max}} fichiers",
+      "image": "PNG, JPG, WEBP, GIF, SVG — jusqu'à {{max}} fichiers"
+    },
+    "fileFieldLabel": "Téléverser un fichier",
+    "dropIdle": "Déposez votre fichier ici",
+    "dropActive": "Déposez pour ajouter des fichiers",
+    "browsePrompt": "ou <1>parcourir</1>",
+    "errorNoFiles": "Ajoutez au moins un fichier à téléverser.",
+    "removeFile": "Retirer {{name}}",
+    "uploadedByLabel": "Téléversé par",
+    "uploadedByPlaceholder": "p. ex. John Doe",
+    "categoryLabel": "Catégorie",
+    "uncategorized": "Sans catégorie",
+    "notesLabel": "Notes",
+    "optional": "(facultatif)",
+    "notesPlaceholder": "Ajoutez ici toute note pertinente…",
+    "cancel": "Annuler",
+    "submit": "Téléverser le fichier",
+    "submitWithCount": "Téléverser ({{count}})"
+  },
+  "confirmDelete": {
+    "title": "Supprimer le fichier",
+    "body": "Retirer <1>{{name}}</1> de la bibliothèque ? Cette action est irréversible.",
+    "cancel": "Annuler",
+    "confirm": "Supprimer"
+  },
+  "emptyState": {
+    "searchTitle": "Aucun fichier ne correspond à votre recherche",
+    "emptyTitle": "Aucun fichier téléversé pour le moment",
+    "searchDesc": "Essayez un autre nom, auteur de téléversement ou catégorie.",
+    "emptyDesc": "Téléversez votre premier fichier pour le voir listé ici.",
+    "clearSearch": "Effacer la recherche",
+    "uploadFile": "Téléverser un fichier"
+  },
+  "settings": {
+    "heading": "Paramètres du profil",
+    "subtitle": "Gérez les préférences et l'apparence de l'organisation",
+    "changesSaved": "Modifications enregistrées",
+    "cancel": "Annuler",
+    "save": "Enregistrer les modifications",
+    "logoErrorType": "Utilisez une image PNG ou JPG.",
+    "logoErrorSize": "L'image doit faire moins de 1 MB.",
+    "logoErrorRead": "Impossible de lire cette image.",
+    "profilePicture": {
+      "title": "Photo de profil",
+      "description": "Téléversez un logo ou un avatar pour votre organisation",
+      "change": "Changer la photo",
+      "remove": "Retirer la photo",
+      "dropIdle": "Cliquez ou faites glisser pour téléverser",
+      "dropActive": "Déposez pour téléverser",
+      "hint": "PNG ou JPG · jusqu'à 1 MB"
+    },
+    "company": {
+      "title": "Informations sur l'entreprise",
+      "description": "Mettez à jour le nom affiché de votre organisation",
+      "nameLabel": "Nom de l'entreprise",
+      "namePlaceholder": "p. ex. XYZ Company"
+    },
+    "appMode": {
+      "title": "Mode d'application",
+      "description": "Basculez entre les modes de fonctionnement ATP et C2M",
+      "ariaLabel": "Mode d'application"
+    }
+  }
+}

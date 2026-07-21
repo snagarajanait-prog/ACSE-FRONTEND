@@ -1,0 +1,220 @@
+{
+  "common": {
+    "askAcseAi": "ACSE AI'a sorun"
+  },
+  "nav": {
+    "platform": "Platform",
+    "useCases": "Kullanım örnekleri",
+    "billing": "Faturalandırma",
+    "about": "Hakkında",
+    "toggleMenu": "Menüyü aç/kapat"
+  },
+  "hero": {
+    "badge": "Kamu hizmetleri için tasarlandı · AI ile desteklenir",
+    "titleLine1": "Kamu hizmeti",
+    "titleLine2": "operasyonlarınızı",
+    "titleLine3": "AI ile otomatikleştirin",
+    "subtitle": "ACSE AI hizmet taleplerini çözer, faturalandırma istisnalarını işaretler ve saha eylemleri oluşturur — tamamen otomatik, 7/24.",
+    "seePlatform": "Platformu görün",
+    "stats": {
+      "callVolume": "Otomatikleştirilen çağrı hacmi",
+      "alwaysOn": "Her zaman açık",
+      "workflows": "İş akışları"
+    }
+  },
+  "platform": {
+    "eyebrow": "Ne yapıyoruz",
+    "heading": "Tüm kamu hizmeti operasyonunuz için tek bir AI platformu",
+    "subtitle": "ACSE AI, gelen müşteri taleplerini, faturalandırma istisnalarını ve saha hizmet siparişlerini otomatikleştirmek için mevcut sistemlerinizle entegre olur — her departmandaki manuel çabayı azaltır.",
+    "pillars": {
+      "customerService": {
+        "title": "Müşteri hizmetleri AI'ı",
+        "body": "Başlatma/durdurma/transfer, hesap güncellemeleri ve kesinti sorgularını her kanalda uçtan uca çözer."
+      },
+      "billing": {
+        "title": "Faturalandırma otomasyonu",
+        "body": "Faturalandırma kuyruğunu sürekli izler, anormallikleri işaretler ve istisna iş akışlarını gerçek zamanlı olarak başlatır."
+      },
+      "field": {
+        "title": "Saha operasyonları",
+        "body": "Sayaç okumaları, incelemeler ve hizmet siparişleri oluşturur ve takip eder — müşterileri de güncel tutar."
+      },
+      "integrations": {
+        "title": "Entegrasyonlar",
+        "body": "Mevcut C2M uygulamanıza ve kayıt sistemlerinize bağlanır. Oracle Cloud Infrastructure üzerinde çalışır."
+      }
+    },
+    "promises": {
+      "handleService": "Bir temsilcinin müdahalesi olmadan hizmet başlatma, durdurma ve transfer işlemlerini yürütür",
+      "autopay": "Bir kesinti yaşanmadan önce, otomatik ödemesi sona ermek üzere olan müşterilerle proaktif olarak iletişime geçer",
+      "fieldActivities": "Sayaç incelemeleri ve okumaları için otomatik olarak saha faaliyetleri oluşturur",
+      "billingAnomalies": "Faturalandırma anormalliklerini izler ve istisnaları gerçek zamanlı olarak işaretler"
+    }
+  },
+  "useCases": {
+    "eyebrow": "Müşteri hizmetleri",
+    "heading": "Müşterilerinizin ihtiyaç duyduğu her şey — otomatik olarak yönetilir",
+    "subtitle": "Rutin hesap güncellemelerinden acil durum bildirimlerine kadar, ACSE AI talepleri müşterileri beklemeye almadan uçtan uca çözer.",
+    "runScenario": "Bu senaryoyu çalıştır →",
+    "tryAll": "Bunlardan herhangi birini asistanla deneyin",
+    "cards": {
+      "startService": {
+        "title": "Hizmet Başlatma / Durdurma / Transfer",
+        "body": "Müşteriler herhangi bir kanaldan hizmeti başlatır, sonlandırır veya transfer eder — tamamen otomatik."
+      },
+      "paymentArrangement": {
+        "title": "Ödeme uzatması ve düzenlemesi",
+        "body": "AI, hesap geçmişine ve politika kurallarına göre ödeme planlarını görüşür ve kaydeder."
+      },
+      "updateContact": {
+        "title": "Hesap bilgileri güncellemeleri",
+        "body": "Telefon numaralarını güncelleyin, hesap sahipleri ekleyin ve posta adreslerini anında düzeltin."
+      },
+      "reportOutage": {
+        "title": "Kesinti sorguları",
+        "body": "Gerçek zamanlı kesinti durumu, temsilciye aktarılmadan müşterilere sunulur."
+      },
+      "reportLeak": {
+        "title": "Acil sızıntı ve ana boru arızası",
+        "body": "Düşük/su yok durumları, sızıntılar ve ana boru arızaları için acil bildirimleri toplar ve yönlendirir."
+      },
+      "highBill": {
+        "title": "Yüksek fatura incelemesi",
+        "body": "AI, tüketim geçmişini inceler ve sayaç anormallikleri için saha faaliyetleri oluşturur."
+      },
+      "meterRead": {
+        "title": "Sayaç okuması oluşturma",
+        "body": "Hesaplar faturalandırma dönemlerinin sonuna ulaştığında otomatik olarak sayaç okumaları oluşturur."
+      },
+      "autopayOutreach": {
+        "title": "Otomatik ödeme sona erme bildirimi",
+        "body": "Kesinti yaşanmaması için otomatik ödeme sona ermek üzereyken müşterilerle proaktif olarak iletişime geçer."
+      },
+      "newService": {
+        "title": "Yeni hizmet başvurusu",
+        "body": "Müşterilere yeni hizmet başvurularında rehberlik eder ve gönderim durumunu takip eder."
+      }
+    }
+  },
+  "billing": {
+    "eyebrow": "Faturalandırma otomasyonu",
+    "heading": "Faturalandırma istisnalarını sorun haline gelmeden yakalayın",
+    "subtitle": "ACSE AI faturalandırma kuyruğunuzu sürekli izler, anormallikleri işaretler ve harekete geçer — böylece hiçbir şey gözden kaçmaz.",
+    "rows": {
+      "usageAlerts": {
+        "tag": "İstisna tespiti",
+        "title": "Yüksek / düşük tüketim uyarıları",
+        "body": "Beklenen eşiklerin dışında tüketimi olan hesapları otomatik olarak işaretler ve inceleme iş akışlarını başlatır."
+      },
+      "maxBill": {
+        "tag": "Eşik izleme",
+        "title": "Maksimum fatura eşiği",
+        "body": "Ekstreler gönderilmeden önce maksimum fatura sınırlarını aşan hesapları yakalayarak faturalandırma hatalarını önler."
+      },
+      "zeroReads": {
+        "tag": "Tüketim gözetimi",
+        "title": "Arka arkaya 3 sıfır okuma",
+        "body": "Arka arkaya üç sıfır tüketim okumasını tespit eder ve saha doğrulaması için bir hizmet siparişi oluşturur."
+      },
+      "schedule": {
+        "tag": "Programlama",
+        "title": "Okuma ve faturalandırma takvimi",
+        "body": "Sayaç okuma ve faturalandırma takvimlerini oluşturur ve yönetir, hesapların her dönem zamanında faturalandırılmasını sağlar."
+      },
+      "orderStatus": {
+        "tag": "Saha operasyonları",
+        "title": "Hizmet ve iş siparişi durumu",
+        "body": "Açık siparişleri takip eder ve durum değiştikçe müşterileri ve sevkiyat görevlilerini otomatik olarak günceller."
+      }
+    },
+    "cta": {
+      "heading": "Kamu hizmeti operasyonlarınızı modernleştirmeye hazır mısınız?",
+      "subtitle": "Çağrı hacmini azaltmak, faturalandırma hatalarını ortadan kaldırmak ve daha hızlı hizmet sunmak için ACSE AI'ı zaten kullanan su hizmeti kuruluşlarına katılın.",
+      "seeItInAction": "İş başında görün",
+      "talkToUs": "Bizimle konuşun"
+    }
+  },
+  "contact": {
+    "eyebrow": "İletişime geçin",
+    "heading": "ACSE AI'ı iş başında görün",
+    "subtitle": "Her boyuttaki su ve kamu hizmeti sağlayıcılarıyla çalışıyoruz. Bize operasyonunuzu anlatın, ACSE AI'ın tam olarak nasıl uyum sağladığını gösterelim.",
+    "info": {
+      "emailLabel": "E-posta",
+      "emailValue": "info@acsesolutions.com",
+      "coverageLabel": "Kapsam",
+      "coverageValue": "Kuzey Amerika genelinde kamu hizmetlerine hizmet veriyoruz",
+      "responseLabel": "Yanıt süresi",
+      "responseValue": "1 iş günü içinde"
+    },
+    "form": {
+      "firstName": "Ad",
+      "firstNamePlaceholder": "Jordan",
+      "lastName": "Soyad",
+      "lastNamePlaceholder": "Rivera",
+      "workEmail": "İş e-postası",
+      "workEmailPlaceholder": "jordan@utility.gov",
+      "organization": "Kuruluş",
+      "organizationPlaceholder": "Metro Water District",
+      "interest": "İlgilendiğim konu",
+      "notes": "Mevcut kurulumunuzdan bahsedin",
+      "notesPlaceholder": "Bugün kullandığınız sistemler, çağrı hacmi, sorunlar…",
+      "submit": "Mesaj gönder"
+    },
+    "interests": {
+      "customerService": "Müşteri hizmetleri otomasyonu",
+      "billing": "Faturalandırma istisna iş akışları",
+      "both": "Her ikisi de — tüm platform",
+      "walkthrough": "Bir tanıtım / fiyatlandırma"
+    },
+    "sentMessage": "Teşekkürler — bilgileriniz alındı. Doğrudan yanıt için bize<1> info@acsesolutions.com</1> adresinden e-posta gönderin."
+  },
+  "footer": {
+    "tagline": "Kamu hizmeti müşteri hizmetleri, faturalandırma istisnaları ve saha operasyonları için AI destekli otomasyon.",
+    "groups": {
+      "platform": "Platform",
+      "company": "Şirket",
+      "tryIt": "Deneyin"
+    },
+    "links": {
+      "customerServiceAi": "Müşteri hizmetleri AI'ı",
+      "billingAutomation": "Faturalandırma otomasyonu",
+      "fieldOperations": "Saha operasyonları",
+      "integrations": "Entegrasyonlar",
+      "aboutAcse": "ACSE Hakkında",
+      "caseStudies": "Vaka çalışmaları",
+      "contact": "İletişim",
+      "useCases": "Kullanım örnekleri",
+      "platform": "Platform"
+    },
+    "copyright": "© 2026 ACSE Solutions · Ürün önizlemesi — gösterilen tüm veriler üretim dışıdır.",
+    "runsOn": "Oracle Cloud Infrastructure üzerinde çalışır"
+  },
+  "preview": {
+    "chips": {
+      "resolvePayment": "Ödeme talebini çöz",
+      "scheduleAppointment": "Randevu planla",
+      "fieldVisit": "Saha ziyareti iletişimi"
+    },
+    "agentName": "ACSE AI <1>— Canlı temsilci</1>",
+    "active": "Etkin",
+    "userMessage": "Bu ayki otomatik faturam çok yüksek görünüyor.",
+    "agentMessage": "Aynı faturalandırma döneminde tüketiminizin geçen ayın referansına kıyasla %148 arttığını görüyorum. Sayaç kontrolü için bir saha incelemesi oluşturacağım.",
+    "workOrder": "Saha iş siparişi {{order}} · {{team}} Ekibine atandı",
+    "steps": {
+      "identity": {
+        "label": "Kimlik doğrulandı",
+        "status": "Hesap eşleşti"
+      },
+      "analysis": {
+        "label": "Fatura istisnası analizi",
+        "status": "Anormallik tespit edildi"
+      },
+      "escalation": {
+        "label": "Otomatik yükseltme oluşturuldu",
+        "status": "Kuyruğa alındı"
+      }
+    },
+    "live": "Canlı",
+    "requestsResolved": "Bugün {{value}} talep çözüldü"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "header": {
+    "title": "Dasbor",
+    "signedInAs": "Masuk sebagai {{name}}"
+  },
+  "loading": "Memuat…",
+  "metrics": {
+    "thousandsAbbrev": "{{value}} rb",
+    "millionsAbbrev": "{{value}} jt"
+  }
+}

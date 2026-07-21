@@ -1,0 +1,191 @@
+{
+  "poweredBy": "Didukung oleh",
+  "header": {
+    "assistantMode": "Mode asisten: {{system}}",
+    "mode": "Mode · {{short}}",
+    "openAccountDetails": "Buka detail akun",
+    "newChat": "Obrolan baru",
+    "backHome": "Kembali ke acsesolutions.com"
+  },
+  "hero": {
+    "greetingFallback": "Ada yang bisa saya bantu hari ini?",
+    "subtitle": "Tanya tentang tagihan, mulai atau hentikan layanan, atau laporkan kebocoran — saya akan memandu prosesnya."
+  },
+  "greeting": {
+    "morning": "Selamat pagi",
+    "afternoon": "Selamat siang",
+    "evening": "Selamat malam",
+    "line": "{{part}}, {{name}}. Ada yang bisa saya bantu hari ini?"
+  },
+  "composer": {
+    "placeholder": "Minta ACSE AI untuk memulai layanan, menjelaskan tagihan, melaporkan kebocoran…",
+    "shortPlaceholder": "Tanya ACSE AI…",
+    "drawerPlaceholder": "Tanya apa saja ke ACSE AI…",
+    "responding": "Asisten sedang merespons…",
+    "send": "Kirim",
+    "disclaimer": "Percakapan ilustratif · data non-produksi · membaca/menulis {{source}}"
+  },
+  "chat": {
+    "you": "Anda",
+    "youSaid": "Anda berkata: ",
+    "assistantSaid": "Asisten berkata: ",
+    "working": "Asisten sedang bekerja",
+    "freeReply": "Saya bisa membantu dengan itu. Berikut hal-hal yang bisa saya lakukan sekarang — pilih salah satu untuk melihatnya beraksi:"
+  },
+  "think": {
+    "analysing": "Menganalisis permintaan Anda",
+    "intent": "Memahami maksud",
+    "checkingAccount": "Memeriksa akun {account}",
+    "requesting": "Meminta data dari {source}",
+    "processing": "Memproses catatan",
+    "compiling": "Menyusun detail",
+    "summarising": "Merangkum",
+    "matching": "Mencocokkan dengan alur kerja"
+  },
+  "otp": {
+    "sms": "SMS",
+    "email": "Email",
+    "identityVerified": "Identitas terverifikasi · {{channel}}",
+    "verifyIdentity": "Verifikasi identitas Anda · {{channel}}",
+    "codeLabel": "Kode verifikasi {{digits}}",
+    "digit": "Digit {{index}} dari {{total}}"
+  },
+  "actions": {
+    "copyLabel": "Salin transkrip",
+    "copy": "Salin",
+    "copied": "Tersalin",
+    "copyFailed": "Gagal menyalin",
+    "shareLabel": "Bagikan transkrip",
+    "share": "Bagikan",
+    "sharedCopied": "Tersalin — tempel untuk membagikan",
+    "shareFailed": "Tidak dapat membagikan",
+    "exportLabel": "Ekspor transkrip sebagai PDF",
+    "exportPdf": "Ekspor PDF",
+    "preparing": "Menyiapkan…",
+    "downloaded": "Terunduh",
+    "exportFailed": "Gagal mengekspor"
+  },
+  "drawer": {
+    "assistantLabel": "Asisten ACSE AI",
+    "accountDetails": "Detail akun",
+    "closeAccountDetails": "Tutup detail akun",
+    "expand": "Perluas asisten",
+    "shrink": "Perkecil asisten",
+    "expandShort": "Perluas",
+    "shrinkShort": "Perkecil",
+    "close": "Tutup asisten",
+    "closeShort": "Tutup",
+    "heroSubtitle": "Tanya tentang tagihan, mulai atau hentikan layanan, atau laporkan kebocoran."
+  },
+  "customerList": {
+    "title": "Pilih pelanggan",
+    "subtitle": "Pilih akun untuk mengatur konteks asisten. Ini adalah catatan pelanggan non-produksi — beberapa memiliki banyak akun.",
+    "searchLabel": "Cari pelanggan",
+    "searchPlaceholder": "Cari berdasarkan nama, no. pelanggan, atau no. akun.",
+    "since": "{{id}} · sejak {{since}}",
+    "accountCount_one": "{{count}} akun",
+    "accountCount_other": "{{count}} akun",
+    "due": "jatuh tempo",
+    "settled": "lunas",
+    "noResults": "Tidak ada pelanggan yang cocok dengan “{{query}}”."
+  },
+  "account": {
+    "detailsTitle": "Detail akun",
+    "customerSince": "{{id}} · Pelanggan sejak {{since}}",
+    "email": "Email",
+    "phone": "Telepon",
+    "serviceAddress": "Alamat layanan",
+    "meter": "Meter",
+    "balance": "Saldo",
+    "due": "Jatuh tempo {{date}}",
+    "nothingDue": "Tidak ada yang jatuh tempo",
+    "autopayOn": "Pembayaran otomatis aktif",
+    "autopayOff": "Pembayaran otomatis nonaktif",
+    "usage": "Penggunaan",
+    "thisYear": "Tahun ini",
+    "lastYear": "Tahun lalu",
+    "avgMonthly": "Rata-rata / bulan",
+    "peakMonth": "Bulan puncak",
+    "notifications": "Notifikasi",
+    "noBaseline": "Belum ada dasar tahun sebelumnya",
+    "yoy": "tahun ke tahun"
+  },
+  "usage": {
+    "range": {
+      "6M": "6 bulan",
+      "1Y": "1 tahun",
+      "2Y": "2 tahun"
+    }
+  },
+  "verify": {
+    "title": "Verifikasi identitas Anda",
+    "stepEmail": "Langkah 1 dari 2 · Alamat email",
+    "stepCode": "Langkah 2 dari 2 · Kode sekali pakai",
+    "emailLabel": "Alamat email",
+    "emailError": "Masukkan alamat email agar kami dapat mengirimkan kode Anda.",
+    "emailHelp": "Kami akan mengirimkan kode 6 digit untuk memastikan itu Anda. Alamat apa pun diterima di sini — tidak ada yang benar-benar dikirim.",
+    "sending": "Mengirim kode…",
+    "sendCode": "Kirim kode",
+    "backToCustomers": "Kembali ke pelanggan",
+    "codeSent": "Kami mengirim kode 6 digit ke <1>{{email}}</1>. Masukkan di bawah untuk membuka asisten.",
+    "anyDigits": "Kombinasi 6 digit apa pun diterima.",
+    "differentEmail": "Gunakan email lain",
+    "cancel": "Batal"
+  },
+  "receiptMenu": {
+    "about": "Tentang \"{{title}}\" — dan unduh sebagai PDF",
+    "trigger": "Detail dan unduhan",
+    "dialogLabel": "Tanda terima permintaan",
+    "recordWithRef": "Catatan permintaan ini persis seperti yang diajukan — referensi <1>{{reference}}</1>.",
+    "recordPlain": "Catatan permintaan ini persis seperti yang diajukan.",
+    "download": "Unduh tanda terima (PDF)",
+    "preparing": "Menyiapkan…",
+    "error": "Tidak dapat membuat PDF. Silakan coba lagi."
+  },
+  "slideOver": {
+    "close": "Tutup {{title}}"
+  },
+  "pdf": {
+    "poweredBy": "Didukung oleh {{vendor}}",
+    "page": "Halaman {{page}} dari {{total}}",
+    "illustrative": "Percakapan ilustratif · data non-produksi",
+    "continued": "{{label}} (lanjutan)"
+  },
+  "receipt": {
+    "kind": "Tanda terima layanan",
+    "issued": "Diterbitkan {{stamp}}",
+    "keep": "Simpan ini untuk catatan Anda.",
+    "customer": "Pelanggan",
+    "requestDetails": "Detail permintaan",
+    "name": "Nama",
+    "customerNumber": "Nomor pelanggan",
+    "email": "Email",
+    "phone": "Telepon",
+    "disclaimer": "Tanda terima ini mengonfirmasi bahwa permintaan telah dicatat. Ini bukan tagihan atau konfirmasi pembayaran."
+  },
+  "transcript": {
+    "title": "Percakapan dengan {{assistant}}",
+    "you": "Anda",
+    "kind": "Transkrip percakapan",
+    "context": "Konteks",
+    "customer": "Pelanggan",
+    "account": "Akun",
+    "serviceAddress": "Alamat layanan",
+    "handledBy": "Ditangani oleh",
+    "exported": "Diekspor",
+    "identityVerifiedMd": "Identitas terverifikasi · {{channel}} — {{text}}",
+    "identityVerifiedPlain": "Identitas terverifikasi ({{channel}}) — {{text}}",
+    "disclaimer": "Transkrip ini adalah catatan dari apa yang dibahas. Ini bukan tagihan atau konfirmasi pembayaran.",
+    "disclaimerFull": "Percakapan ilustratif · data non-produksi. Transkrip ini adalah catatan dari apa yang dibahas. Ini bukan tagihan atau konfirmasi pembayaran."
+  },
+  "useCases": {
+    "start-service": "Mulai layanan",
+    "stop-service": "Hentikan layanan",
+    "transfer-service": "Pindahkan layanan",
+    "high-bill": "Mengapa tagihan saya tinggi?",
+    "payment-arrangement": "Pengaturan pembayaran",
+    "report-outage": "Laporkan / periksa gangguan",
+    "update-contact": "Perbarui info kontak",
+    "report-leak": "Laporkan kebocoran"
+  }
+}

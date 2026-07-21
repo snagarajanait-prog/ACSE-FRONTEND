@@ -1,0 +1,157 @@
+{
+  "login": {
+    "welcome": "おかえりなさい！",
+    "identifierLabel": "メールアドレスまたはユーザー名",
+    "identifierPlaceholder": "you@company.com",
+    "passwordLabel": "パスワード",
+    "showPassword": "パスワードを表示",
+    "hidePassword": "パスワードを非表示",
+    "signingIn": "サインインしています…",
+    "submit": "ログイン",
+    "rememberMe": "ログイン状態を保持する",
+    "heroTitle": "<1>公益事業の管理</1>を支援します",
+    "heroSubtitle": "最新の公益事業者向けに設計された、安全で一元化されたプラットフォームから、顧客アカウント、サービスリクエスト、請求、供給停止、現場業務、分析を管理できます。"
+  },
+  "auth": {
+    "signedInTitle": "サインインしました",
+    "signedInDesc": "おかえりなさい、{{name}} さん。",
+    "signInFailedTitle": "サインインに失敗しました",
+    "signInFailedDesc": "サインインできませんでした。もう一度お試しください。",
+    "signedOut": "サインアウトしました"
+  },
+  "shell": {
+    "adminNav": "管理ナビゲーション",
+    "openNav": "ナビゲーションを開く",
+    "closeNav": "ナビゲーションを閉じる",
+    "closeDialog": "ダイアログを閉じる",
+    "navigation": "ナビゲーション",
+    "nav": {
+      "document": "ドキュメント",
+      "image": "画像",
+      "settings": "設定"
+    },
+    "signOut": "サインアウト",
+    "online": "オンライン",
+    "poweredBy": "提供元",
+    "backTo": "acsesolutions.com に戻る",
+    "userCard": {
+      "name": "管理コンソール",
+      "role": "システム管理者"
+    },
+    "fileUploadTitle": "ファイルアップロード",
+    "settingsTitle": "プロフィールと設定"
+  },
+  "files": {
+    "heading": "社内ファイルアップロード",
+    "subtitle": {
+      "document": "アップロードされた会社のドキュメントを管理・整理します",
+      "image": "アップロードされた会社の画像を管理・整理します"
+    },
+    "searchLabel": "ファイルを検索",
+    "searchPlaceholder": "ファイルを検索…",
+    "clearSearch": "検索をクリア",
+    "uploadFile": "ファイルをアップロード",
+    "columns": {
+      "uploadedAt": "アップロード日",
+      "uploadedBy": "アップロード者",
+      "fileName": "アップロードされたファイル",
+      "category": "アップロードの種類",
+      "notes": "メモ",
+      "download": "ダウンロード",
+      "action": "操作"
+    },
+    "sortBy": "{{label}} で並べ替え",
+    "fileFallback": "ファイル",
+    "downloadFile": "{{name}} をダウンロード",
+    "downloadTitle": "ダウンロード",
+    "deleteFile": "{{name}} を削除",
+    "deleteTitle": "削除",
+    "summary": {
+      "showing": "{{total}} 件中 <1>{{shown}}</1> 件を表示",
+      "total_one": "<1>{{count}}</1> 件のファイル",
+      "total_other": "<1>{{count}}</1> 件のファイル"
+    },
+    "stub": {
+      "file": "ファイル: {{name}}",
+      "category": "カテゴリ: {{category}}",
+      "uploadedBy": "アップロード者: {{name}}",
+      "uploadedAt": "アップロード日時: {{date}}",
+      "notes": "メモ: {{notes}}",
+      "placeholder": "これはデモ用のプレースホルダーです。元のファイルはブラウザーに保存されていません。"
+    }
+  },
+  "upload": {
+    "title": {
+      "document": "ドキュメントをアップロード",
+      "image": "画像をアップロード"
+    },
+    "description": {
+      "document": "社内ライブラリにドキュメントを追加します。",
+      "image": "社内ライブラリに画像を追加します。"
+    },
+    "hint": {
+      "document": "PDF、DOC、XLS、PPT、CSV、HTML — 最大 {{max}} ファイル",
+      "image": "PNG、JPG、WEBP、GIF、SVG — 最大 {{max}} ファイル"
+    },
+    "fileFieldLabel": "ファイルをアップロード",
+    "dropIdle": "ここにファイルをドロップ",
+    "dropActive": "ドロップしてファイルを追加",
+    "browsePrompt": "または <1>参照</1>",
+    "errorNoFiles": "アップロードするファイルを 1 つ以上追加してください。",
+    "removeFile": "{{name}} を削除",
+    "uploadedByLabel": "アップロード者",
+    "uploadedByPlaceholder": "例: John Doe",
+    "categoryLabel": "カテゴリ",
+    "uncategorized": "未分類",
+    "notesLabel": "メモ",
+    "optional": "（任意）",
+    "notesPlaceholder": "関連するメモをここに追加…",
+    "cancel": "キャンセル",
+    "submit": "ファイルをアップロード",
+    "submitWithCount": "アップロード（{{count}}）"
+  },
+  "confirmDelete": {
+    "title": "ファイルを削除",
+    "body": "<1>{{name}}</1> をライブラリから削除しますか？この操作は取り消せません。",
+    "cancel": "キャンセル",
+    "confirm": "削除"
+  },
+  "emptyState": {
+    "searchTitle": "検索に一致するファイルがありません",
+    "emptyTitle": "まだファイルがアップロードされていません",
+    "searchDesc": "別の名前、アップロード者、またはカテゴリでお試しください。",
+    "emptyDesc": "最初のファイルをアップロードすると、ここに表示されます。",
+    "clearSearch": "検索をクリア",
+    "uploadFile": "ファイルをアップロード"
+  },
+  "settings": {
+    "heading": "プロフィール設定",
+    "subtitle": "組織の設定と外観を管理します",
+    "changesSaved": "変更を保存しました",
+    "cancel": "キャンセル",
+    "save": "変更を保存",
+    "logoErrorType": "PNG または JPG 画像を使用してください。",
+    "logoErrorSize": "画像は 1 MB 未満である必要があります。",
+    "logoErrorRead": "その画像を読み込めませんでした。",
+    "profilePicture": {
+      "title": "プロフィール画像",
+      "description": "組織のロゴまたはアバターをアップロードします",
+      "change": "画像を変更",
+      "remove": "画像を削除",
+      "dropIdle": "クリックまたはドラッグしてアップロード",
+      "dropActive": "ドロップしてアップロード",
+      "hint": "PNG または JPG · 最大 1 MB"
+    },
+    "company": {
+      "title": "会社情報",
+      "description": "組織の表示名を更新します",
+      "nameLabel": "会社名",
+      "namePlaceholder": "例: XYZ Company"
+    },
+    "appMode": {
+      "title": "アプリケーションモード",
+      "description": "ATP と C2M の動作モードを切り替えます",
+      "ariaLabel": "アプリケーションモード"
+    }
+  }
+}
