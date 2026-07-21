@@ -104,7 +104,14 @@ async function request<T>(url: string, options: RequestOptions = {}): Promise<T>
     method,
     headers,
     body: payload,
-    credentials: 'include',
+    // `same-origin` (the fetch default), NOT `include`. This API authenticates
+    // with a Bearer token and answers cross-origin with `Access-Control-Allow-
+    // Origin: *` — a wildcard the browser REJECTS the instant a request is
+    // credentialed, so `include` would block every cross-origin call. Same-origin
+    // still carries cookies for a same-origin deployment, so a future HttpOnly-
+    // cookie backend (specific origin + `Allow-Credentials: true`) is a one-line
+    // flip back to `include`. The frontend never reads or writes cookies itself.
+    credentials: 'same-origin',
     signal,
   })
 

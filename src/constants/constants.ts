@@ -5,6 +5,7 @@
 import type { Role } from '@/types'
 
 export const ROLES: Record<string, Role> = {
+  SUPER_ADMIN: 'super_admin',
   ADMIN: 'admin',
   MANAGER: 'manager',
   AGENT: 'agent',

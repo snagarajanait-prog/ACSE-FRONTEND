@@ -12,6 +12,7 @@ import type { ReactNode } from 'react'
 import { Provider } from 'react-redux'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter } from 'react-router-dom'
+import AppToaster from '@/components/AppToaster'
 import BootSplash from '@/components/BootSplash'
 import { LoaderProvider } from '@/context/LoaderContext'
 import { ThemeProvider } from '@/context/ThemeContext'
@@ -29,6 +30,8 @@ export default function Entry({ children }: { children: ReactNode }) {
               {/* Above the router on purpose — it plays on boot, not per route. */}
               <BootSplash />
             </LoaderProvider>
+            {/* Toast host — inside ThemeProvider so toasts follow the app theme. */}
+            <AppToaster />
           </ThemeProvider>
         </BrowserRouter>
       </QueryClientProvider>

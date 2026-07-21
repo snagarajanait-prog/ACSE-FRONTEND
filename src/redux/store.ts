@@ -4,8 +4,10 @@
  */
 
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { setupListeners } from '@reduxjs/toolkit/query'
 import { STORAGE_KEYS } from '@/constants/constants'
 import { reduxName } from '@/constants/reduxConstants'
+import { apiSlice } from '@/redux/api/apiSlice'
 import dataSourceReducer from '@/redux/dataSourceSlice'
 import demoReducer from '@/redux/demoSlice'
 import settingsReducer from '@/redux/settingsSlice'
@@ -18,6 +20,8 @@ const rootReducer = combineReducers({
   [reduxName.demo]: demoReducer,
   [reduxName.dataSource]: dataSourceReducer,
   [reduxName.settings]: settingsReducer,
+  // The single RTK Query cache. All API calls flow through this slice.
+  [apiSlice.reducerPath]: apiSlice.reducer,
 })
 
 // Restore a persisted sign-in synchronously, before the first render, so a
@@ -28,10 +32,15 @@ const sessionUser = storage.get<User>(STORAGE_KEYS.session)
 
 export const store = configureStore({
   reducer: rootReducer,
+  // RTK Query's middleware powers caching, invalidation and polling.
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
   preloadedState: sessionUser
     ? { [reduxName.user]: { current: sessionUser, isAuthenticated: true } }
     : undefined,
 })
+
+// Enables refetchOnFocus / refetchOnReconnect behaviour for RTK Query.
+setupListeners(store.dispatch)
 
 export type AppStore = typeof store
 export type RootState = ReturnType<AppStore['getState']>

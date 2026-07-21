@@ -8,4 +8,6 @@ export const reduxName = {
   demo: 'demoSlice',
   dataSource: 'dataSourceSlice',
   settings: 'settingsSlice',
+  /** RTK Query cache slice (`createApi().reducerPath`). */
+  api: 'apiSlice',
 } as const

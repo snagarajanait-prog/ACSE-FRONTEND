@@ -2,7 +2,7 @@
  * Shared, app-wide types. Feature-specific types live with their feature.
  */
 
-export type Role = 'admin' | 'manager' | 'agent'
+export type Role = 'super_admin' | 'admin' | 'manager' | 'agent'
 
 export interface User {
   id: string

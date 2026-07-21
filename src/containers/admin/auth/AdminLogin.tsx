@@ -3,11 +3,11 @@
  * until a session exists.
  *
  * A single centred card: email, password (with a show/hide toggle), a submit
- * button that spins while signing in, and an inline error. The demo account is
- * printed under the form because there's no backend to check against yet (see
- * `credentials.ts`). Chrome mirrors the rest of the app — client brand up top,
- * ACSE "powered by" at the foot, a theme toggle in the corner — so the gate reads
- * as part of the product, not a bolted-on wall.
+ * button that spins while signing in, and an inline error surfaced from the API.
+ * Credentials are checked by the real `/auth/login` (see `useAdminAuth`). Chrome
+ * mirrors the rest of the app — client brand up top, ACSE "powered by" at the
+ * foot, a theme toggle in the corner — so the gate reads as part of the product,
+ * not a bolted-on wall.
  */
 
 import { useState } from 'react'
@@ -17,7 +17,6 @@ import Logo from '@/components/Logo'
 import ThemeToggle from '@/components/ThemeToggle'
 import { useAppSelector } from '@/redux/hooks'
 import { cn } from '@/utils/cn'
-import { DEMO_ADMIN } from '@/containers/admin/auth/credentials'
 import { useAdminAuth } from '@/containers/admin/auth/useAdminAuth'
 
 const INPUT_CLASS =
@@ -33,7 +32,7 @@ export default function AdminLogin() {
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault()
-    signIn(email, password)
+    void signIn(email, password)
   }
 
   return (
@@ -151,19 +150,6 @@ export default function AdminLogin() {
                 </>
               )}
             </button>
-
-            <div className="mt-4 rounded-lg bg-slate-50 px-3 py-2.5 text-[11px] leading-relaxed text-slate-500 ring-1 ring-slate-100 dark:bg-white/[0.03] dark:text-slate-400 dark:ring-white/[0.06]">
-              <span className="font-semibold text-slate-600 dark:text-slate-300">Demo access</span>{' '}
-              — not wired to a live server yet. Sign in with{' '}
-              <code className="rounded bg-white px-1 py-0.5 font-mono text-[10.5px] text-brand-navy ring-1 ring-slate-200 dark:bg-white/10 dark:text-slate-200 dark:ring-white/10">
-                {DEMO_ADMIN.email}
-              </code>{' '}
-              /{' '}
-              <code className="rounded bg-white px-1 py-0.5 font-mono text-[10.5px] text-brand-navy ring-1 ring-slate-200 dark:bg-white/10 dark:text-slate-200 dark:ring-white/10">
-                {DEMO_ADMIN.password}
-              </code>
-              .
-            </div>
           </form>
 
           <div className="mt-6 flex items-center justify-center gap-1.5">
