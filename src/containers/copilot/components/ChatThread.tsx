@@ -214,7 +214,7 @@ function Turn({
           <span className="mb-1 text-[10px] uppercase tracking-wider text-slate-400">
             {t('chat.you')}
           </span>
-          <div className="w-fit max-w-[75%] rounded-2xl rounded-tr-md bg-brand-cyan/[0.08] px-4 py-2.5 text-[15px] leading-6 text-brand-navy ring-1 ring-brand-cyan/15 dark:bg-white/[0.06] dark:text-slate-100 dark:ring-white/10 dark:backdrop-blur">
+          <div className="w-fit max-w-[75%] rounded-2xl rounded-tr-md bg-brand-cyan px-4 py-2.5 text-[15px] leading-6 text-white dark:bg-white/[0.06] dark:text-slate-100 dark:ring-1 dark:ring-white/10 dark:backdrop-blur">
             <span className="sr-only">{t('chat.youSaid')}</span>
             {step.text}
           </div>

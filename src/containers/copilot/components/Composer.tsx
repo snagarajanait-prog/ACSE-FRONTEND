@@ -159,7 +159,7 @@ function Chip({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-2 text-[13px] font-medium text-slate-700 outline-none ring-1 ring-slate-200 transition hover:bg-brand-cyan/[0.06] hover:text-brand-navy hover:ring-brand-cyan/30 focus-visible:ring-2 focus-visible:ring-brand-cyan active:scale-95 disabled:opacity-40 dark:bg-white/[0.04] dark:text-slate-300 dark:ring-white/10 dark:backdrop-blur dark:hover:bg-brand-cyan/10 dark:hover:text-white dark:hover:ring-brand-cyan/40',
+        'inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-2 text-[13px] font-medium text-slate-700 outline-none ring-1 ring-slate-200 transition hover:bg-brand-cyan/[0.06] hover:text-brand-cyan hover:ring-brand-cyan focus-visible:ring-2 focus-visible:ring-brand-cyan active:scale-95 disabled:opacity-40 dark:bg-white/[0.04] dark:text-slate-300 dark:ring-white/10 dark:backdrop-blur dark:hover:bg-brand-cyan/10 dark:hover:text-white dark:hover:ring-brand-cyan/40',
         className,
       )}
     >
