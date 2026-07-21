@@ -7,13 +7,9 @@
  */
 
 import { Search, UploadCloud, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { AdminSection } from '@/containers/admin/types'
 import { cn } from '@/utils/cn'
-
-const SUBTITLES: Record<AdminSection, string> = {
-  document: 'Manage and organize uploaded company documents',
-  image: 'Manage and organize uploaded company images',
-}
 
 interface FileToolbarProps {
   section: AdminSection
@@ -28,18 +24,21 @@ export default function FileToolbar({
   onQueryChange,
   onUpload,
 }: FileToolbarProps) {
+  const { t } = useTranslation('admin')
   return (
     <div className="mb-5 flex flex-col gap-4">
       <div>
         <h1 className="text-xl font-semibold tracking-tight text-brand-navy sm:text-2xl dark:text-slate-100">
-          Internal File Upload
+          {t('files.heading')}
         </h1>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{SUBTITLES[section]}</p>
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          {t(`files.subtitle.${section}`)}
+        </p>
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <label className="relative w-full sm:max-w-xs">
-          <span className="sr-only">Search files</span>
+          <span className="sr-only">{t('files.searchLabel')}</span>
           <Search
             className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
             aria-hidden
@@ -48,14 +47,14 @@ export default function FileToolbar({
             type="search"
             value={query}
             onChange={(e) => onQueryChange(e.target.value)}
-            placeholder="Search files…"
+            placeholder={t('files.searchPlaceholder')}
             className="h-10 w-full rounded-lg border border-slate-200 bg-white pl-9 pr-9 text-sm text-brand-navy shadow-sm outline-none transition-colors placeholder:text-slate-400 focus:border-brand-cyan focus:ring-2 focus:ring-brand-cyan/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
           {query && (
             <button
               type="button"
               onClick={() => onQueryChange('')}
-              aria-label="Clear search"
+              aria-label={t('files.clearSearch')}
               className="absolute right-2 top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-md text-slate-400 outline-none hover:bg-slate-100 hover:text-slate-600 focus-visible:ring-2 focus-visible:ring-brand-cyan dark:hover:bg-white/10 dark:hover:text-slate-200"
             >
               <X className="h-3.5 w-3.5" />
@@ -72,7 +71,7 @@ export default function FileToolbar({
           )}
         >
           <UploadCloud className="h-4 w-4" aria-hidden />
-          Upload File
+          {t('files.uploadFile')}
         </button>
       </div>
     </div>

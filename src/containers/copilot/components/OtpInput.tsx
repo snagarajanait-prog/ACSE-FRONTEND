@@ -9,6 +9,7 @@
 
 import { useRef, useState } from 'react'
 import type { ClipboardEvent, KeyboardEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/utils/cn'
 
 export const OTP_LENGTH = 6
@@ -19,6 +20,7 @@ interface OtpInputProps {
 }
 
 export default function OtpInput({ onSubmit, className }: OtpInputProps) {
+  const { t } = useTranslation('copilot')
   const [digits, setDigits] = useState<string[]>(() => Array(OTP_LENGTH).fill(''))
   const refs = useRef<(HTMLInputElement | null)[]>([])
   // Latches on the submitting change so a stray keystroke landing in the same
@@ -96,7 +98,7 @@ export default function OtpInput({ onSubmit, className }: OtpInputProps) {
           autoFocus={i === 0}
           inputMode="numeric"
           autoComplete={i === 0 ? 'one-time-code' : 'off'}
-          aria-label={`Digit ${i + 1} of ${OTP_LENGTH}`}
+          aria-label={t('otp.digit', { index: i + 1, total: OTP_LENGTH })}
           onChange={(e) => handleChange(i, e.target.value)}
           onKeyDown={(e) => handleKeyDown(i, e)}
           onPaste={(e) => handlePaste(i, e)}

@@ -2,10 +2,12 @@
  * The provider tree — composed ONCE, here. Adding global state means wrapping
  * one more provider in this file.
  *
- * Order: Redux → Query → Router → Theme → Loader.
+ * Order: Redux → Query → Router → i18n → Theme → Loader.
  *
- * Loader sits innermost so its overlay renders inside the themed subtree — the
- * loading screen has to honour `.dark` like everything else.
+ * i18n wraps Theme so every rendered string — including the themed loader and
+ * toasts below — can call `useTranslation`. Loader sits innermost so its overlay
+ * renders inside the themed subtree — the loading screen has to honour `.dark`
+ * like everything else.
  */
 
 import type { ReactNode } from 'react'
@@ -16,6 +18,7 @@ import AppToaster from '@/components/AppToaster'
 import BootSplash from '@/components/BootSplash'
 import { LoaderProvider } from '@/context/LoaderContext'
 import { ThemeProvider } from '@/context/ThemeContext'
+import { I18nProvider } from '@/i18n/I18nProvider'
 import { queryClient } from '@/lib/queryClient'
 import { store } from '@/redux/store'
 
@@ -24,15 +27,17 @@ export default function Entry({ children }: { children: ReactNode }) {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <ThemeProvider>
-            <LoaderProvider>
-              {children}
-              {/* Above the router on purpose — it plays on boot, not per route. */}
-              <BootSplash />
-            </LoaderProvider>
-            {/* Toast host — inside ThemeProvider so toasts follow the app theme. */}
-            <AppToaster />
-          </ThemeProvider>
+          <I18nProvider>
+            <ThemeProvider>
+              <LoaderProvider>
+                {children}
+                {/* Above the router on purpose — it plays on boot, not per route. */}
+                <BootSplash />
+              </LoaderProvider>
+              {/* Toast host — inside ThemeProvider so toasts follow the app theme. */}
+              <AppToaster />
+            </ThemeProvider>
+          </I18nProvider>
         </BrowserRouter>
       </QueryClientProvider>
     </Provider>

@@ -12,6 +12,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import i18n from '@/i18n'
 import { CLIENT_NAME, STORAGE_KEYS } from '@/constants/constants'
 import { setDataSource } from '@/redux/dataSourceSlice'
 import type { DataSource } from '@/redux/dataSourceSlice'
@@ -65,11 +66,11 @@ export function useSettings() {
 
   const pickLogo = useCallback((file: File) => {
     if (!ACCEPTED_LOGO.includes(file.type)) {
-      setLogoError('Use a PNG or JPG image.')
+      setLogoError(i18n.t('admin:settings.logoErrorType'))
       return
     }
     if (file.size > MAX_LOGO_BYTES) {
-      setLogoError('Image must be under 1 MB.')
+      setLogoError(i18n.t('admin:settings.logoErrorSize'))
       return
     }
     const reader = new FileReader()
@@ -80,7 +81,7 @@ export function useSettings() {
         setDraft((d) => ({ ...d, logoDataUrl: reader.result as string }))
       }
     }
-    reader.onerror = () => setLogoError('Could not read that image.')
+    reader.onerror = () => setLogoError(i18n.t('admin:settings.logoErrorRead'))
     reader.readAsDataURL(file)
   }, [])
 

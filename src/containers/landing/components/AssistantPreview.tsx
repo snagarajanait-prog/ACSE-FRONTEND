@@ -13,21 +13,19 @@
  */
 
 import { Activity, Bot, Check } from 'lucide-react'
+import { Trans, useTranslation } from 'react-i18next'
 import { cn } from '@/utils/cn'
 
 const CHIPS = [
-  { label: 'Resolve payment request', active: true },
-  { label: 'Schedule appointment', active: false },
-  { label: 'Field visit contact', active: false },
+  { key: 'resolvePayment', active: true },
+  { key: 'scheduleAppointment', active: false },
+  { key: 'fieldVisit', active: false },
 ]
 
-const STEPS = [
-  { label: 'Identity verified', status: 'Account matched' },
-  { label: 'Bill exception analysis', status: 'Anomaly detected' },
-  { label: 'Automatic escalation created', status: 'Queued' },
-]
+const STEPS = ['identity', 'analysis', 'escalation']
 
 export default function AssistantPreview() {
+  const { t } = useTranslation('landing')
   return (
     <div className="relative mx-auto w-full max-w-lg">
       {/* Intent chips. Floated over the card's top edge only at xl+: the three
@@ -37,7 +35,7 @@ export default function AssistantPreview() {
       <div className="mb-3 flex flex-wrap gap-2 xl:absolute xl:-top-5 xl:left-4 xl:right-4 xl:mb-0 xl:flex-nowrap">
         {CHIPS.map((c) => (
           <span
-            key={c.label}
+            key={c.key}
             className={cn(
               'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[11px] font-medium shadow-sm ring-1',
               c.active
@@ -51,7 +49,7 @@ export default function AssistantPreview() {
                 c.active ? 'bg-brand-cyan' : 'bg-slate-300 dark:bg-slate-500',
               )}
             />
-            {c.label}
+            {t(`preview.chips.${c.key}`)}
           </span>
         ))}
       </div>
@@ -64,41 +62,44 @@ export default function AssistantPreview() {
             <Bot className="h-4 w-4 text-brand-cyan" />
           </span>
           <p className="min-w-0 flex-1 truncate text-[13px] font-semibold text-brand-navy dark:text-slate-100">
-            ACSE AI <span className="font-normal text-slate-400">— Live agent</span>
+            <Trans
+              t={t}
+              i18nKey="preview.agentName"
+              components={{ 1: <span className="font-normal text-slate-400" /> }}
+            />
           </p>
           <span className="shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-700 ring-1 ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/30">
-            Active
+            {t('preview.active')}
           </span>
         </div>
 
         {/* Exchange */}
         <div className="space-y-2.5 py-4">
           <p className="rounded-xl rounded-tl-sm bg-white px-3 py-2.5 text-[13px] leading-relaxed text-slate-600 ring-1 ring-slate-200 dark:bg-white/[0.03] dark:text-slate-300 dark:ring-white/10">
-            My auto bill this month seems way too high.
+            {t('preview.userMessage')}
           </p>
           <p className="ml-auto w-[92%] rounded-xl rounded-tr-sm bg-brand-cyan/[0.10] px-3 py-2.5 text-[13px] leading-relaxed text-brand-navy ring-1 ring-brand-cyan/15 dark:bg-brand-cyan/15 dark:text-slate-100 dark:ring-brand-cyan/25">
-            I can see your usage jumped 148% vs. last month&apos;s baseline in the same billing
-            window. I&apos;ll create a field investigation for a meter check.
+            {t('preview.agentMessage')}
           </p>
         </div>
 
         <p className="text-[10px] text-slate-400 dark:text-slate-500">
-          Field work order #FA-40721 · Assigned to Team B
+          {t('preview.workOrder', { order: '#FA-40721', team: 'B' })}
         </p>
 
         {/* Resolution trail */}
         <ul className="mt-3 space-y-px overflow-hidden rounded-xl">
           {STEPS.map((s) => (
             <li
-              key={s.label}
+              key={s}
               className="flex items-center gap-2.5 bg-slate-50/80 px-3 py-2.5 dark:bg-white/[0.03]"
             >
               <Check className="h-3.5 w-3.5 shrink-0 text-brand-cyan" />
               <span className="min-w-0 flex-1 truncate text-[12px] font-medium text-brand-navy dark:text-slate-200">
-                {s.label}
+                {t(`preview.steps.${s}.label`)}
               </span>
               <span className="shrink-0 text-[11px] text-slate-400 dark:text-slate-500">
-                {s.status}
+                {t(`preview.steps.${s}.status`)}
               </span>
             </li>
           ))}
@@ -109,8 +110,12 @@ export default function AssistantPreview() {
       <div className="mt-3 flex sm:absolute sm:-bottom-5 sm:left-2 sm:mt-0">
         <span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-[11px] shadow-[0_10px_30px_-12px_rgba(10,30,53,0.4)] ring-1 ring-slate-200/80 dark:bg-brand-navy dark:ring-white/10">
           <Activity className="h-3.5 w-3.5 text-brand-cyan" />
-          <span className="font-semibold text-brand-navy dark:text-slate-100">Live</span>
-          <span className="text-slate-500 dark:text-slate-400">1,284 requests resolved today</span>
+          <span className="font-semibold text-brand-navy dark:text-slate-100">
+            {t('preview.live')}
+          </span>
+          <span className="text-slate-500 dark:text-slate-400">
+            {t('preview.requestsResolved', { value: '1,284' })}
+          </span>
         </span>
       </div>
     </div>

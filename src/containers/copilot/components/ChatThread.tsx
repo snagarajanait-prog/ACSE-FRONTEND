@@ -6,6 +6,7 @@
  */
 
 import { CheckCircle2, ClipboardCheck, KeyRound, Loader2, ShieldCheck } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import ChatActions from '@/containers/copilot/components/ChatActions'
 import OtpInput from '@/containers/copilot/components/OtpInput'
 import ReceiptMenu from '@/containers/copilot/components/ReceiptMenu'
@@ -204,14 +205,17 @@ function Turn({
   customer?: ReceiptCustomer
   reference: string | null
 }) {
+  const { t } = useTranslation('copilot')
   const step = msg.step
   switch (step.kind) {
     case 'user':
       return (
         <li className="relative flex flex-col items-end pl-9 motion-safe:animate-rise-in">
-          <span className="mb-1 text-[10px] uppercase tracking-wider text-slate-400">You</span>
+          <span className="mb-1 text-[10px] uppercase tracking-wider text-slate-400">
+            {t('chat.you')}
+          </span>
           <div className="w-fit max-w-[75%] rounded-2xl rounded-tr-md bg-brand-cyan/[0.08] px-4 py-2.5 text-[15px] leading-6 text-brand-navy ring-1 ring-brand-cyan/15 dark:bg-white/[0.06] dark:text-slate-100 dark:ring-white/10 dark:backdrop-blur">
-            <span className="sr-only">You said: </span>
+            <span className="sr-only">{t('chat.youSaid')}</span>
             {step.text}
           </div>
         </li>
@@ -221,7 +225,7 @@ function Turn({
         <li className="relative pl-9 motion-safe:animate-rise-in">
           <Node />
           <p className="max-w-[68ch] text-[15px] leading-7 text-slate-700 dark:text-slate-100/90">
-            <span className="sr-only">Assistant said: </span>
+            <span className="sr-only">{t('chat.assistantSaid')}</span>
             <Lede text={step.text} />
           </p>
         </li>
@@ -303,7 +307,9 @@ function OtpCard({
   /** Present only when the customer keyed the code in; otherwise auto-verified. */
   entered?: string
 }) {
+  const { t } = useTranslation('copilot')
   const digits = entered ? [...entered] : [...OTP_DIGITS]
+  const channelLabel = t(channel === 'sms' ? 'otp.sms' : 'otp.email')
   return (
     <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200 dark:bg-white/[0.04] dark:shadow-[0_0_40px_-18px_rgba(16,185,129,0.5)] dark:ring-white/10 dark:backdrop-blur-xl">
       <div className="flex items-center gap-2">
@@ -311,11 +317,14 @@ function OtpCard({
           <ShieldCheck className="h-4 w-4" />
         </span>
         <span className="text-[13px] font-medium text-brand-navy dark:text-slate-100">
-          Identity verified · {channel === 'sms' ? 'SMS' : 'Email'}
+          {t('otp.identityVerified', { channel: channelLabel })}
         </span>
       </div>
       <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{text}</p>
-      <div className="mt-3 grid grid-cols-6 gap-2" aria-label={`Verification code ${digits.join(' ')}`}>
+      <div
+        className="mt-3 grid grid-cols-6 gap-2"
+        aria-label={t('otp.codeLabel', { digits: digits.join(' ') })}
+      >
         {digits.map((d, i) => (
           <span
             key={i}
@@ -338,6 +347,8 @@ function OtpChallengeNode({
   prompt: OtpPrompt
   onSubmit: (code: string) => void
 }) {
+  const { t } = useTranslation('copilot')
+  const channelLabel = t(prompt.channel === 'sms' ? 'otp.sms' : 'otp.email')
   return (
     <li className="relative pl-9 motion-safe:animate-rise-in">
       <Node />
@@ -347,7 +358,7 @@ function OtpChallengeNode({
             <KeyRound className="h-4 w-4" />
           </span>
           <span className="text-[13px] font-medium text-brand-navy dark:text-slate-100">
-            Verify your identity · {prompt.channel === 'sms' ? 'SMS' : 'Email'}
+            {t('otp.verifyIdentity', { channel: channelLabel })}
           </span>
         </div>
         <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{prompt.text}</p>
@@ -437,11 +448,12 @@ function DoneBand({ text }: { text: string }) {
 }
 
 function ThinkingNode({ phrases }: { phrases: string[] }) {
+  const { t } = useTranslation('copilot')
   const label = useCyclingPhrase(phrases)
   return (
     <li className="relative pl-9">
       <Node />
-      <div className="flex items-center gap-2" aria-label="Assistant is working">
+      <div className="flex items-center gap-2" aria-label={t('chat.working')}>
         <span key={label} className="text-sm font-medium">
           <Shimmer>{label}</Shimmer>
         </span>

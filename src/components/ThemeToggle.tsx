@@ -7,6 +7,7 @@
  */
 
 import { Moon, Sun } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useTheme } from '@/context/theme.context'
 import { cn } from '@/utils/cn'
 
@@ -15,9 +16,10 @@ export interface ThemeToggleProps {
 }
 
 export default function ThemeToggle({ className }: ThemeToggleProps) {
+  const { t } = useTranslation('common')
   const { theme, toggleTheme } = useTheme()
   const dark = theme === 'dark'
-  const label = dark ? 'Switch to light theme' : 'Switch to dark theme'
+  const label = dark ? t('theme.toLight') : t('theme.toDark')
 
   return (
     <button

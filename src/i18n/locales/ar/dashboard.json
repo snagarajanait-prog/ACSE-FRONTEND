@@ -1,0 +1,11 @@
+{
+  "header": {
+    "title": "لوحة التحكم",
+    "signedInAs": "تم تسجيل الدخول باسم {{name}}"
+  },
+  "loading": "جارٍ التحميل…",
+  "metrics": {
+    "thousandsAbbrev": "{{value}} ألف",
+    "millionsAbbrev": "{{value}} مليون"
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "poweredBy": "Powered by",
+  "header": {
+    "assistantMode": "Assistant mode: {{system}}",
+    "mode": "Mode · {{short}}",
+    "openAccountDetails": "Open account details",
+    "newChat": "New chat",
+    "backHome": "Back to acsesolutions.com"
+  },
+  "hero": {
+    "greetingFallback": "How can I help you today?",
+    "subtitle": "Ask about a bill, start or stop service, or report a leak — I'll walk it through."
+  },
+  "greeting": {
+    "morning": "Good morning",
+    "afternoon": "Good afternoon",
+    "evening": "Good evening",
+    "line": "{{part}}, {{name}}. How can I help you today?"
+  },
+  "composer": {
+    "placeholder": "Ask ACSE AI to start service, explain a bill, report a leak…",
+    "shortPlaceholder": "Ask ACSE AI…",
+    "drawerPlaceholder": "Ask ACSE AI anything…",
+    "responding": "Assistant is responding…",
+    "send": "Send",
+    "disclaimer": "Illustrative conversation · non-production data · reads/writes {{source}}"
+  },
+  "chat": {
+    "you": "You",
+    "youSaid": "You said: ",
+    "assistantSaid": "Assistant said: ",
+    "working": "Assistant is working",
+    "freeReply": "I can help with that. Here are the things I can do right now — pick one to see it in action:"
+  },
+  "think": {
+    "analysing": "Analysing your request",
+    "intent": "Understanding intent",
+    "checkingAccount": "Checking account {account}",
+    "requesting": "Requesting data from {source}",
+    "processing": "Processing records",
+    "compiling": "Compiling the details",
+    "summarising": "Summarising",
+    "matching": "Matching to a workflow"
+  },
+  "otp": {
+    "sms": "SMS",
+    "email": "Email",
+    "identityVerified": "Identity verified · {{channel}}",
+    "verifyIdentity": "Verify your identity · {{channel}}",
+    "codeLabel": "Verification code {{digits}}",
+    "digit": "Digit {{index}} of {{total}}"
+  },
+  "actions": {
+    "copyLabel": "Copy transcript",
+    "copy": "Copy",
+    "copied": "Copied",
+    "copyFailed": "Copy failed",
+    "shareLabel": "Share transcript",
+    "share": "Share",
+    "sharedCopied": "Copied — paste to share",
+    "shareFailed": "Could not share",
+    "exportLabel": "Export transcript as PDF",
+    "exportPdf": "Export PDF",
+    "preparing": "Preparing…",
+    "downloaded": "Downloaded",
+    "exportFailed": "Export failed"
+  },
+  "drawer": {
+    "assistantLabel": "ACSE AI assistant",
+    "accountDetails": "Account details",
+    "closeAccountDetails": "Close account details",
+    "expand": "Expand the assistant",
+    "shrink": "Shrink the assistant",
+    "expandShort": "Expand",
+    "shrinkShort": "Shrink",
+    "close": "Close the assistant",
+    "closeShort": "Close",
+    "heroSubtitle": "Ask about a bill, start or stop service, or report a leak."
+  },
+  "customerList": {
+    "title": "Select a customer",
+    "subtitle": "Pick an account to set the assistant's context. These are non-production customer records — several have multiple accounts.",
+    "searchLabel": "Search customers",
+    "searchPlaceholder": "Search by name, customer no. or account no.",
+    "since": "{{id}} · since {{since}}",
+    "accountCount_one": "{{count}} account",
+    "accountCount_other": "{{count}} accounts",
+    "due": "due",
+    "settled": "settled",
+    "noResults": "No customers match “{{query}}”."
+  },
+  "account": {
+    "detailsTitle": "Account details",
+    "customerSince": "{{id}} · Customer since {{since}}",
+    "email": "Email",
+    "phone": "Phone",
+    "serviceAddress": "Service address",
+    "meter": "Meter",
+    "balance": "Balance",
+    "due": "Due {{date}}",
+    "nothingDue": "Nothing due",
+    "autopayOn": "Autopay on",
+    "autopayOff": "Autopay off",
+    "usage": "Usage",
+    "thisYear": "This year",
+    "lastYear": "Last year",
+    "avgMonthly": "Avg / month",
+    "peakMonth": "Peak month",
+    "notifications": "Notifications",
+    "noBaseline": "No prior-year baseline yet",
+    "yoy": "year over year"
+  },
+  "usage": {
+    "range": {
+      "6M": "6 months",
+      "1Y": "1 year",
+      "2Y": "2 years"
+    }
+  },
+  "verify": {
+    "title": "Verify your identity",
+    "stepEmail": "Step 1 of 2 · Email address",
+    "stepCode": "Step 2 of 2 · One-time code",
+    "emailLabel": "Email address",
+    "emailError": "Enter an email address so we can send your code.",
+    "emailHelp": "We'll send a 6-digit code to confirm it's you. Any address is accepted here — nothing is really sent.",
+    "sending": "Sending code…",
+    "sendCode": "Send code",
+    "backToCustomers": "Back to customers",
+    "codeSent": "We sent a 6-digit code to <1>{{email}}</1>. Enter it below to open the assistant.",
+    "anyDigits": "Any 6 digits are accepted.",
+    "differentEmail": "Use a different email",
+    "cancel": "Cancel"
+  },
+  "receiptMenu": {
+    "about": "About \"{{title}}\" — and download as PDF",
+    "trigger": "Details and download",
+    "dialogLabel": "Request receipt",
+    "recordWithRef": "A record of this request exactly as it was submitted — reference <1>{{reference}}</1>.",
+    "recordPlain": "A record of this request exactly as it was submitted.",
+    "download": "Download receipt (PDF)",
+    "preparing": "Preparing…",
+    "error": "Could not generate the PDF. Please try again."
+  },
+  "slideOver": {
+    "close": "Close {{title}}"
+  },
+  "pdf": {
+    "poweredBy": "Powered by {{vendor}}",
+    "page": "Page {{page}} of {{total}}",
+    "illustrative": "Illustrative conversation · non-production data",
+    "continued": "{{label}} (continued)"
+  },
+  "receipt": {
+    "kind": "Service receipt",
+    "issued": "Issued {{stamp}}",
+    "keep": "Keep this for your records.",
+    "customer": "Customer",
+    "requestDetails": "Request details",
+    "name": "Name",
+    "customerNumber": "Customer number",
+    "email": "Email",
+    "phone": "Phone",
+    "disclaimer": "This receipt confirms a request was logged. It is not a bill or a payment confirmation."
+  },
+  "transcript": {
+    "title": "Conversation with {{assistant}}",
+    "you": "You",
+    "kind": "Conversation transcript",
+    "context": "Context",
+    "customer": "Customer",
+    "account": "Account",
+    "serviceAddress": "Service address",
+    "handledBy": "Handled by",
+    "exported": "Exported",
+    "identityVerifiedMd": "Identity verified · {{channel}} — {{text}}",
+    "identityVerifiedPlain": "Identity verified ({{channel}}) — {{text}}",
+    "disclaimer": "This transcript is a record of what was discussed. It is not a bill or a payment confirmation.",
+    "disclaimerFull": "Illustrative conversation · non-production data. This transcript is a record of what was discussed. It is not a bill or a payment confirmation."
+  },
+  "useCases": {
+    "start-service": "Start service",
+    "stop-service": "Stop service",
+    "transfer-service": "Transfer service",
+    "high-bill": "Why is my bill high?",
+    "payment-arrangement": "Payment arrangement",
+    "report-outage": "Report / check outage",
+    "update-contact": "Update contact info",
+    "report-leak": "Report a leak"
+  }
+}

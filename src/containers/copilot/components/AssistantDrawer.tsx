@@ -20,6 +20,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Maximize2, Minimize2, PanelRightClose, SlidersHorizontal, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import AssistantOrbLottie from '@/components/AssistantOrbLottie'
 import Logo from '@/components/Logo'
 import ThemeToggle from '@/components/ThemeToggle'
@@ -41,6 +42,7 @@ export interface AssistantDrawerProps {
 }
 
 export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps) {
+  const { t } = useTranslation('copilot')
   const engine = useChatEngine()
   const {
     customer,
@@ -116,7 +118,7 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
     (messages.length === 0 || messages[0]?.step.kind === 'ai')
 
   const greetingText =
-    messages[0]?.step.kind === 'ai' ? messages[0].step.text : 'How can I help you today?'
+    messages[0]?.step.kind === 'ai' ? messages[0].step.text : t('hero.greetingFallback')
 
   return (
     <>
@@ -134,7 +136,7 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
         ref={panelRef}
         role="dialog"
         aria-modal="true"
-        aria-label="ACSE AI assistant"
+        aria-label={t('drawer.assistantLabel')}
         aria-hidden={!open}
         tabIndex={-1}
         className={cn(
@@ -171,7 +173,7 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
               XYZ Company
             </p>
             <p className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-slate-400">
-              Powered by <Logo className="h-4" />
+              {t('poweredBy')} <Logo className="h-4" />
             </p>
           </div>
 
@@ -180,8 +182,8 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
               onClick={() => setDetailsOpen((v) => !v)}
               aria-pressed={detailsOpen}
               className={cn(ICON_BUTTON_CLASS, detailsOpen && 'bg-slate-100 dark:bg-white/10')}
-              aria-label="Account details"
-              title="Account details"
+              aria-label={t('drawer.accountDetails')}
+              title={t('drawer.accountDetails')}
             >
               <SlidersHorizontal className="h-4 w-4" />
             </button>
@@ -194,16 +196,16 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
             onClick={() => setExpanded((v) => !v)}
             aria-pressed={expanded}
             className={cn(ICON_BUTTON_CLASS, 'hidden sm:grid')}
-            aria-label={expanded ? 'Shrink the assistant' : 'Expand the assistant'}
-            title={expanded ? 'Shrink' : 'Expand'}
+            aria-label={expanded ? t('drawer.shrink') : t('drawer.expand')}
+            title={expanded ? t('drawer.shrinkShort') : t('drawer.expandShort')}
           >
             {expanded ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
           </button>
           <button
             onClick={onClose}
             className={ICON_BUTTON_CLASS}
-            aria-label="Close the assistant"
-            title="Close"
+            aria-label={t('drawer.close')}
+            title={t('drawer.closeShort')}
           >
             <X className="h-4 w-4" />
           </button>
@@ -231,7 +233,7 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
                       {greetingText}
                     </h2>
                     <p className="mt-2 text-[13px] text-slate-500 dark:text-slate-400">
-                      Ask about a bill, start or stop service, or report a leak.
+                      {t('drawer.heroSubtitle')}
                     </p>
                   </div>
                 ) : (
@@ -265,7 +267,7 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
                   pills={engine.pills}
                   onStartScenario={engine.startScenario}
                   sourceLabel={meta.chatLabel}
-                  placeholder="Ask ACSE AI anything…"
+                  placeholder={t('composer.drawerPlaceholder')}
                 />
               </div>
             </>
@@ -294,12 +296,12 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
             >
               <div className="flex h-12 shrink-0 items-center justify-between border-b border-slate-200 px-3 dark:border-white/10">
                 <p className="text-sm font-semibold text-brand-navy dark:text-slate-100">
-                  Account details
+                  {t('drawer.accountDetails')}
                 </p>
                 <button
                   onClick={() => setDetailsOpen(false)}
                   className={ICON_BUTTON_CLASS}
-                  aria-label="Close account details"
+                  aria-label={t('drawer.closeAccountDetails')}
                 >
                   <PanelRightClose className="h-4 w-4" />
                 </button>

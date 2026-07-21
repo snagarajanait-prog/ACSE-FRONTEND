@@ -7,6 +7,7 @@
  */
 
 import { Check } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import AdminGate from '@/containers/admin/auth/AdminGate'
 import { AdminShell } from '@/containers/admin/components'
 import {
@@ -26,18 +27,19 @@ export default function AdminSettingsPage() {
 }
 
 function AdminSettings() {
+  const { t } = useTranslation('admin')
   const settings = useSettings()
   const { draft } = settings
 
   return (
-    <AdminShell active="settings" title="Profile & Settings">
+    <AdminShell active="settings" title={t('shell.settingsTitle')}>
       <div className="mx-auto w-full max-w-3xl px-4 py-6 md:px-8">
         <header className="mb-6">
           <h1 className="text-xl font-semibold tracking-tight text-brand-navy sm:text-2xl dark:text-slate-100">
-            Profile Settings
+            {t('settings.heading')}
           </h1>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Manage organization preferences and appearance
+            {t('settings.subtitle')}
           </p>
         </header>
 
@@ -62,7 +64,7 @@ function AdminSettings() {
           {settings.justSaved && (
             <span className="mr-auto inline-flex items-center gap-1.5 text-sm font-medium text-emerald-600 dark:text-emerald-400">
               <Check className="h-4 w-4" aria-hidden />
-              Changes saved
+              {t('settings.changesSaved')}
             </span>
           )}
           <button
@@ -71,7 +73,7 @@ function AdminSettings() {
             disabled={!settings.dirty}
             className="inline-flex h-10 items-center rounded-lg border border-slate-200 px-4 text-sm font-medium text-slate-600 outline-none transition-colors hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-brand-cyan disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/5"
           >
-            Cancel
+            {t('settings.cancel')}
           </button>
           <button
             type="button"
@@ -82,7 +84,7 @@ function AdminSettings() {
               'disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:brightness-100',
             )}
           >
-            Save Changes
+            {t('settings.save')}
           </button>
         </div>
       </div>

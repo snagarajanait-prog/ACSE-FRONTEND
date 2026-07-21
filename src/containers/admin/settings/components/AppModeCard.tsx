@@ -7,6 +7,7 @@
  */
 
 import { Zap } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { DATA_SOURCE_META } from '@/redux/dataSourceSlice'
 import type { DataSource } from '@/redux/dataSourceSlice'
 import SettingCard from '@/containers/admin/settings/components/SettingCard'
@@ -23,15 +24,16 @@ interface AppModeCardProps {
 }
 
 export default function AppModeCard({ mode, onChange }: AppModeCardProps) {
+  const { t } = useTranslation('admin')
   return (
     <SettingCard
       icon={Zap}
-      title="Application Mode"
-      description="Switch between ATP and C2M operating modes"
+      title={t('settings.appMode.title')}
+      description={t('settings.appMode.description')}
     >
       <div
         role="radiogroup"
-        aria-label="Application mode"
+        aria-label={t('settings.appMode.ariaLabel')}
         className="inline-flex items-center gap-1 rounded-xl bg-slate-100 p-1 dark:bg-white/5"
       >
         {OPTIONS.map(({ value, label }) => {

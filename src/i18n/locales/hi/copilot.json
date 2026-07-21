@@ -1,0 +1,191 @@
+{
+  "poweredBy": "द्वारा संचालित",
+  "header": {
+    "assistantMode": "सहायक मोड: {{system}}",
+    "mode": "मोड · {{short}}",
+    "openAccountDetails": "खाता विवरण खोलें",
+    "newChat": "नई चैट",
+    "backHome": "acsesolutions.com पर वापस जाएँ"
+  },
+  "hero": {
+    "greetingFallback": "आज मैं आपकी कैसे मदद कर सकता हूँ?",
+    "subtitle": "किसी बिल के बारे में पूछें, सेवा शुरू या बंद करें, या रिसाव की सूचना दें — मैं आपको चरण-दर-चरण मार्गदर्शन दूँगा।"
+  },
+  "greeting": {
+    "morning": "सुप्रभात",
+    "afternoon": "नमस्कार",
+    "evening": "शुभ संध्या",
+    "line": "{{part}}, {{name}}। आज मैं आपकी कैसे मदद कर सकता हूँ?"
+  },
+  "composer": {
+    "placeholder": "सेवा शुरू करने, बिल समझाने, रिसाव की सूचना देने के लिए ACSE AI से पूछें…",
+    "shortPlaceholder": "ACSE AI से पूछें…",
+    "drawerPlaceholder": "ACSE AI से कुछ भी पूछें…",
+    "responding": "सहायक जवाब दे रहा है…",
+    "send": "भेजें",
+    "disclaimer": "उदाहरणात्मक बातचीत · गैर-उत्पादन डेटा · {{source}} में पढ़ता/लिखता है"
+  },
+  "chat": {
+    "you": "आप",
+    "youSaid": "आपने कहा: ",
+    "assistantSaid": "सहायक ने कहा: ",
+    "working": "सहायक काम कर रहा है",
+    "freeReply": "मैं इसमें मदद कर सकता हूँ। अभी मैं ये काम कर सकता हूँ — इसे क्रिया में देखने के लिए कोई एक चुनें:"
+  },
+  "think": {
+    "analysing": "आपके अनुरोध का विश्लेषण किया जा रहा है",
+    "intent": "आशय समझा जा रहा है",
+    "checkingAccount": "खाता {account} की जाँच की जा रही है",
+    "requesting": "{source} से डेटा का अनुरोध किया जा रहा है",
+    "processing": "रिकॉर्ड संसाधित किए जा रहे हैं",
+    "compiling": "विवरण संकलित किए जा रहे हैं",
+    "summarising": "सारांश बनाया जा रहा है",
+    "matching": "किसी वर्कफ़्लो से मिलान किया जा रहा है"
+  },
+  "otp": {
+    "sms": "SMS",
+    "email": "ईमेल",
+    "identityVerified": "पहचान सत्यापित · {{channel}}",
+    "verifyIdentity": "अपनी पहचान सत्यापित करें · {{channel}}",
+    "codeLabel": "सत्यापन कोड {{digits}}",
+    "digit": "अंक {{index}} / {{total}}"
+  },
+  "actions": {
+    "copyLabel": "प्रतिलेख कॉपी करें",
+    "copy": "कॉपी करें",
+    "copied": "कॉपी हो गया",
+    "copyFailed": "कॉपी विफल",
+    "shareLabel": "प्रतिलेख साझा करें",
+    "share": "साझा करें",
+    "sharedCopied": "कॉपी हो गया — साझा करने के लिए पेस्ट करें",
+    "shareFailed": "साझा नहीं कर सके",
+    "exportLabel": "प्रतिलेख को PDF के रूप में निर्यात करें",
+    "exportPdf": "PDF निर्यात करें",
+    "preparing": "तैयार किया जा रहा है…",
+    "downloaded": "डाउनलोड हो गया",
+    "exportFailed": "निर्यात विफल"
+  },
+  "drawer": {
+    "assistantLabel": "ACSE AI सहायक",
+    "accountDetails": "खाता विवरण",
+    "closeAccountDetails": "खाता विवरण बंद करें",
+    "expand": "सहायक का विस्तार करें",
+    "shrink": "सहायक को सिकोड़ें",
+    "expandShort": "विस्तार करें",
+    "shrinkShort": "सिकोड़ें",
+    "close": "सहायक बंद करें",
+    "closeShort": "बंद करें",
+    "heroSubtitle": "किसी बिल के बारे में पूछें, सेवा शुरू या बंद करें, या रिसाव की सूचना दें।"
+  },
+  "customerList": {
+    "title": "एक ग्राहक चुनें",
+    "subtitle": "सहायक का संदर्भ सेट करने के लिए एक खाता चुनें। ये गैर-उत्पादन ग्राहक रिकॉर्ड हैं — कई के पास कई खाते हैं।",
+    "searchLabel": "ग्राहक खोजें",
+    "searchPlaceholder": "नाम, ग्राहक संख्या या खाता संख्या से खोजें।",
+    "since": "{{id}} · {{since}} से",
+    "accountCount_one": "{{count}} खाता",
+    "accountCount_other": "{{count}} खाते",
+    "due": "बकाया",
+    "settled": "निपटाया गया",
+    "noResults": "«{{query}}» से कोई ग्राहक मेल नहीं खाता।"
+  },
+  "account": {
+    "detailsTitle": "खाता विवरण",
+    "customerSince": "{{id}} · {{since}} से ग्राहक",
+    "email": "ईमेल",
+    "phone": "फ़ोन",
+    "serviceAddress": "सेवा पता",
+    "meter": "मीटर",
+    "balance": "शेष राशि",
+    "due": "देय {{date}}",
+    "nothingDue": "कुछ भी देय नहीं",
+    "autopayOn": "ऑटोपे चालू",
+    "autopayOff": "ऑटोपे बंद",
+    "usage": "उपयोग",
+    "thisYear": "इस वर्ष",
+    "lastYear": "पिछले वर्ष",
+    "avgMonthly": "औसत / माह",
+    "peakMonth": "चरम माह",
+    "notifications": "सूचनाएँ",
+    "noBaseline": "पिछले वर्ष का आधार अभी तक नहीं",
+    "yoy": "वर्ष-दर-वर्ष"
+  },
+  "usage": {
+    "range": {
+      "6M": "6 माह",
+      "1Y": "1 वर्ष",
+      "2Y": "2 वर्ष"
+    }
+  },
+  "verify": {
+    "title": "अपनी पहचान सत्यापित करें",
+    "stepEmail": "चरण 1 / 2 · ईमेल पता",
+    "stepCode": "चरण 2 / 2 · एकबारगी कोड",
+    "emailLabel": "ईमेल पता",
+    "emailError": "एक ईमेल पता दर्ज करें ताकि हम आपका कोड भेज सकें।",
+    "emailHelp": "यह पुष्टि करने के लिए कि यह आप ही हैं, हम 6 अंकों का कोड भेजेंगे। यहाँ कोई भी पता स्वीकार किया जाता है — वास्तव में कुछ भी नहीं भेजा जाता।",
+    "sending": "कोड भेजा जा रहा है…",
+    "sendCode": "कोड भेजें",
+    "backToCustomers": "ग्राहकों पर वापस जाएँ",
+    "codeSent": "हमने <1>{{email}}</1> पर 6 अंकों का कोड भेजा है। सहायक खोलने के लिए इसे नीचे दर्ज करें।",
+    "anyDigits": "कोई भी 6 अंक स्वीकार किए जाते हैं।",
+    "differentEmail": "कोई अन्य ईमेल उपयोग करें",
+    "cancel": "रद्द करें"
+  },
+  "receiptMenu": {
+    "about": "\"{{title}}\" के बारे में — और PDF के रूप में डाउनलोड करें",
+    "trigger": "विवरण और डाउनलोड",
+    "dialogLabel": "अनुरोध रसीद",
+    "recordWithRef": "इस अनुरोध का रिकॉर्ड ठीक वैसे ही जैसे यह जमा किया गया था — संदर्भ <1>{{reference}}</1>.",
+    "recordPlain": "इस अनुरोध का रिकॉर्ड ठीक वैसे ही जैसे यह जमा किया गया था।",
+    "download": "रसीद डाउनलोड करें (PDF)",
+    "preparing": "तैयार किया जा रहा है…",
+    "error": "PDF तैयार नहीं हो सका। कृपया फिर से प्रयास करें।"
+  },
+  "slideOver": {
+    "close": "{{title}} बंद करें"
+  },
+  "pdf": {
+    "poweredBy": "{{vendor}} द्वारा संचालित",
+    "page": "पृष्ठ {{page}} / {{total}}",
+    "illustrative": "उदाहरणात्मक बातचीत · गैर-उत्पादन डेटा",
+    "continued": "{{label}} (जारी)"
+  },
+  "receipt": {
+    "kind": "सेवा रसीद",
+    "issued": "जारी किया गया {{stamp}}",
+    "keep": "इसे अपने रिकॉर्ड के लिए रखें।",
+    "customer": "ग्राहक",
+    "requestDetails": "अनुरोध विवरण",
+    "name": "नाम",
+    "customerNumber": "ग्राहक संख्या",
+    "email": "ईमेल",
+    "phone": "फ़ोन",
+    "disclaimer": "यह रसीद पुष्टि करती है कि एक अनुरोध दर्ज किया गया था। यह कोई बिल या भुगतान पुष्टि नहीं है।"
+  },
+  "transcript": {
+    "title": "{{assistant}} के साथ बातचीत",
+    "you": "आप",
+    "kind": "बातचीत प्रतिलेख",
+    "context": "संदर्भ",
+    "customer": "ग्राहक",
+    "account": "खाता",
+    "serviceAddress": "सेवा पता",
+    "handledBy": "द्वारा संभाला गया",
+    "exported": "निर्यात किया गया",
+    "identityVerifiedMd": "पहचान सत्यापित · {{channel}} — {{text}}",
+    "identityVerifiedPlain": "पहचान सत्यापित ({{channel}}) — {{text}}",
+    "disclaimer": "यह प्रतिलेख इस बात का रिकॉर्ड है कि क्या चर्चा हुई। यह कोई बिल या भुगतान पुष्टि नहीं है।",
+    "disclaimerFull": "उदाहरणात्मक बातचीत · गैर-उत्पादन डेटा। यह प्रतिलेख इस बात का रिकॉर्ड है कि क्या चर्चा हुई। यह कोई बिल या भुगतान पुष्टि नहीं है।"
+  },
+  "useCases": {
+    "start-service": "सेवा शुरू करें",
+    "stop-service": "सेवा बंद करें",
+    "transfer-service": "सेवा स्थानांतरित करें",
+    "high-bill": "मेरा बिल अधिक क्यों है?",
+    "payment-arrangement": "भुगतान व्यवस्था",
+    "report-outage": "आउटेज की सूचना दें / जाँचें",
+    "update-contact": "संपर्क जानकारी अपडेट करें",
+    "report-leak": "रिसाव की सूचना दें"
+  }
+}

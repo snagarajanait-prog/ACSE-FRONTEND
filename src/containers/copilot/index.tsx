@@ -15,6 +15,7 @@
  */
 
 import { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import AssistantOrbLottie from '@/components/AssistantOrbLottie'
 import {
   AccountPanel,
@@ -30,6 +31,7 @@ import { useChatEngine } from '@/containers/copilot/hooks/useChatEngine'
 import { useAppSelector } from '@/redux/hooks'
 
 export default function Copilot() {
+  const { t } = useTranslation('copilot')
   const engine = useChatEngine()
   const {
     customer,
@@ -77,7 +79,7 @@ export default function Copilot() {
     (messages.length === 0 || messages[0]?.step.kind === 'ai')
 
   const greetingText =
-    messages[0]?.step.kind === 'ai' ? messages[0].step.text : 'How can I help you today?'
+    messages[0]?.step.kind === 'ai' ? messages[0].step.text : t('hero.greetingFallback')
 
   return (
     <div className="relative flex h-[100dvh] w-full flex-col overflow-hidden bg-white font-sans text-brand-navy antialiased transition-colors duration-300 dark:bg-brand-navydeep dark:text-slate-100">
@@ -124,8 +126,7 @@ export default function Copilot() {
                     {greetingText}
                   </h1>
                   <p className="mt-3 text-[15px] text-slate-500 dark:text-slate-400">
-                    Ask about a bill, start or stop service, or report a leak — I&apos;ll walk it
-                    through.
+                    {t('hero.subtitle')}
                   </p>
                   <div className="mt-8 w-full">
                     <ComposerFor engine={engine} mode="hero" />
@@ -163,7 +164,7 @@ export default function Copilot() {
 
       {/* Account panel on smaller viewports */}
       {hasContext && (
-        <SlideOver open={panelOpen} onClose={closePanel} side="left" title="Account details">
+        <SlideOver open={panelOpen} onClose={closePanel} side="left" title={t('account.detailsTitle')}>
           <AccountPanel />
         </SlideOver>
       )}

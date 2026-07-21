@@ -15,6 +15,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import LogoAssembly, { ASSEMBLY_DURATION_MS } from '@/components/LogoAssembly'
 import { cn } from '@/utils/cn'
 
@@ -22,7 +23,10 @@ import { cn } from '@/utils/cn'
 const EXIT_DURATION_MS = 450
 
 export interface GlobalLoaderProps {
-  /** Status line under the mark. Keep it short — it sits at small caps width. */
+  /**
+   * Status line under the mark. Keep it short — it sits at small caps width.
+   * Omit it to fall back to the translated "Preparing your workspace".
+   */
   message?: string
   /**
    * Drives the exit. Defaults to true so the Suspense-fallback case — where the
@@ -42,11 +46,14 @@ export interface GlobalLoaderProps {
 }
 
 export default function GlobalLoader({
-  message = 'Preparing your workspace',
+  message,
   visible = true,
   onExited,
   appearDelayMs = 0,
 }: GlobalLoaderProps) {
+  const { t } = useTranslation('common')
+  // Resolved here rather than as a default param — a default can't call a hook.
+  const text = message ?? t('loader.preparing')
   const [appeared, setAppeared] = useState(appearDelayMs === 0)
 
   useEffect(() => {
@@ -130,7 +137,7 @@ export default function GlobalLoader({
             className="flex items-center gap-2 text-center text-xs font-medium tracking-[0.18em] text-muted-foreground uppercase motion-safe:animate-fade-in"
             style={{ animationDelay: `${ASSEMBLY_DURATION_MS}ms`, animationFillMode: 'both' }}
           >
-            {message}
+            {text}
             <span aria-hidden className="inline-flex gap-1">
               {[0, 1, 2].map((i) => (
                 <span

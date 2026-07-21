@@ -15,6 +15,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Download, Info, Loader2 } from 'lucide-react'
+import { Trans, useTranslation } from 'react-i18next'
 import { cn } from '@/utils/cn'
 import { downloadReceiptPdf, type ReceiptCustomer } from '@/utils/receipt'
 
@@ -33,6 +34,7 @@ const GAP = 8
 const PANEL_W = 260
 
 export default function ReceiptMenu({ title, rows, reference, customer }: ReceiptMenuProps) {
+  const { t } = useTranslation('copilot')
   const [open, setOpen] = useState(false)
   const [status, setStatus] = useState<Status>('idle')
   const [anchor, setAnchor] = useState<{ top: number; right: number } | null>(null)
@@ -128,8 +130,8 @@ export default function ReceiptMenu({ title, rows, reference, customer }: Receip
         onClick={toggle}
         aria-expanded={open}
         aria-haspopup="dialog"
-        aria-label={`About "${title}" — and download as PDF`}
-        title="Details and download"
+        aria-label={t('receiptMenu.about', { title })}
+        title={t('receiptMenu.trigger')}
         className={cn(
           'relative -my-1 -mr-1 ml-auto grid h-7 w-7 shrink-0 place-items-center rounded-full outline-none transition-colors hover:bg-slate-100 hover:text-brand-navy focus-visible:ring-2 focus-visible:ring-brand-cyan aria-expanded:bg-brand-cyan/10 aria-expanded:text-brand-cyan dark:hover:bg-white/10 dark:hover:text-slate-100',
           // While hinting, the resting colour is the brand cyan rather than a
@@ -156,23 +158,26 @@ export default function ReceiptMenu({ title, rows, reference, customer }: Receip
           <div
             ref={panelRef}
             role="dialog"
-            aria-label="Request receipt"
+            aria-label={t('receiptMenu.dialogLabel')}
             style={{ top: anchor.top, right: anchor.right, width: PANEL_W }}
             className="fixed z-50 rounded-xl bg-white p-3 shadow-lg ring-1 ring-slate-200 motion-safe:animate-rise-in dark:bg-brand-navydeep dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.7)] dark:ring-white/10"
           >
             <p className="text-[13px] font-semibold text-brand-navy dark:text-slate-100">{title}</p>
             <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">
-              A record of this request exactly as it was submitted
               {reference ? (
-                <>
-                  {' '}
-                  — reference{' '}
-                  <span className="whitespace-nowrap font-mono text-[11px] text-brand-navy dark:text-slate-200">
-                    {reference}
-                  </span>
-                </>
-              ) : null}
-              .
+                <Trans
+                  t={t}
+                  i18nKey="receiptMenu.recordWithRef"
+                  values={{ reference }}
+                  components={{
+                    1: (
+                      <span className="whitespace-nowrap font-mono text-[11px] text-brand-navy dark:text-slate-200" />
+                    ),
+                  }}
+                />
+              ) : (
+                t('receiptMenu.recordPlain')
+              )}
             </p>
 
             <button
@@ -186,12 +191,12 @@ export default function ReceiptMenu({ title, rows, reference, customer }: Receip
               ) : (
                 <Download className="h-4 w-4" />
               )}
-              {working ? 'Preparing…' : 'Download receipt (PDF)'}
+              {working ? t('receiptMenu.preparing') : t('receiptMenu.download')}
             </button>
 
             {status === 'error' && (
               <p role="alert" className="mt-2 text-xs text-brand-red">
-                Could not generate the PDF. Please try again.
+                {t('receiptMenu.error')}
               </p>
             )}
           </div>,

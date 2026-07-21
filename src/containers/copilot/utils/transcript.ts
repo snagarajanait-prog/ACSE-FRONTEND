@@ -15,6 +15,7 @@
  * React-free on purpose, so a test or a future server-side export can call it.
  */
 
+import i18n from '@/i18n'
 import type { Msg } from '@/containers/copilot/hooks/useChatEngine'
 import { splitReference } from '@/containers/copilot/utils/splitReference'
 import { CLIENT_NAME, VENDOR_NAME } from '@/constants/constants'
@@ -24,7 +25,8 @@ import { formatStamp, slugify } from '@/utils/pdfTheme'
 
 /** How the assistant signs its turns in an exported transcript. */
 export const ASSISTANT_NAME = 'ACSE AI'
-const CUSTOMER_NAME = 'You'
+/** How the customer's turns are labelled — resolved in the active language. */
+const customerName = () => i18n.t('copilot:transcript.you')
 
 /** A single exportable line of conversation, stripped of playback concerns. */
 export type TranscriptEntry =
@@ -65,10 +67,9 @@ export interface Transcript {
 /**
  * The disclaimer every format carries. The transcript is a record of a demo
  * conversation, and saying so travels with the file rather than staying behind
- * on the screen the file was downloaded from.
+ * on the screen the file was downloaded from. Resolved in the active language.
  */
-const DISCLAIMER =
-  'Illustrative conversation · non-production data. This transcript is a record of what was discussed. It is not a bill or a payment confirmation.'
+const disclaimer = () => i18n.t('copilot:transcript.disclaimerFull')
 
 function toEntries(messages: Msg[]): TranscriptEntry[] {
   const entries: TranscriptEntry[] = []
@@ -99,16 +100,16 @@ function toEntries(messages: Msg[]): TranscriptEntry[] {
 function toMeta(ctx: TranscriptContext, issuedAt: Date): [string, string][] {
   const meta: [string, string][] = []
   if (ctx.customer) {
-    meta.push(['Customer', `${ctx.customer.name} (${ctx.customer.id})`])
+    meta.push([i18n.t('copilot:transcript.customer'), `${ctx.customer.name} (${ctx.customer.id})`])
   }
   if (ctx.account) {
-    meta.push(['Account', `${ctx.account.id} · ${ctx.account.type}`])
-    meta.push(['Service address', ctx.account.serviceAddress])
+    meta.push([i18n.t('copilot:transcript.account'), `${ctx.account.id} · ${ctx.account.type}`])
+    meta.push([i18n.t('copilot:transcript.serviceAddress'), ctx.account.serviceAddress])
   }
   if (ctx.source) {
-    meta.push(['Handled by', DATA_SOURCE_META[ctx.source].chatSystem])
+    meta.push([i18n.t('copilot:transcript.handledBy'), DATA_SOURCE_META[ctx.source].chatSystem])
   }
-  meta.push(['Exported', formatStamp(issuedAt)])
+  meta.push([i18n.t('copilot:transcript.exported'), formatStamp(issuedAt)])
   return meta
 }
 
@@ -126,7 +127,7 @@ function toMarkdown(t: Omit<Transcript, 'markdown' | 'text' | 'fileBase'>): stri
   for (const entry of t.entries) {
     switch (entry.kind) {
       case 'user':
-        lines.push(`**${CUSTOMER_NAME}:** ${entry.text}`, '')
+        lines.push(`**${customerName()}:** ${entry.text}`, '')
         break
       case 'ai':
         lines.push(`**${ASSISTANT_NAME}:** ${entry.text}`, '')
@@ -136,7 +137,10 @@ function toMarkdown(t: Omit<Transcript, 'markdown' | 'text' | 'fileBase'>): stri
         break
       case 'otp':
         lines.push(
-          `> _Identity verified · ${channelLabel(entry.channel)} — ${entry.text}_`,
+          `> _${i18n.t('copilot:transcript.identityVerifiedMd', {
+            channel: channelLabel(entry.channel),
+            text: entry.text,
+          })}_`,
           '',
         )
         break
@@ -154,7 +158,14 @@ function toMarkdown(t: Omit<Transcript, 'markdown' | 'text' | 'fileBase'>): stri
     }
   }
 
-  lines.push('---', '', `_${DISCLAIMER}_`, '', `_Powered by ${VENDOR_NAME}_`, '')
+  lines.push(
+    '---',
+    '',
+    `_${disclaimer()}_`,
+    '',
+    `_${i18n.t('copilot:pdf.poweredBy', { vendor: VENDOR_NAME })}_`,
+    '',
+  )
   return lines.join('\n')
 }
 
@@ -172,7 +183,7 @@ function toPlainText(t: Omit<Transcript, 'markdown' | 'text' | 'fileBase'>): str
   for (const entry of t.entries) {
     switch (entry.kind) {
       case 'user':
-        lines.push(`${CUSTOMER_NAME}: ${entry.text}`, '')
+        lines.push(`${customerName()}: ${entry.text}`, '')
         break
       case 'ai':
         lines.push(`${ASSISTANT_NAME}: ${entry.text}`, '')
@@ -181,7 +192,13 @@ function toPlainText(t: Omit<Transcript, 'markdown' | 'text' | 'fileBase'>): str
         lines.push(`  · ${entry.text}`, '')
         break
       case 'otp':
-        lines.push(`  · Identity verified (${channelLabel(entry.channel)}) — ${entry.text}`, '')
+        lines.push(
+          `  · ${i18n.t('copilot:transcript.identityVerifiedPlain', {
+            channel: channelLabel(entry.channel),
+            text: entry.text,
+          })}`,
+          '',
+        )
         break
       case 'summary':
         lines.push(`${entry.title.toUpperCase()}`)
@@ -194,12 +211,18 @@ function toPlainText(t: Omit<Transcript, 'markdown' | 'text' | 'fileBase'>): str
     }
   }
 
-  lines.push('—'.repeat(40), '', DISCLAIMER, `Powered by ${VENDOR_NAME}`, '')
+  lines.push(
+    '—'.repeat(40),
+    '',
+    disclaimer(),
+    i18n.t('copilot:pdf.poweredBy', { vendor: VENDOR_NAME }),
+    '',
+  )
   return lines.join('\n')
 }
 
 export function channelLabel(channel: 'sms' | 'email'): string {
-  return channel === 'sms' ? 'SMS' : 'Email'
+  return i18n.t(channel === 'sms' ? 'copilot:otp.sms' : 'copilot:otp.email')
 }
 
 /**
@@ -224,7 +247,7 @@ export function buildTranscript(messages: Msg[], ctx: TranscriptContext = {}): T
   const reference = lastReference(entries)
 
   const base = {
-    title: `Conversation with ${ASSISTANT_NAME}`,
+    title: i18n.t('copilot:transcript.title', { assistant: ASSISTANT_NAME }),
     company,
     issuedAt,
     meta: toMeta(ctx, issuedAt),

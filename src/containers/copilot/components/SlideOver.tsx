@@ -9,6 +9,7 @@
 import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/utils/cn'
 
 interface SlideOverProps {
@@ -26,6 +27,7 @@ export default function SlideOver({
   title,
   children,
 }: SlideOverProps) {
+  const { t } = useTranslation('copilot')
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => {
@@ -61,7 +63,7 @@ export default function SlideOver({
           <p className="text-sm font-semibold text-brand-navy dark:text-slate-100">{title}</p>
           <button
             onClick={onClose}
-            aria-label={`Close ${title.toLowerCase()}`}
+            aria-label={t('slideOver.close', { title })}
             className="grid h-8 w-8 place-items-center rounded-md text-slate-400 outline-none hover:bg-slate-100 hover:text-slate-700 focus-visible:ring-2 focus-visible:ring-brand-cyan dark:hover:bg-white/10 dark:hover:text-white"
           >
             <X className="h-4 w-4" />

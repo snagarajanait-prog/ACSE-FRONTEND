@@ -10,6 +10,8 @@
  */
 
 import { useCallback, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import i18n from '@/i18n'
 import { STORAGE_KEYS } from '@/constants/constants'
 import type {
   AdminSection,
@@ -35,19 +37,24 @@ function makeId(section: AdminSection): string {
   return `${prefix}-${Date.now().toString(36)}-${Math.floor(Math.random() * 1e4)}`
 }
 
-const SORT_LABELS: Record<SortKey, string> = {
-  uploadedAt: 'Uploaded Date',
-  uploadedBy: 'Uploaded By',
-  fileName: 'Uploaded Files',
-  category: 'Uploaded Type',
-}
-
 /**
  * The active library (`section`) is CONTROLLED — the page derives it from the
  * URL (`?lib=`) so the two libraries are distinct, linkable destinations. The
  * hook owns everything else: the working set, search, sort, uploads, deletes.
  */
 export function useAdminFiles(section: AdminSection) {
+  const { t } = useTranslation('admin')
+  // Column labels (also the sort-header text) — rebuilt on language change.
+  const sortLabels = useMemo<Record<SortKey, string>>(
+    () => ({
+      uploadedAt: t('files.columns.uploadedAt'),
+      uploadedBy: t('files.columns.uploadedBy'),
+      fileName: t('files.columns.fileName'),
+      category: t('files.columns.category'),
+    }),
+    [t],
+  )
+
   const [files, setFiles] = useState<FileRecord[]>(loadFiles)
   const [query, setQuery] = useState('')
   const [sort, setSort] = useState<SortState>({ key: 'uploadedAt', dir: 'desc' })
@@ -112,13 +119,13 @@ export function useAdminFiles(section: AdminSection) {
     // Seed rows (and anything from a prior session) have no real bytes — hand
     // over a readable placeholder rather than a broken/empty download.
     const stub = [
-      `File: ${record.fileName}`,
-      `Category: ${record.category}`,
-      `Uploaded by: ${record.uploadedBy}`,
-      `Uploaded at: ${record.uploadedAt}`,
-      record.notes ? `Notes: ${record.notes}` : '',
+      i18n.t('admin:files.stub.file', { name: record.fileName }),
+      i18n.t('admin:files.stub.category', { category: record.category }),
+      i18n.t('admin:files.stub.uploadedBy', { name: record.uploadedBy }),
+      i18n.t('admin:files.stub.uploadedAt', { date: record.uploadedAt }),
+      record.notes ? i18n.t('admin:files.stub.notes', { notes: record.notes }) : '',
       '',
-      'This is a demo placeholder — the original file was not stored in the browser.',
+      i18n.t('admin:files.stub.placeholder'),
     ]
       .filter(Boolean)
       .join('\n')
@@ -170,7 +177,7 @@ export function useAdminFiles(section: AdminSection) {
     setQuery,
     sort,
     toggleSort,
-    sortLabels: SORT_LABELS,
+    sortLabels,
     counts,
     visible,
     totalInSection: counts[section],

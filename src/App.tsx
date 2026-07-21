@@ -7,6 +7,7 @@
  */
 
 import { Suspense } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import GlobalLoader from '@/components/GlobalLoader'
 import { ROUTE_PATHS } from '@/constants/constants'
@@ -14,11 +15,12 @@ import routes from '@/routes'
 import Default from '@/userAccess/Default'
 
 export default function App() {
+  const { t } = useTranslation('common')
   // The boot moment belongs to <BootSplash> (see Entry.tsx) — this fallback only
   // covers route chunks fetched later. It waits before painting so a fast
   // navigation doesn't flash a half-built logo.
   return (
-    <Suspense fallback={<GlobalLoader appearDelayMs={220} message="Loading" />}>
+    <Suspense fallback={<GlobalLoader appearDelayMs={220} message={t('actions.loading')} />}>
       <Routes>
         {routes.map(({ path, component: Screen, allowed, isPublic }) => (
           <Route

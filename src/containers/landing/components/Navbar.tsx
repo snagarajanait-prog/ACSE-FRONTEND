@@ -9,16 +9,18 @@
 
 import { useEffect, useState } from 'react'
 import { Menu, Sparkles, X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import Button from '@/components/Button'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 import Logo from '@/components/Logo'
 import ThemeToggle from '@/components/ThemeToggle'
 import { cn } from '@/utils/cn'
 
 const links = [
-  { href: '#platform', label: 'Platform' },
-  { href: '#use-cases', label: 'Use cases' },
-  { href: '#billing', label: 'Billing' },
-  { href: '#contact', label: 'About' },
+  { href: '#platform', labelKey: 'nav.platform' },
+  { href: '#use-cases', labelKey: 'nav.useCases' },
+  { href: '#billing', labelKey: 'nav.billing' },
+  { href: '#contact', labelKey: 'nav.about' },
 ]
 
 interface NavbarProps {
@@ -26,6 +28,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({ onAskAcseAi }: NavbarProps) {
+  const { t } = useTranslation('landing')
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -57,26 +60,28 @@ export default function Navbar({ onAskAcseAi }: NavbarProps) {
                 href={l.href}
                 className="text-[15px] font-medium text-slate-600 transition-colors hover:text-brand-cyan dark:text-slate-300 dark:hover:text-brand-cyan"
               >
-                {l.label}
+                {t(l.labelKey)}
               </a>
             </li>
           ))}
         </ul>
 
         <div className="hidden items-center gap-3 md:flex">
+          <LanguageSwitcher />
           <ThemeToggle />
           <Button onClick={onAskAcseAi} className="rounded-full px-5">
             <Sparkles className="h-4 w-4" />
-            Ask ACSE AI
+            {t('common.askAcseAi')}
           </Button>
         </div>
 
         <div className="flex items-center gap-1 md:hidden">
+          <LanguageSwitcher />
           <ThemeToggle />
           <button
             className="grid h-10 w-10 place-items-center rounded-md text-slate-600 outline-none transition-colors hover:bg-slate-100 focus-visible:ring-2 focus-visible:ring-brand-cyan dark:text-slate-300 dark:hover:bg-white/10"
             onClick={() => setMobileOpen((v) => !v)}
-            aria-label="Toggle menu"
+            aria-label={t('nav.toggleMenu')}
             aria-expanded={mobileOpen}
           >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -94,7 +99,7 @@ export default function Navbar({ onAskAcseAi }: NavbarProps) {
                   onClick={() => setMobileOpen(false)}
                   className="block rounded-md px-2 py-2.5 font-medium text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/5"
                 >
-                  {l.label}
+                  {t(l.labelKey)}
                 </a>
               </li>
             ))}
@@ -107,7 +112,7 @@ export default function Navbar({ onAskAcseAi }: NavbarProps) {
             className="mt-3 w-full rounded-full"
           >
             <Sparkles className="h-4 w-4" />
-            Ask ACSE AI
+            {t('common.askAcseAi')}
           </Button>
         </div>
       )}

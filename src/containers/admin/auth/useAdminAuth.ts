@@ -15,6 +15,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
+import i18n from '@/i18n'
 import { STORAGE_KEYS } from '@/constants/constants'
 import { auth } from '@/middleware/auth'
 import { apiSlice } from '@/redux/api/apiSlice'
@@ -53,12 +54,14 @@ export function useAdminAuth() {
         // the gate swaps this form out, so nothing is written after the unmount.
         storage.set(STORAGE_KEYS.session, user)
         dispatch(setUser(user))
-        toast.success('Signed in', { description: `Welcome back, ${user.name}.` })
+        toast.success(i18n.t('admin:auth.signedInTitle'), {
+          description: i18n.t('admin:auth.signedInDesc', { name: user.name }),
+        })
       } catch (err) {
         if (!mounted.current) return
-        const message = (err as ApiError)?.message || 'Could not sign in. Please try again.'
+        const message = (err as ApiError)?.message || i18n.t('admin:auth.signInFailedDesc')
         setError(message)
-        toast.error('Sign in failed', { description: message })
+        toast.error(i18n.t('admin:auth.signInFailedTitle'), { description: message })
       }
     },
     [dispatch, login],
@@ -74,7 +77,7 @@ export function useAdminAuth() {
     dispatch(clearUser())
     // Drop every cached query so the next user never sees the last one's data.
     dispatch(apiSlice.util.resetApiState())
-    toast.success('Signed out')
+    toast.success(i18n.t('admin:auth.signedOut'))
   }, [dispatch, logout])
 
   return { authed, signingIn, error, clearError, signIn, signOut }

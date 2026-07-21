@@ -20,6 +20,7 @@ import {
   TrendingDown,
   TrendingUp,
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { formatCurrency } from '@/containers/copilot/utils/formatCurrency'
 import { findAccount, findCustomer, type Account } from '@/data/customers'
 import { RANGE_LABEL, USAGE_RANGES, rangeSeries, usageStats, type UsageRange } from '@/data/usage'
@@ -33,6 +34,7 @@ const HEADING_CLASS = 'text-brand-navy dark:text-slate-100'
 const LABEL_CLASS = 'text-slate-500 dark:text-slate-400'
 
 export default function AccountPanel() {
+  const { t } = useTranslation('copilot')
   const dispatch = useAppDispatch()
   const { selectedCustomerId, selectedAccountId } = useAppSelector((s) => s.demoSlice)
   const customer = findCustomer(selectedCustomerId)
@@ -72,7 +74,7 @@ export default function AccountPanel() {
           <div className="min-w-0">
             <p className={cn('truncate font-semibold', HEADING_CLASS)}>{customer.name}</p>
             <p className={cn('text-xs', LABEL_CLASS)}>
-              {customer.id} · Customer since {customer.since}
+              {t('account.customerSince', { id: customer.id, since: customer.since })}
             </p>
           </div>
           <StatusBadge status={account.status} />
@@ -102,17 +104,17 @@ export default function AccountPanel() {
       <div className="scrollbar-slim flex-1 space-y-4 overflow-y-auto p-4">
         {/* Contact + service */}
         <div className={cn('space-y-3', CARD_CLASS)}>
-          <Row icon={Mail} label="Email" value={customer.email} />
-          <Row icon={Phone} label="Phone" value={customer.phone} />
-          <Row icon={MapPin} label="Service address" value={account.serviceAddress} />
-          <Row icon={Gauge} label="Meter" value={`${account.meterId} · ${account.type}`} />
+          <Row icon={Mail} label={t('account.email')} value={customer.email} />
+          <Row icon={Phone} label={t('account.phone')} value={customer.phone} />
+          <Row icon={MapPin} label={t('account.serviceAddress')} value={account.serviceAddress} />
+          <Row icon={Gauge} label={t('account.meter')} value={`${account.meterId} · ${account.type}`} />
         </div>
 
         {/* Balance */}
         <div className={CARD_CLASS}>
           <div className={cn('flex items-center gap-2 text-sm font-medium', HEADING_CLASS)}>
             <CreditCard className="h-4 w-4 text-brand-cyan" />
-            Balance
+            {t('account.balance')}
           </div>
           <div className="mt-2 flex items-end justify-between">
             <div>
@@ -126,7 +128,9 @@ export default function AccountPanel() {
               </p>
               <p className={cn('flex items-center gap-1 text-xs', LABEL_CLASS)}>
                 <CalendarClock className="h-3 w-3" />
-                {account.balance > 0 ? `Due ${account.dueDate}` : 'Nothing due'}
+                {account.balance > 0
+                  ? t('account.due', { date: account.dueDate })
+                  : t('account.nothingDue')}
               </p>
             </div>
             <span
@@ -137,7 +141,7 @@ export default function AccountPanel() {
                   : cn(LABEL_CLASS, 'ring-slate-200 dark:ring-white/15'),
               )}
             >
-              {account.autopay ? 'Autopay on' : 'Autopay off'}
+              {account.autopay ? t('account.autopayOn') : t('account.autopayOff')}
             </span>
           </div>
         </div>
@@ -146,7 +150,7 @@ export default function AccountPanel() {
         <div className={CARD_CLASS}>
           <div className="flex items-center justify-between">
             <p className={cn('text-sm font-medium', HEADING_CLASS)}>
-              Usage <span className={LABEL_CLASS}>({account.unit})</span>
+              {t('account.usage')} <span className={LABEL_CLASS}>({account.unit})</span>
             </p>
             <div className="inline-flex rounded-lg bg-slate-100 p-0.5 dark:bg-white/[0.06]">
               {USAGE_RANGES.map((r) => (
@@ -154,7 +158,7 @@ export default function AccountPanel() {
                   key={r}
                   onClick={() => setRange(r)}
                   aria-pressed={range === r}
-                  title={RANGE_LABEL[r]}
+                  title={t(`usage.range.${r}`, RANGE_LABEL[r])}
                   className={cn(
                     'min-h-[28px] min-w-[34px] rounded-md px-2 text-[11px] font-semibold outline-none transition-colors focus-visible:ring-2 focus-visible:ring-brand-cyan',
                     range === r
@@ -197,11 +201,11 @@ export default function AccountPanel() {
 
           {/* Stats */}
           <div className="mt-3 grid grid-cols-2 gap-px overflow-hidden rounded-lg bg-slate-100 dark:bg-white/[0.06]">
-            <Stat label="This year" value={stats.thisYear.toLocaleString()} unit={account.unit} />
-            <Stat label="Last year" value={stats.lastYear.toLocaleString()} unit={account.unit} />
-            <Stat label="Avg / month" value={stats.avgMonthly.toLocaleString()} unit={account.unit} />
+            <Stat label={t('account.thisYear')} value={stats.thisYear.toLocaleString()} unit={account.unit} />
+            <Stat label={t('account.lastYear')} value={stats.lastYear.toLocaleString()} unit={account.unit} />
+            <Stat label={t('account.avgMonthly')} value={stats.avgMonthly.toLocaleString()} unit={account.unit} />
             <Stat
-              label="Peak month"
+              label={t('account.peakMonth')}
               value={stats.peak ? stats.peak.value.toLocaleString() : '—'}
               unit={stats.peak ? `${account.unit} · ${stats.peak.label}` : ''}
             />
@@ -213,7 +217,7 @@ export default function AccountPanel() {
         <div className={CARD_CLASS}>
           <div className={cn('flex items-center gap-2 text-sm font-medium', HEADING_CLASS)}>
             <Bell className="h-4 w-4 text-brand-cyan" />
-            Notifications
+            {t('account.notifications')}
           </div>
           <ul className="mt-3 space-y-2">
             {account.notifications.map((n) => (
@@ -256,9 +260,10 @@ function Stat({ label, value, unit }: { label: string; value: string; unit: stri
 }
 
 function YoY({ pct }: { pct: number | null }) {
+  const { t } = useTranslation('copilot')
   if (pct === null) {
     return (
-      <p className={cn('mt-2 text-center text-[11px]', LABEL_CLASS)}>No prior-year baseline yet</p>
+      <p className={cn('mt-2 text-center text-[11px]', LABEL_CLASS)}>{t('account.noBaseline')}</p>
     )
   }
   const up = pct >= 0
@@ -271,7 +276,7 @@ function YoY({ pct }: { pct: number | null }) {
         {up ? '+' : ''}
         {pct.toFixed(0)}%
       </span>
-      <span>year over year</span>
+      <span>{t('account.yoy')}</span>
     </div>
   )
 }

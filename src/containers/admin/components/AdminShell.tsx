@@ -10,6 +10,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import AdminSidebar from '@/containers/admin/components/AdminSidebar'
 import type { AdminNav } from '@/containers/admin/components/AdminSidebar'
 import AdminTopbar from '@/containers/admin/components/AdminTopbar'
@@ -73,6 +74,7 @@ function NavDrawer({
   onClose: () => void
   children: ReactNode
 }) {
+  const { t } = useTranslation('admin')
   useEffect(() => {
     if (!open) return
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
@@ -91,7 +93,7 @@ function NavDrawer({
         )}
       />
       <aside
-        aria-label="Admin navigation"
+        aria-label={t('shell.adminNav')}
         aria-hidden={!open}
         className={cn(
           'fixed inset-y-0 left-0 z-40 flex w-64 max-w-[82vw] flex-col border-r border-slate-200 bg-white shadow-2xl transition-transform duration-300 lg:hidden dark:border-white/10 dark:bg-brand-navy',
@@ -102,7 +104,7 @@ function NavDrawer({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close navigation"
+            aria-label={t('shell.closeNav')}
             className="grid h-8 w-8 place-items-center rounded-md text-slate-400 outline-none hover:bg-slate-100 hover:text-slate-700 focus-visible:ring-2 focus-visible:ring-brand-cyan dark:hover:bg-white/10 dark:hover:text-white"
           >
             <X className="h-4 w-4" />

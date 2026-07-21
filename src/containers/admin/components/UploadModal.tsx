@@ -10,6 +10,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { FileText, Image as ImageIcon, Paperclip, UploadCloud, X } from 'lucide-react'
+import { Trans, useTranslation } from 'react-i18next'
 import { CATEGORY_OPTIONS } from '@/containers/admin/data'
 import type { AdminSection } from '@/containers/admin/types'
 import { formatBytes } from '@/containers/admin/utils/format'
@@ -24,11 +25,6 @@ const ACCEPT: Record<AdminSection, string> = {
   image: 'image/png,image/jpeg,image/webp,image/gif,image/svg+xml',
 }
 
-const HINT: Record<AdminSection, string> = {
-  document: 'PDF, DOC, XLS, PPT, CSV, HTML — up to 25 files',
-  image: 'PNG, JPG, WEBP, GIF, SVG — up to 25 files',
-}
-
 interface UploadModalProps {
   open: boolean
   section: AdminSection
@@ -37,6 +33,7 @@ interface UploadModalProps {
 }
 
 export default function UploadModal({ open, section, onClose, onSubmit }: UploadModalProps) {
+  const { t } = useTranslation('admin')
   const inputRef = useRef<HTMLInputElement>(null)
   const [picked, setPicked] = useState<File[]>([])
   const [uploadedBy, setUploadedBy] = useState('')
@@ -45,7 +42,6 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
   const [dragging, setDragging] = useState(false)
   const [error, setError] = useState('')
 
-  const noun = section === 'image' ? 'Image' : 'Document'
   const categories = CATEGORY_OPTIONS[section]
 
   // Fresh form on every open.
@@ -82,7 +78,7 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
 
   function submit() {
     if (picked.length === 0) {
-      setError('Add at least one file to upload.')
+      setError(t('upload.errorNoFiles'))
       return
     }
     onSubmit({ files: picked, uploadedBy, category, notes })
@@ -92,8 +88,8 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
     <Modal
       open={open}
       onClose={onClose}
-      title={`Upload ${noun}`}
-      description={`Add ${noun.toLowerCase()}s to the internal library.`}
+      title={t(`upload.title.${section}`)}
+      description={t(`upload.description.${section}`)}
       className="max-w-lg"
       footer={
         <>
@@ -102,7 +98,7 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
             onClick={onClose}
             className="inline-flex h-10 items-center rounded-lg border border-slate-200 px-4 text-sm font-medium text-slate-600 outline-none transition-colors hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-brand-cyan dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/5"
           >
-            Cancel
+            {t('upload.cancel')}
           </button>
           <button
             type="button"
@@ -111,7 +107,9 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
             className="inline-flex h-10 items-center gap-2 rounded-lg bg-gradient-to-r from-brand-cyan to-[#1b7fa8] px-4 text-sm font-semibold text-white shadow-sm outline-none transition hover:brightness-110 focus-visible:ring-2 focus-visible:ring-brand-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
           >
             <UploadCloud className="h-4 w-4" aria-hidden />
-            Upload {picked.length > 0 ? `(${picked.length})` : 'File'}
+            {picked.length > 0
+              ? t('upload.submitWithCount', { count: picked.length })
+              : t('upload.submit')}
           </button>
         </>
       }
@@ -119,7 +117,9 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
       <div className="space-y-5">
         {/* Dropzone */}
         <div>
-          <p className="mb-1.5 text-sm font-medium text-brand-navy dark:text-slate-200">Upload File</p>
+          <p className="mb-1.5 text-sm font-medium text-brand-navy dark:text-slate-200">
+            {t('upload.fileFieldLabel')}
+          </p>
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
@@ -144,10 +144,15 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
               <UploadCloud className="h-5 w-5" aria-hidden />
             </span>
             <span className="text-sm font-medium text-brand-navy dark:text-slate-200">
-              {dragging ? 'Drop to add files' : 'Drop your file here'}
+              {dragging ? t('upload.dropActive') : t('upload.dropIdle')}
             </span>
             <span className="text-xs text-slate-400">
-              or <span className="font-medium text-brand-cyan">browse</span> · {HINT[section]}
+              <Trans
+                t={t}
+                i18nKey="upload.browsePrompt"
+                components={{ 1: <span className="font-medium text-brand-cyan" /> }}
+              />{' '}
+              · {t(`upload.hint.${section}`, { max: MAX_FILES })}
             </span>
           </button>
           <input
@@ -184,7 +189,7 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
                   <button
                     type="button"
                     onClick={() => removeAt(i)}
-                    aria-label={`Remove ${file.name}`}
+                    aria-label={t('upload.removeFile', { name: file.name })}
                     className="grid h-7 w-7 shrink-0 place-items-center rounded-md text-slate-400 outline-none transition-colors hover:bg-white hover:text-brand-red focus-visible:ring-2 focus-visible:ring-brand-cyan dark:hover:bg-white/10"
                   >
                     <X className="h-3.5 w-3.5" />
@@ -196,25 +201,25 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
         )}
 
         {/* Uploaded by */}
-        <Field label="Uploaded By">
+        <Field label={t('upload.uploadedByLabel')}>
           <input
             type="text"
             value={uploadedBy}
             onChange={(e) => setUploadedBy(e.target.value)}
-            placeholder="e.g. John Doe"
+            placeholder={t('upload.uploadedByPlaceholder')}
             className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-brand-navy outline-none transition-colors placeholder:text-slate-400 focus:border-brand-cyan focus:ring-2 focus:ring-brand-cyan/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
         </Field>
 
         {/* Category */}
-        <Field label="Category">
+        <Field label={t('upload.categoryLabel')}>
           <div className="relative">
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className="h-10 w-full appearance-none rounded-lg border border-slate-200 bg-white px-3 pr-9 text-sm text-brand-navy outline-none transition-colors focus:border-brand-cyan focus:ring-2 focus:ring-brand-cyan/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-100"
             >
-              <option value="">Uncategorized</option>
+              <option value="">{t('upload.uncategorized')}</option>
               {categories.map((c) => (
                 <option key={c} value={c}>
                   {c}
@@ -226,12 +231,12 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
         </Field>
 
         {/* Notes */}
-        <Field label="Notes" optional>
+        <Field label={t('upload.notesLabel')} optional>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
-            placeholder="Add any relevant notes here…"
+            placeholder={t('upload.notesPlaceholder')}
             className="w-full resize-none rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm text-brand-navy outline-none transition-colors placeholder:text-slate-400 focus:border-brand-cyan focus:ring-2 focus:ring-brand-cyan/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
         </Field>
@@ -249,11 +254,14 @@ function Field({
   optional?: boolean
   children: ReactNode
 }) {
+  const { t } = useTranslation('admin')
   return (
     <label className="block">
       <span className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-brand-navy dark:text-slate-200">
         {label}
-        {optional && <span className="text-xs font-normal text-slate-400">(optional)</span>}
+        {optional && (
+          <span className="text-xs font-normal text-slate-400">{t('upload.optional')}</span>
+        )}
       </span>
       {children}
     </label>

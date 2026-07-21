@@ -11,6 +11,7 @@
  */
 
 import logoUrl from '@/assets/acse-solutions-logo.png'
+import i18n from '@/i18n'
 import { VENDOR_NAME } from '@/constants/constants'
 
 /** Brand palette, mirrored from `--color-brand-*` in `index.css` as RGB triples. */
@@ -391,7 +392,12 @@ export function fieldRows(
       y = onBreak(doc)
       index = 0
       if (continued) {
-        y = sectionHeading(doc, `${continued.label} (continued)`, y + 2, continued.accent)
+        y = sectionHeading(
+          doc,
+          i18n.t('copilot:pdf.continued', { label: continued.label }),
+          y + 2,
+          continued.accent,
+        )
       }
     }
 
@@ -447,15 +453,15 @@ export function paginate(doc: Doc, disclaimer: string): void {
     doc.setFont('helvetica', 'bold')
     doc.setFontSize(8)
     doc.setTextColor(...NAVY)
-    doc.text(`Powered by ${VENDOR_NAME}`, MARGIN, top + 8)
+    doc.text(i18n.t('copilot:pdf.poweredBy', { vendor: VENDOR_NAME }), MARGIN, top + 8)
 
     doc.setFont('helvetica', 'normal')
     doc.setTextColor(...SLATE)
-    doc.text(`Page ${page} of ${total}`, RIGHT_EDGE, top + 8, { align: 'right' })
+    doc.text(i18n.t('copilot:pdf.page', { page, total }), RIGHT_EDGE, top + 8, { align: 'right' })
 
     doc.setFontSize(7)
     doc.text(disclaimer, MARGIN, top + 13, { maxWidth: CONTENT_W })
     doc.setTextColor(...SLATE_LIGHT)
-    doc.text('Illustrative conversation · non-production data', MARGIN, top + 20)
+    doc.text(i18n.t('copilot:pdf.illustrative'), MARGIN, top + 20)
   }
 }

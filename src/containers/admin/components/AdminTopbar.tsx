@@ -9,7 +9,9 @@
  */
 
 import { LogOut } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 import Logo from '@/components/Logo'
 import ThemeToggle from '@/components/ThemeToggle'
 import { ROUTE_PATHS } from '@/constants/constants'
@@ -24,12 +26,13 @@ interface AdminTopbarProps {
 }
 
 export default function AdminTopbar({ title, onOpenNav }: AdminTopbarProps) {
+  const { t } = useTranslation('admin')
   return (
     <header className="relative z-30 flex h-16 shrink-0 items-center gap-3 border-b border-slate-200/80 bg-white/80 px-4 backdrop-blur-xl transition-colors md:px-6 dark:border-white/[0.06] dark:bg-brand-navydeep/70">
       <button
         type="button"
         onClick={onOpenNav}
-        aria-label="Open navigation"
+        aria-label={t('shell.openNav')}
         className="grid h-9 w-9 shrink-0 place-items-center rounded-md text-slate-500 outline-none transition-colors hover:bg-slate-100 hover:text-brand-navy focus-visible:ring-2 focus-visible:ring-brand-cyan lg:hidden dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white"
       >
         <MenuGlyph />
@@ -47,6 +50,7 @@ export default function AdminTopbar({ title, onOpenNav }: AdminTopbarProps) {
       )}
 
       <div className="ml-auto flex shrink-0 items-center gap-2 sm:gap-3">
+        <LanguageSwitcher />
         <ThemeToggle className="h-9 w-9" />
         <SignOutButton />
         <span aria-hidden className="hidden h-6 w-px bg-slate-200 sm:block dark:bg-white/10" />
@@ -58,13 +62,14 @@ export default function AdminTopbar({ title, onOpenNav }: AdminTopbarProps) {
 
 /** Ends the admin session and drops back to the sign-in screen. */
 function SignOutButton() {
+  const { t } = useTranslation('admin')
   const { signOut } = useAdminAuth()
   return (
     <button
       type="button"
       onClick={signOut}
-      aria-label="Sign out"
-      title="Sign out"
+      aria-label={t('shell.signOut')}
+      title={t('shell.signOut')}
       className="grid h-9 w-9 shrink-0 place-items-center rounded-md text-slate-500 outline-none transition-colors hover:bg-slate-100 hover:text-brand-navy focus-visible:ring-2 focus-visible:ring-brand-cyan dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white"
     >
       <LogOut className="h-4 w-4" />
@@ -73,6 +78,7 @@ function SignOutButton() {
 }
 
 function ClientBrand() {
+  const { t } = useTranslation('admin')
   const companyName = useAppSelector((s) => s.settingsSlice.companyName)
   const logo = useAppSelector((s) => s.settingsSlice.logoDataUrl)
 
@@ -98,7 +104,7 @@ function ClientBrand() {
             <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75 motion-safe:animate-ping" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
           </span>
-          Online
+          {t('shell.online')}
         </p>
       </div>
     </div>
@@ -107,14 +113,15 @@ function ClientBrand() {
 
 /** "Powered by ACSE · AI" attribution, doubling as the way back home. */
 function PoweredBy() {
+  const { t } = useTranslation('admin')
   return (
     <Link
       to={ROUTE_PATHS.landing}
-      title="Back to acsesolutions.com"
+      title={t('shell.backTo')}
       className="-my-2 flex shrink-0 items-center gap-1.5 rounded-md py-2 outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan"
     >
       <span className="hidden text-[10px] font-medium uppercase tracking-wide text-slate-400 sm:inline">
-        Powered by
+        {t('shell.poweredBy')}
       </span>
       <Logo className="h-7" />
       <span className="text-xs font-bold tracking-tight text-brand-red">AI</span>

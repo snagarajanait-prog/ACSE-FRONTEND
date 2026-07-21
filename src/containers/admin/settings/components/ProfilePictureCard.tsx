@@ -6,6 +6,7 @@
 
 import { useRef, useState } from 'react'
 import { Image as ImageIcon, Trash2, UploadCloud } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import SettingCard from '@/containers/admin/settings/components/SettingCard'
 import { initials } from '@/containers/admin/utils/format'
 import { cn } from '@/utils/cn'
@@ -25,14 +26,15 @@ export default function ProfilePictureCard({
   onPick,
   onRemove,
 }: ProfilePictureCardProps) {
+  const { t } = useTranslation('admin')
   const inputRef = useRef<HTMLInputElement>(null)
   const [dragging, setDragging] = useState(false)
 
   return (
     <SettingCard
       icon={ImageIcon}
-      title="Profile Picture"
-      description="Upload a logo or avatar for your organization"
+      title={t('settings.profilePicture.title')}
+      description={t('settings.profilePicture.description')}
     >
       <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start">
         {/* Avatar + change button */}
@@ -55,14 +57,14 @@ export default function ProfilePictureCard({
               className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 outline-none transition-colors hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-brand-cyan dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/5"
             >
               <UploadCloud className="h-3.5 w-3.5" aria-hidden />
-              Change Picture
+              {t('settings.profilePicture.change')}
             </button>
             {logoDataUrl && (
               <button
                 type="button"
                 onClick={onRemove}
-                aria-label="Remove picture"
-                title="Remove picture"
+                aria-label={t('settings.profilePicture.remove')}
+                title={t('settings.profilePicture.remove')}
                 className="grid h-8 w-8 place-items-center rounded-lg text-slate-400 outline-none transition-colors hover:bg-brand-red/10 hover:text-brand-red focus-visible:ring-2 focus-visible:ring-brand-red"
               >
                 <Trash2 className="h-3.5 w-3.5" />
@@ -97,9 +99,9 @@ export default function ProfilePictureCard({
             <UploadCloud className="h-4.5 w-4.5" aria-hidden />
           </span>
           <span className="text-sm font-medium text-brand-navy dark:text-slate-200">
-            {dragging ? 'Drop to upload' : 'Click or drag to upload'}
+            {dragging ? t('settings.profilePicture.dropActive') : t('settings.profilePicture.dropIdle')}
           </span>
-          <span className="text-xs text-slate-400">PNG or JPG · up to 1 MB</span>
+          <span className="text-xs text-slate-400">{t('settings.profilePicture.hint')}</span>
         </button>
       </div>
 

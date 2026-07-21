@@ -8,6 +8,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Send, Sparkles } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { EnginePill } from '@/containers/copilot/hooks/useChatEngine'
 import { cn } from '@/utils/cn'
 
@@ -22,18 +23,12 @@ interface ComposerProps {
   /** Neutral name of the active mode, shown in the disclaimer line. */
   sourceLabel: string
   /**
-   * Idle placeholder for roomy layouts. Narrow ones fall back to
-   * SHORT_PLACEHOLDER automatically — see `useNarrow`.
+   * Idle placeholder for roomy layouts. Narrow ones fall back to a short
+   * placeholder automatically — see `useNarrow`. Defaults to the copilot
+   * composer placeholder when omitted.
    */
   placeholder?: string
 }
-
-/**
- * The full hint does not fit a phone: the textarea is a single 40px row, so a
- * placeholder that wraps to two lines is simply cut in half. Swap in a short one
- * below `sm` rather than letting it clip.
- */
-const SHORT_PLACEHOLDER = 'Ask ACSE AI…'
 
 function useNarrow(): boolean {
   const [narrow, setNarrow] = useState(
@@ -58,10 +53,12 @@ export default function Composer({
   pills,
   onStartScenario,
   sourceLabel,
-  placeholder = 'Ask ACSE AI to start service, explain a bill, report a leak…',
+  placeholder,
 }: ComposerProps) {
+  const { t } = useTranslation('copilot')
   const taRef = useRef<HTMLTextAreaElement>(null)
   const narrow = useNarrow()
+  const roomyPlaceholder = placeholder ?? t('composer.placeholder')
 
   // Auto-grow the textarea with the draft.
   useEffect(() => {
@@ -79,7 +76,13 @@ export default function Composer({
         // composer's rounded edge.
         <div className="mb-5 mt-4 flex flex-wrap justify-center gap-2">
           {pills.map((u) => (
-            <Chip key={u.id} pill={u} disabled={playing} onClick={() => onStartScenario(u.id)} />
+            <Chip
+              key={u.id}
+              pill={u}
+              label={t(`useCases.${u.id}`, u.label)}
+              disabled={playing}
+              onClick={() => onStartScenario(u.id)}
+            />
           ))}
         </div>
       ) : (
@@ -89,6 +92,7 @@ export default function Composer({
               <Chip
                 key={u.id}
                 pill={u}
+                label={t(`useCases.${u.id}`, u.label)}
                 disabled={playing}
                 onClick={() => onStartScenario(u.id)}
                 className="shrink-0"
@@ -113,21 +117,25 @@ export default function Composer({
           }}
           disabled={playing}
           placeholder={
-            playing ? 'Assistant is responding…' : narrow ? SHORT_PLACEHOLDER : placeholder
+            playing
+              ? t('composer.responding')
+              : narrow
+                ? t('composer.shortPlaceholder')
+                : roomyPlaceholder
           }
           className="max-h-[200px] min-h-[40px] flex-1 resize-none bg-transparent py-2 text-[15px] leading-6 text-brand-navy outline-none placeholder:text-slate-400 dark:text-slate-100 dark:placeholder:text-slate-500"
         />
         <button
           onClick={onSend}
           disabled={playing || !draft.trim()}
-          aria-label="Send"
+          aria-label={t('composer.send')}
           className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-cyan text-white shadow-[0_6px_16px_-6px_rgba(44,165,217,0.7)] outline-none transition hover:brightness-105 focus-visible:ring-2 focus-visible:ring-brand-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:opacity-30 disabled:shadow-none dark:text-brand-navydeep dark:shadow-[0_0_20px_-4px_rgba(44,165,217,0.7)] dark:hover:scale-105 dark:focus-visible:ring-offset-brand-navydeep"
         >
           <Send className="h-4 w-4" />
         </button>
       </div>
       <p className="mt-2 text-center text-[11px] text-slate-500 dark:text-slate-400">
-        Illustrative conversation · non-production data · reads/writes {sourceLabel}
+        {t('composer.disclaimer', { source: sourceLabel })}
       </p>
     </div>
   )
@@ -135,11 +143,13 @@ export default function Composer({
 
 function Chip({
   pill,
+  label,
   onClick,
   disabled,
   className,
 }: {
   pill: EnginePill
+  label: string
   onClick: () => void
   disabled: boolean
   className?: string
@@ -154,7 +164,7 @@ function Chip({
       )}
     >
       <pill.Icon className="h-3.5 w-3.5 text-brand-cyan" />
-      {pill.label}
+      {label}
     </button>
   )
 }

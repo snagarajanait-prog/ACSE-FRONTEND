@@ -1,0 +1,11 @@
+{
+  "header": {
+    "title": "டாஷ்போர்டு",
+    "signedInAs": "{{name}} என உள்நுழைந்துள்ளீர்கள்"
+  },
+  "loading": "ஏற்றுகிறது…",
+  "metrics": {
+    "thousandsAbbrev": "{{value}} ஆயிரம்",
+    "millionsAbbrev": "{{value}} மில்லியன்"
+  }
+}

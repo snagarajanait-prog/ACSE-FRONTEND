@@ -11,16 +11,21 @@
  * logic belongs in the hook.
  */
 
+import { useTranslation } from 'react-i18next'
 import { DashboardHeader } from '@/containers/dashboard/components'
 import { useDashboard } from '@/containers/dashboard/hooks/useDashboard'
 
 export default function Dashboard() {
+  const { t } = useTranslation('dashboard')
   const { user, isLoading } = useDashboard()
 
   return (
     <div className="p-6">
-      <DashboardHeader title="Dashboard" subtitle={user ? `Signed in as ${user.name}` : undefined} />
-      {isLoading && <p className="mt-4 text-sm text-gray-500">Loading…</p>}
+      <DashboardHeader
+        title={t('header.title')}
+        subtitle={user ? t('header.signedInAs', { name: user.name }) : undefined}
+      />
+      {isLoading && <p className="mt-4 text-sm text-gray-500">{t('loading')}</p>}
     </div>
   )
 }

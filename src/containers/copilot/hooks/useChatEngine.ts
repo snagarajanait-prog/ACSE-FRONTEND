@@ -10,6 +10,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { RefObject } from 'react'
+import i18n from '@/i18n'
 import { getIcon } from '@/containers/copilot/utils/iconMap'
 import { findAccount, findCustomer, type Account, type Customer } from '@/data/customers'
 import { getScenario, type ChatStep } from '@/data/scenarios'
@@ -105,16 +106,26 @@ function matchScenario(text: string): string | null {
 
 function greeting(name: string) {
   const h = new Date().getHours()
-  const part = h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'
-  return `${part}, ${name.split(' ')[0]}. How can I help you today?`
+  const part =
+    h < 12
+      ? i18n.t('copilot:greeting.morning')
+      : h < 18
+        ? i18n.t('copilot:greeting.afternoon')
+        : i18n.t('copilot:greeting.evening')
+  return i18n.t('copilot:greeting.line', { part, name: name.split(' ')[0] })
 }
 
 // Default "working" phrases shown (shimmering, one at a time) before a response.
-// Tokens like {account}/{source} are resolved at play time.
-const THINK_INTENT = ['Analysing your request', 'Understanding intent', 'Checking account {account}']
-const THINK_STATUS = ['Requesting data from {source}', 'Processing records']
-const THINK_SUMMARY = ['Compiling the details', 'Summarising']
-const THINK_FALLBACK = ['Analysing your request', 'Matching to a workflow']
+// Resolved fresh (in the active language) at play time, and the {account}/{source}
+// tokens they still carry are token-resolved by `resolve` afterwards.
+const thinkIntent = () => [
+  i18n.t('copilot:think.analysing'),
+  i18n.t('copilot:think.intent'),
+  i18n.t('copilot:think.checkingAccount'),
+]
+const thinkStatus = () => [i18n.t('copilot:think.requesting'), i18n.t('copilot:think.processing')]
+const thinkSummary = () => [i18n.t('copilot:think.compiling'), i18n.t('copilot:think.summarising')]
+const thinkFallback = () => [i18n.t('copilot:think.analysing'), i18n.t('copilot:think.matching')]
 
 /**
  * Which "thinking" phrases to shimmer before a step appears. Authored `think`
@@ -126,11 +137,11 @@ function thinkPhrasesFor(step: ChatStep, prevWasUser: boolean): string[] | null 
   if (authored && authored.length) return authored
   switch (step.kind) {
     case 'status':
-      return THINK_STATUS
+      return thinkStatus()
     case 'summary':
-      return THINK_SUMMARY
+      return thinkSummary()
     case 'ai':
-      return prevWasUser ? THINK_INTENT : null
+      return prevWasUser ? thinkIntent() : null
     default:
       return null
   }
@@ -411,13 +422,13 @@ export function useChatEngine(): ChatEngine {
     push({ kind: 'user', text })
     setPlaying(true)
     void (async () => {
-      setThinking(THINK_FALLBACK.map(resolve))
+      setThinking(thinkFallback().map(resolve))
       await sleep(1500)
       if (runRef.current !== myRun) return
       setThinking(null)
       push({
         kind: 'ai',
-        text: 'I can help with that. Here are the things I can do right now — pick one to see it in action:',
+        text: i18n.t('copilot:chat.freeReply'),
       })
       setPlaying(false)
     })()

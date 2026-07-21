@@ -1,0 +1,191 @@
+{
+  "poweredBy": "مدعوم من",
+  "header": {
+    "assistantMode": "وضع المساعد: {{system}}",
+    "mode": "الوضع · {{short}}",
+    "openAccountDetails": "فتح تفاصيل الحساب",
+    "newChat": "محادثة جديدة",
+    "backHome": "العودة إلى acsesolutions.com"
+  },
+  "hero": {
+    "greetingFallback": "كيف يمكنني مساعدتك اليوم؟",
+    "subtitle": "اسأل عن فاتورة، أو ابدأ خدمة أو أوقفها، أو أبلغ عن تسرّب — وسأرافقك خطوة بخطوة."
+  },
+  "greeting": {
+    "morning": "صباح الخير",
+    "afternoon": "مساء الخير",
+    "evening": "مساء الخير",
+    "line": "{{part}}، {{name}}. كيف يمكنني مساعدتك اليوم؟"
+  },
+  "composer": {
+    "placeholder": "اطلب من ACSE AI بدء خدمة، أو شرح فاتورة، أو الإبلاغ عن تسرّب…",
+    "shortPlaceholder": "اسأل ACSE AI…",
+    "drawerPlaceholder": "اسأل ACSE AI عن أي شيء…",
+    "responding": "المساعد يستجيب…",
+    "send": "إرسال",
+    "disclaimer": "محادثة توضيحية · بيانات غير إنتاجية · يقرأ/يكتب في {{source}}"
+  },
+  "chat": {
+    "you": "أنت",
+    "youSaid": "قلت: ",
+    "assistantSaid": "قال المساعد: ",
+    "working": "المساعد يعمل",
+    "freeReply": "يمكنني المساعدة في ذلك. إليك ما يمكنني فعله الآن — اختر واحدًا لرؤيته أثناء العمل:"
+  },
+  "think": {
+    "analysing": "جارٍ تحليل طلبك",
+    "intent": "فهم الغرض",
+    "checkingAccount": "التحقق من الحساب {account}",
+    "requesting": "طلب البيانات من {source}",
+    "processing": "معالجة السجلات",
+    "compiling": "تجميع التفاصيل",
+    "summarising": "جارٍ التلخيص",
+    "matching": "المطابقة مع سير عمل"
+  },
+  "otp": {
+    "sms": "رسالة نصية",
+    "email": "بريد إلكتروني",
+    "identityVerified": "تم التحقق من الهوية · {{channel}}",
+    "verifyIdentity": "تحقّق من هويتك · {{channel}}",
+    "codeLabel": "رمز التحقق {{digits}}",
+    "digit": "الرقم {{index}} من {{total}}"
+  },
+  "actions": {
+    "copyLabel": "نسخ النص",
+    "copy": "نسخ",
+    "copied": "تم النسخ",
+    "copyFailed": "فشل النسخ",
+    "shareLabel": "مشاركة النص",
+    "share": "مشاركة",
+    "sharedCopied": "تم النسخ — الصقه للمشاركة",
+    "shareFailed": "تعذّرت المشاركة",
+    "exportLabel": "تصدير النص بصيغة PDF",
+    "exportPdf": "تصدير PDF",
+    "preparing": "جارٍ التحضير…",
+    "downloaded": "تم التنزيل",
+    "exportFailed": "فشل التصدير"
+  },
+  "drawer": {
+    "assistantLabel": "مساعد ACSE AI",
+    "accountDetails": "تفاصيل الحساب",
+    "closeAccountDetails": "إغلاق تفاصيل الحساب",
+    "expand": "توسيع المساعد",
+    "shrink": "تصغير المساعد",
+    "expandShort": "توسيع",
+    "shrinkShort": "تصغير",
+    "close": "إغلاق المساعد",
+    "closeShort": "إغلاق",
+    "heroSubtitle": "اسأل عن فاتورة، أو ابدأ خدمة أو أوقفها، أو أبلغ عن تسرّب."
+  },
+  "customerList": {
+    "title": "اختر عميلاً",
+    "subtitle": "اختر حسابًا لتحديد سياق المساعد. هذه سجلات عملاء غير إنتاجية — للعديد منها حسابات متعددة.",
+    "searchLabel": "البحث عن العملاء",
+    "searchPlaceholder": "ابحث بالاسم أو رقم العميل أو رقم الحساب.",
+    "since": "{{id}} · منذ {{since}}",
+    "accountCount_one": "{{count}} حساب",
+    "accountCount_other": "{{count}} حسابات",
+    "due": "مستحق",
+    "settled": "مسدّد",
+    "noResults": "لا يوجد عميل يطابق «{{query}}»."
+  },
+  "account": {
+    "detailsTitle": "تفاصيل الحساب",
+    "customerSince": "{{id}} · عميل منذ {{since}}",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "serviceAddress": "عنوان الخدمة",
+    "meter": "العدّاد",
+    "balance": "الرصيد",
+    "due": "الاستحقاق {{date}}",
+    "nothingDue": "لا شيء مستحق",
+    "autopayOn": "الدفع التلقائي مفعّل",
+    "autopayOff": "الدفع التلقائي معطّل",
+    "usage": "الاستهلاك",
+    "thisYear": "هذا العام",
+    "lastYear": "العام الماضي",
+    "avgMonthly": "المتوسط / شهر",
+    "peakMonth": "شهر الذروة",
+    "notifications": "الإشعارات",
+    "noBaseline": "لا يوجد أساس مرجعي للعام السابق بعد",
+    "yoy": "سنويًا"
+  },
+  "usage": {
+    "range": {
+      "6M": "6 أشهر",
+      "1Y": "سنة واحدة",
+      "2Y": "سنتان"
+    }
+  },
+  "verify": {
+    "title": "تحقّق من هويتك",
+    "stepEmail": "الخطوة 1 من 2 · البريد الإلكتروني",
+    "stepCode": "الخطوة 2 من 2 · رمز لمرة واحدة",
+    "emailLabel": "البريد الإلكتروني",
+    "emailError": "أدخل عنوان بريد إلكتروني حتى نتمكن من إرسال الرمز إليك.",
+    "emailHelp": "سنرسل رمزًا من 6 أرقام للتأكد من هويتك. يُقبل أي عنوان هنا — ولا يُرسل شيء فعليًا.",
+    "sending": "جارٍ إرسال الرمز…",
+    "sendCode": "إرسال الرمز",
+    "backToCustomers": "العودة إلى العملاء",
+    "codeSent": "أرسلنا رمزًا من 6 أرقام إلى <1>{{email}}</1>. أدخله أدناه لفتح المساعد.",
+    "anyDigits": "يُقبل أي 6 أرقام.",
+    "differentEmail": "استخدام بريد إلكتروني آخر",
+    "cancel": "إلغاء"
+  },
+  "receiptMenu": {
+    "about": "حول \"{{title}}\" — والتنزيل بصيغة PDF",
+    "trigger": "التفاصيل والتنزيل",
+    "dialogLabel": "إيصال الطلب",
+    "recordWithRef": "سجل لهذا الطلب تمامًا كما تم إرساله — المرجع <1>{{reference}}</1>.",
+    "recordPlain": "سجل لهذا الطلب تمامًا كما تم إرساله.",
+    "download": "تنزيل الإيصال (PDF)",
+    "preparing": "جارٍ التحضير…",
+    "error": "تعذّر إنشاء ملف PDF. يُرجى المحاولة مرة أخرى."
+  },
+  "slideOver": {
+    "close": "إغلاق {{title}}"
+  },
+  "pdf": {
+    "poweredBy": "مدعوم من {{vendor}}",
+    "page": "صفحة {{page}} من {{total}}",
+    "illustrative": "محادثة توضيحية · بيانات غير إنتاجية",
+    "continued": "{{label}} (تابع)"
+  },
+  "receipt": {
+    "kind": "إيصال خدمة",
+    "issued": "صدر في {{stamp}}",
+    "keep": "احتفظ بهذا لسجلاتك.",
+    "customer": "العميل",
+    "requestDetails": "تفاصيل الطلب",
+    "name": "الاسم",
+    "customerNumber": "رقم العميل",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "disclaimer": "يؤكد هذا الإيصال تسجيل طلب. وهو ليس فاتورة ولا تأكيد دفع."
+  },
+  "transcript": {
+    "title": "محادثة مع {{assistant}}",
+    "you": "أنت",
+    "kind": "نص المحادثة",
+    "context": "السياق",
+    "customer": "العميل",
+    "account": "الحساب",
+    "serviceAddress": "عنوان الخدمة",
+    "handledBy": "تمت المعالجة بواسطة",
+    "exported": "تاريخ التصدير",
+    "identityVerifiedMd": "تم التحقق من الهوية · {{channel}} — {{text}}",
+    "identityVerifiedPlain": "تم التحقق من الهوية ({{channel}}) — {{text}}",
+    "disclaimer": "هذا النص سجل لما تمت مناقشته. وهو ليس فاتورة ولا تأكيد دفع.",
+    "disclaimerFull": "محادثة توضيحية · بيانات غير إنتاجية. هذا النص سجل لما تمت مناقشته. وهو ليس فاتورة ولا تأكيد دفع."
+  },
+  "useCases": {
+    "start-service": "بدء الخدمة",
+    "stop-service": "إيقاف الخدمة",
+    "transfer-service": "نقل الخدمة",
+    "high-bill": "لماذا فاتورتي مرتفعة؟",
+    "payment-arrangement": "ترتيب الدفع",
+    "report-outage": "الإبلاغ عن انقطاع / التحقق منه",
+    "update-contact": "تحديث معلومات الاتصال",
+    "report-leak": "الإبلاغ عن تسرّب"
+  }
+}

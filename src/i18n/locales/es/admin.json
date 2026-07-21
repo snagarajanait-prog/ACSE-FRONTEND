@@ -1,0 +1,157 @@
+{
+  "login": {
+    "welcome": "¡Bienvenido de nuevo!",
+    "identifierLabel": "Correo electrónico o usuario",
+    "identifierPlaceholder": "tu@empresa.com",
+    "passwordLabel": "Contraseña",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "signingIn": "Iniciando sesión…",
+    "submit": "Iniciar sesión",
+    "rememberMe": "Recuérdame",
+    "heroTitle": "Impulsando la <1>gestión de servicios públicos</1>",
+    "heroSubtitle": "Gestione cuentas de clientes, solicitudes de servicio, facturación, cortes, operaciones de campo y análisis desde una plataforma segura y centralizada diseñada para proveedores de servicios públicos modernos."
+  },
+  "auth": {
+    "signedInTitle": "Sesión iniciada",
+    "signedInDesc": "Bienvenido de nuevo, {{name}}.",
+    "signInFailedTitle": "Error al iniciar sesión",
+    "signInFailedDesc": "No se pudo iniciar sesión. Inténtalo de nuevo.",
+    "signedOut": "Sesión cerrada"
+  },
+  "shell": {
+    "adminNav": "Navegación de administración",
+    "openNav": "Abrir navegación",
+    "closeNav": "Cerrar navegación",
+    "closeDialog": "Cerrar diálogo",
+    "navigation": "Navegación",
+    "nav": {
+      "document": "Documento",
+      "image": "Imagen",
+      "settings": "Ajustes"
+    },
+    "signOut": "Cerrar sesión",
+    "online": "En línea",
+    "poweredBy": "Con la tecnología de",
+    "backTo": "Volver a acsesolutions.com",
+    "userCard": {
+      "name": "Consola de administración",
+      "role": "Administrador del sistema"
+    },
+    "fileUploadTitle": "Carga de archivos",
+    "settingsTitle": "Perfil y ajustes"
+  },
+  "files": {
+    "heading": "Carga interna de archivos",
+    "subtitle": {
+      "document": "Gestione y organice los documentos cargados de la empresa",
+      "image": "Gestione y organice las imágenes cargadas de la empresa"
+    },
+    "searchLabel": "Buscar archivos",
+    "searchPlaceholder": "Buscar archivos…",
+    "clearSearch": "Borrar búsqueda",
+    "uploadFile": "Cargar archivo",
+    "columns": {
+      "uploadedAt": "Fecha de carga",
+      "uploadedBy": "Cargado por",
+      "fileName": "Archivos cargados",
+      "category": "Tipo cargado",
+      "notes": "Notas",
+      "download": "Descargar",
+      "action": "Acción"
+    },
+    "sortBy": "Ordenar por {{label}}",
+    "fileFallback": "archivo",
+    "downloadFile": "Descargar {{name}}",
+    "downloadTitle": "Descargar",
+    "deleteFile": "Eliminar {{name}}",
+    "deleteTitle": "Eliminar",
+    "summary": {
+      "showing": "Mostrando <1>{{shown}}</1> de {{total}}",
+      "total_one": "<1>{{count}}</1> archivo",
+      "total_other": "<1>{{count}}</1> archivos"
+    },
+    "stub": {
+      "file": "Archivo: {{name}}",
+      "category": "Categoría: {{category}}",
+      "uploadedBy": "Cargado por: {{name}}",
+      "uploadedAt": "Cargado el: {{date}}",
+      "notes": "Notas: {{notes}}",
+      "placeholder": "Este es un marcador de posición de demostración: el archivo original no se guardó en el navegador."
+    }
+  },
+  "upload": {
+    "title": {
+      "document": "Cargar documento",
+      "image": "Cargar imagen"
+    },
+    "description": {
+      "document": "Añada documentos a la biblioteca interna.",
+      "image": "Añada imágenes a la biblioteca interna."
+    },
+    "hint": {
+      "document": "PDF, DOC, XLS, PPT, CSV, HTML — hasta {{max}} archivos",
+      "image": "PNG, JPG, WEBP, GIF, SVG — hasta {{max}} archivos"
+    },
+    "fileFieldLabel": "Cargar archivo",
+    "dropIdle": "Suelte su archivo aquí",
+    "dropActive": "Suelte para añadir archivos",
+    "browsePrompt": "o <1>explorar</1>",
+    "errorNoFiles": "Añada al menos un archivo para cargar.",
+    "removeFile": "Quitar {{name}}",
+    "uploadedByLabel": "Cargado por",
+    "uploadedByPlaceholder": "p. ej. John Doe",
+    "categoryLabel": "Categoría",
+    "uncategorized": "Sin categoría",
+    "notesLabel": "Notas",
+    "optional": "(opcional)",
+    "notesPlaceholder": "Añada aquí cualquier nota relevante…",
+    "cancel": "Cancelar",
+    "submit": "Cargar archivo",
+    "submitWithCount": "Cargar ({{count}})"
+  },
+  "confirmDelete": {
+    "title": "Eliminar archivo",
+    "body": "¿Quitar <1>{{name}}</1> de la biblioteca? Esto no se puede deshacer.",
+    "cancel": "Cancelar",
+    "confirm": "Eliminar"
+  },
+  "emptyState": {
+    "searchTitle": "Ningún archivo coincide con su búsqueda",
+    "emptyTitle": "Aún no se han cargado archivos",
+    "searchDesc": "Pruebe con otro nombre, autor de carga o categoría.",
+    "emptyDesc": "Cargue su primer archivo para verlo aquí.",
+    "clearSearch": "Borrar búsqueda",
+    "uploadFile": "Cargar archivo"
+  },
+  "settings": {
+    "heading": "Ajustes de perfil",
+    "subtitle": "Gestione las preferencias y la apariencia de la organización",
+    "changesSaved": "Cambios guardados",
+    "cancel": "Cancelar",
+    "save": "Guardar cambios",
+    "logoErrorType": "Use una imagen PNG o JPG.",
+    "logoErrorSize": "La imagen debe pesar menos de 1 MB.",
+    "logoErrorRead": "No se pudo leer esa imagen.",
+    "profilePicture": {
+      "title": "Foto de perfil",
+      "description": "Cargue un logotipo o avatar para su organización",
+      "change": "Cambiar foto",
+      "remove": "Quitar foto",
+      "dropIdle": "Haga clic o arrastre para cargar",
+      "dropActive": "Suelte para cargar",
+      "hint": "PNG o JPG · hasta 1 MB"
+    },
+    "company": {
+      "title": "Información de la empresa",
+      "description": "Actualice el nombre visible de su organización",
+      "nameLabel": "Nombre de la empresa",
+      "namePlaceholder": "p. ej. XYZ Company"
+    },
+    "appMode": {
+      "title": "Modo de aplicación",
+      "description": "Cambie entre los modos de operación ATP y C2M",
+      "ariaLabel": "Modo de aplicación"
+    }
+  }
+}

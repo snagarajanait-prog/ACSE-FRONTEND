@@ -1,0 +1,220 @@
+{
+  "common": {
+    "askAcseAi": "Ask ACSE AI"
+  },
+  "nav": {
+    "platform": "Platform",
+    "useCases": "Use cases",
+    "billing": "Billing",
+    "about": "About",
+    "toggleMenu": "Toggle menu"
+  },
+  "hero": {
+    "badge": "Built for utilities · Powered by AI",
+    "titleLine1": "Automate your",
+    "titleLine2": "utility operations",
+    "titleLine3": "with AI",
+    "subtitle": "ACSE AI resolves service requests, flags billing exceptions, and creates field actions — fully automated, 24/7.",
+    "seePlatform": "See the platform",
+    "stats": {
+      "callVolume": "Call volume automated",
+      "alwaysOn": "Always on",
+      "workflows": "Workflows"
+    }
+  },
+  "platform": {
+    "eyebrow": "What we do",
+    "heading": "One AI platform for your entire utility operation",
+    "subtitle": "ACSE AI integrates with your existing systems to automate inbound customer requests, billing exceptions, and field service orders — reducing manual effort across every department.",
+    "pillars": {
+      "customerService": {
+        "title": "Customer service AI",
+        "body": "Resolves start/stop/transfer, account updates, and outage inquiries end-to-end across any channel."
+      },
+      "billing": {
+        "title": "Billing automation",
+        "body": "Monitors the billing queue continuously, flags anomalies, and initiates exception workflows in real time."
+      },
+      "field": {
+        "title": "Field operations",
+        "body": "Creates and tracks meter reads, investigations, and service orders — and keeps customers updated."
+      },
+      "integrations": {
+        "title": "Integrations",
+        "body": "Plugs into your existing C2M application and systems of record. Runs on Oracle Cloud Infrastructure."
+      }
+    },
+    "promises": {
+      "handleService": "Handles start, stop, and transfer of service without agent involvement",
+      "autopay": "Proactively contacts customers with expiring autopay before a disruption",
+      "fieldActivities": "Automatically creates field activities for meter investigations and reads",
+      "billingAnomalies": "Monitors billing anomalies and flags exceptions in real time"
+    }
+  },
+  "useCases": {
+    "eyebrow": "Customer service",
+    "heading": "Everything your customers need — handled automatically",
+    "subtitle": "From routine account updates to emergency reports, ACSE AI resolves requests end-to-end without putting customers on hold.",
+    "runScenario": "Run this scenario →",
+    "tryAll": "Try any of these with the assistant",
+    "cards": {
+      "startService": {
+        "title": "Start / Stop / Transfer service",
+        "body": "Customers initiate, end, or transfer service through any channel — fully automated."
+      },
+      "paymentArrangement": {
+        "title": "Payment extension & arrangement",
+        "body": "AI negotiates and logs payment plans based on account history and policy rules."
+      },
+      "updateContact": {
+        "title": "Account information updates",
+        "body": "Update phone numbers, add account holders, and correct mailing addresses instantly."
+      },
+      "reportOutage": {
+        "title": "Outage inquiries",
+        "body": "Real-time outage status delivered to customers without agent escalation."
+      },
+      "reportLeak": {
+        "title": "Emergency leak & main break",
+        "body": "Captures and routes emergency reports for low/no water, leaks, and main breaks."
+      },
+      "highBill": {
+        "title": "High bill investigation",
+        "body": "AI reviews consumption history and creates field activities for meter anomalies."
+      },
+      "meterRead": {
+        "title": "Meter read creation",
+        "body": "Automatically creates meter reads when accounts reach their billing window end."
+      },
+      "autopayOutreach": {
+        "title": "Autopay expiration outreach",
+        "body": "Proactively contacts customers when autopay is expiring to prevent interruption."
+      },
+      "newService": {
+        "title": "New service application",
+        "body": "Guides customers through new service applications and tracks submission status."
+      }
+    }
+  },
+  "billing": {
+    "eyebrow": "Billing automation",
+    "heading": "Catch billing exceptions before they become problems",
+    "subtitle": "ACSE AI monitors your billing queue continuously, flags anomalies, and takes action — so nothing slips through.",
+    "rows": {
+      "usageAlerts": {
+        "tag": "Exception detection",
+        "title": "High / low usage alerts",
+        "body": "Automatically flags accounts with usage outside expected thresholds and initiates investigation workflows."
+      },
+      "maxBill": {
+        "tag": "Threshold monitoring",
+        "title": "Max bill threshold",
+        "body": "Prevents billing errors by catching accounts that exceed maximum bill limits before statements go out."
+      },
+      "zeroReads": {
+        "tag": "Consumption watch",
+        "title": "3 consecutive zero reads",
+        "body": "Detects three straight zero-consumption reads and creates a service order for field verification."
+      },
+      "schedule": {
+        "tag": "Scheduling",
+        "title": "Read & bill schedule",
+        "body": "Creates and manages meter read and billing schedules, ensuring accounts are billed on time every cycle."
+      },
+      "orderStatus": {
+        "tag": "Field operations",
+        "title": "Service & work order status",
+        "body": "Tracks open orders and updates customers and dispatchers automatically as status changes."
+      }
+    },
+    "cta": {
+      "heading": "Ready to modernize your utility operations?",
+      "subtitle": "Join water utilities already using ACSE AI to reduce call volume, eliminate billing errors, and deliver faster service.",
+      "seeItInAction": "See it in action",
+      "talkToUs": "Talk to us"
+    }
+  },
+  "contact": {
+    "eyebrow": "Get in touch",
+    "heading": "See ACSE AI in action",
+    "subtitle": "We work with water and utility providers of all sizes. Tell us about your operation and we'll show you exactly how ACSE AI fits in.",
+    "info": {
+      "emailLabel": "Email",
+      "emailValue": "info@acsesolutions.com",
+      "coverageLabel": "Coverage",
+      "coverageValue": "Serving utilities across North America",
+      "responseLabel": "Response time",
+      "responseValue": "Within 1 business day"
+    },
+    "form": {
+      "firstName": "First name",
+      "firstNamePlaceholder": "Jordan",
+      "lastName": "Last name",
+      "lastNamePlaceholder": "Rivera",
+      "workEmail": "Work email",
+      "workEmailPlaceholder": "jordan@utility.gov",
+      "organization": "Organization",
+      "organizationPlaceholder": "Metro Water District",
+      "interest": "I'm interested in",
+      "notes": "Tell us about your current setup",
+      "notesPlaceholder": "Systems you run today, call volume, pain points…",
+      "submit": "Send message"
+    },
+    "interests": {
+      "customerService": "Customer service automation",
+      "billing": "Billing exception workflows",
+      "both": "Both — full platform",
+      "walkthrough": "A walkthrough / pricing"
+    },
+    "sentMessage": "Thanks — your details were captured. For a direct reply, email us at<1> info@acsesolutions.com</1>."
+  },
+  "footer": {
+    "tagline": "AI-powered automation for utility customer service, billing exceptions, and field operations.",
+    "groups": {
+      "platform": "Platform",
+      "company": "Company",
+      "tryIt": "Try it"
+    },
+    "links": {
+      "customerServiceAi": "Customer service AI",
+      "billingAutomation": "Billing automation",
+      "fieldOperations": "Field operations",
+      "integrations": "Integrations",
+      "aboutAcse": "About ACSE",
+      "caseStudies": "Case studies",
+      "contact": "Contact",
+      "useCases": "Use cases",
+      "platform": "Platform"
+    },
+    "copyright": "© 2026 ACSE Solutions · Product preview — all data shown is non-production.",
+    "runsOn": "Runs on Oracle Cloud Infrastructure"
+  },
+  "preview": {
+    "chips": {
+      "resolvePayment": "Resolve payment request",
+      "scheduleAppointment": "Schedule appointment",
+      "fieldVisit": "Field visit contact"
+    },
+    "agentName": "ACSE AI <1>— Live agent</1>",
+    "active": "Active",
+    "userMessage": "My auto bill this month seems way too high.",
+    "agentMessage": "I can see your usage jumped 148% vs. last month's baseline in the same billing window. I'll create a field investigation for a meter check.",
+    "workOrder": "Field work order {{order}} · Assigned to Team {{team}}",
+    "steps": {
+      "identity": {
+        "label": "Identity verified",
+        "status": "Account matched"
+      },
+      "analysis": {
+        "label": "Bill exception analysis",
+        "status": "Anomaly detected"
+      },
+      "escalation": {
+        "label": "Automatic escalation created",
+        "status": "Queued"
+      }
+    },
+    "live": "Live",
+    "requestsResolved": "{{value}} requests resolved today"
+  }
+}

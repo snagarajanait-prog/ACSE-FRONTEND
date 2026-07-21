@@ -10,16 +10,12 @@
 import { useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import { CheckCircle2, Clock, Mail, MapPin } from 'lucide-react'
+import { Trans, useTranslation } from 'react-i18next'
 import Button from '@/components/Button'
 import type { Lead } from '@/redux/demoSlice'
 import { cn } from '@/utils/cn'
 
-const interests = [
-  'Customer service automation',
-  'Billing exception workflows',
-  'Both — full platform',
-  'A walkthrough / pricing',
-]
+const interestKeys = ['customerService', 'billing', 'both', 'walkthrough']
 
 const FIELD_CLASS = cn(
   'w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none transition',
@@ -31,17 +27,23 @@ interface ContactSectionProps {
 }
 
 export default function ContactSection({ onSubmitLead }: ContactSectionProps) {
+  const { t } = useTranslation('landing')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
   const [organization, setOrganization] = useState('')
-  const [interest, setInterest] = useState(interests[3])
+  const [interest, setInterest] = useState('walkthrough')
   const [notes, setNotes] = useState('')
   const [sent, setSent] = useState(false)
 
   const submit = (e: FormEvent) => {
     e.preventDefault()
-    onSubmitLead({ name: `${firstName} ${lastName}`.trim(), email, organization, interest })
+    onSubmitLead({
+      name: `${firstName} ${lastName}`.trim(),
+      email,
+      organization,
+      interest: t(`contact.interests.${interest}`),
+    })
     setSent(true)
     setFirstName('')
     setLastName('')
@@ -57,20 +59,25 @@ export default function ContactSection({ onSubmitLead }: ContactSectionProps) {
           {/* Left: info */}
           <div>
             <p className="text-sm font-semibold uppercase tracking-wide text-brand-cyan">
-              Get in touch
+              {t('contact.eyebrow')}
             </p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight text-brand-navy sm:text-4xl dark:text-slate-100">
-              See ACSE AI in action
+              {t('contact.heading')}
             </h2>
-            <p className="mt-4 text-lg text-muted-foreground">
-              We work with water and utility providers of all sizes. Tell us about your operation and
-              we&apos;ll show you exactly how ACSE AI fits in.
-            </p>
+            <p className="mt-4 text-lg text-muted-foreground">{t('contact.subtitle')}</p>
 
             <ul className="mt-8 space-y-4">
-              <InfoRow icon={Mail} label="Email" value="info@acsesolutions.com" />
-              <InfoRow icon={MapPin} label="Coverage" value="Serving utilities across North America" />
-              <InfoRow icon={Clock} label="Response time" value="Within 1 business day" />
+              <InfoRow icon={Mail} label={t('contact.info.emailLabel')} value={t('contact.info.emailValue')} />
+              <InfoRow
+                icon={MapPin}
+                label={t('contact.info.coverageLabel')}
+                value={t('contact.info.coverageValue')}
+              />
+              <InfoRow
+                icon={Clock}
+                label={t('contact.info.responseLabel')}
+                value={t('contact.info.responseValue')}
+              />
             </ul>
           </div>
 
@@ -80,66 +87,66 @@ export default function ContactSection({ onSubmitLead }: ContactSectionProps) {
             className="rounded-2xl border border-border bg-background p-6 shadow-sm sm:p-8 dark:bg-white/[0.03]"
           >
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="First name">
+              <Field label={t('contact.form.firstName')}>
                 <input
                   required
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  placeholder="Jordan"
+                  placeholder={t('contact.form.firstNamePlaceholder')}
                   className={FIELD_CLASS}
                 />
               </Field>
-              <Field label="Last name">
+              <Field label={t('contact.form.lastName')}>
                 <input
                   required
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  placeholder="Rivera"
+                  placeholder={t('contact.form.lastNamePlaceholder')}
                   className={FIELD_CLASS}
                 />
               </Field>
             </div>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              <Field label="Work email">
+              <Field label={t('contact.form.workEmail')}>
                 <input
                   required
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="jordan@utility.gov"
+                  placeholder={t('contact.form.workEmailPlaceholder')}
                   className={FIELD_CLASS}
                 />
               </Field>
-              <Field label="Organization">
+              <Field label={t('contact.form.organization')}>
                 <input
                   value={organization}
                   onChange={(e) => setOrganization(e.target.value)}
-                  placeholder="Metro Water District"
+                  placeholder={t('contact.form.organizationPlaceholder')}
                   className={FIELD_CLASS}
                 />
               </Field>
             </div>
             <div className="mt-4">
-              <Field label="I'm interested in">
+              <Field label={t('contact.form.interest')}>
                 <select
                   value={interest}
                   onChange={(e) => setInterest(e.target.value)}
                   className={FIELD_CLASS}
                 >
-                  {interests.map((i) => (
+                  {interestKeys.map((i) => (
                     <option key={i} value={i}>
-                      {i}
+                      {t(`contact.interests.${i}`)}
                     </option>
                   ))}
                 </select>
               </Field>
             </div>
             <div className="mt-4">
-              <Field label="Tell us about your current setup">
+              <Field label={t('contact.form.notes')}>
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
-                  placeholder="Systems you run today, call volume, pain points…"
+                  placeholder={t('contact.form.notesPlaceholder')}
                   rows={4}
                   className={cn(FIELD_CLASS, 'resize-y')}
                 />
@@ -147,7 +154,7 @@ export default function ContactSection({ onSubmitLead }: ContactSectionProps) {
             </div>
 
             <Button type="submit" size="lg" className="mt-6 w-full">
-              Send message
+              {t('contact.form.submit')}
             </Button>
 
             {sent && (
@@ -157,8 +164,11 @@ export default function ContactSection({ onSubmitLead }: ContactSectionProps) {
               >
                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
                 <span>
-                  Thanks — your details were captured. For a direct reply, email us at
-                  <span className="font-medium"> info@acsesolutions.com</span>.
+                  <Trans
+                    t={t}
+                    i18nKey="contact.sentMessage"
+                    components={{ 1: <span className="font-medium" /> }}
+                  />
                 </span>
               </p>
             )}

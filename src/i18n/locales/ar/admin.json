@@ -1,0 +1,161 @@
+{
+  "login": {
+    "welcome": "مرحبًا بعودتك!",
+    "identifierLabel": "البريد الإلكتروني أو اسم المستخدم",
+    "identifierPlaceholder": "you@company.com",
+    "passwordLabel": "كلمة المرور",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور",
+    "signingIn": "جارٍ تسجيل الدخول…",
+    "submit": "تسجيل الدخول",
+    "rememberMe": "تذكّرني",
+    "heroTitle": "تمكين <1>إدارة المرافق</1>",
+    "heroSubtitle": "أدِر حسابات العملاء وطلبات الخدمة والفوترة والانقطاعات والعمليات الميدانية والتحليلات من منصة آمنة ومركزية مصمَّمة لمزوّدي خدمات المرافق الحديثة."
+  },
+  "auth": {
+    "signedInTitle": "تم تسجيل الدخول",
+    "signedInDesc": "مرحبًا بعودتك، {{name}}.",
+    "signInFailedTitle": "فشل تسجيل الدخول",
+    "signInFailedDesc": "تعذّر تسجيل الدخول. يُرجى المحاولة مرة أخرى.",
+    "signedOut": "تم تسجيل الخروج"
+  },
+  "shell": {
+    "adminNav": "التنقل في لوحة الإدارة",
+    "openNav": "فتح التنقل",
+    "closeNav": "إغلاق التنقل",
+    "closeDialog": "إغلاق مربع الحوار",
+    "navigation": "التنقل",
+    "nav": {
+      "document": "مستند",
+      "image": "صورة",
+      "settings": "الإعدادات"
+    },
+    "signOut": "تسجيل الخروج",
+    "online": "متصل",
+    "poweredBy": "مشغَّل بواسطة",
+    "backTo": "العودة إلى acsesolutions.com",
+    "userCard": {
+      "name": "وحدة تحكم الإدارة",
+      "role": "مسؤول النظام"
+    },
+    "fileUploadTitle": "رفع الملفات",
+    "settingsTitle": "الملف الشخصي والإعدادات"
+  },
+  "files": {
+    "heading": "رفع الملفات الداخلي",
+    "subtitle": {
+      "document": "إدارة وتنظيم مستندات الشركة المرفوعة",
+      "image": "إدارة وتنظيم صور الشركة المرفوعة"
+    },
+    "searchLabel": "البحث في الملفات",
+    "searchPlaceholder": "البحث في الملفات…",
+    "clearSearch": "مسح البحث",
+    "uploadFile": "رفع ملف",
+    "columns": {
+      "uploadedAt": "تاريخ الرفع",
+      "uploadedBy": "رُفع بواسطة",
+      "fileName": "الملفات المرفوعة",
+      "category": "النوع المرفوع",
+      "notes": "ملاحظات",
+      "download": "تنزيل",
+      "action": "إجراء"
+    },
+    "sortBy": "الترتيب حسب {{label}}",
+    "fileFallback": "ملف",
+    "downloadFile": "تنزيل {{name}}",
+    "downloadTitle": "تنزيل",
+    "deleteFile": "حذف {{name}}",
+    "deleteTitle": "حذف",
+    "summary": {
+      "showing": "عرض <1>{{shown}}</1> من {{total}}",
+      "total_zero": "<1>{{count}}</1> ملف",
+      "total_one": "<1>{{count}}</1> ملف",
+      "total_two": "<1>{{count}}</1> ملفان",
+      "total_few": "<1>{{count}}</1> ملفات",
+      "total_many": "<1>{{count}}</1> ملفًا",
+      "total_other": "<1>{{count}}</1> ملف"
+    },
+    "stub": {
+      "file": "الملف: {{name}}",
+      "category": "الفئة: {{category}}",
+      "uploadedBy": "رُفع بواسطة: {{name}}",
+      "uploadedAt": "تاريخ الرفع: {{date}}",
+      "notes": "ملاحظات: {{notes}}",
+      "placeholder": "هذا عنصر نائب للعرض التوضيحي — لم يُحفظ الملف الأصلي في المتصفح."
+    }
+  },
+  "upload": {
+    "title": {
+      "document": "رفع مستند",
+      "image": "رفع صورة"
+    },
+    "description": {
+      "document": "أضف مستندات إلى المكتبة الداخلية.",
+      "image": "أضف صورًا إلى المكتبة الداخلية."
+    },
+    "hint": {
+      "document": "PDF، DOC، XLS، PPT، CSV، HTML — حتى {{max}} ملفات",
+      "image": "PNG، JPG، WEBP، GIF، SVG — حتى {{max}} ملفات"
+    },
+    "fileFieldLabel": "رفع ملف",
+    "dropIdle": "أفلِت ملفك هنا",
+    "dropActive": "أفلِت لإضافة الملفات",
+    "browsePrompt": "أو <1>تصفّح</1>",
+    "errorNoFiles": "أضف ملفًا واحدًا على الأقل للرفع.",
+    "removeFile": "إزالة {{name}}",
+    "uploadedByLabel": "رُفع بواسطة",
+    "uploadedByPlaceholder": "مثال: John Doe",
+    "categoryLabel": "الفئة",
+    "uncategorized": "غير مصنّف",
+    "notesLabel": "ملاحظات",
+    "optional": "(اختياري)",
+    "notesPlaceholder": "أضف أي ملاحظات ذات صلة هنا…",
+    "cancel": "إلغاء",
+    "submit": "رفع ملف",
+    "submitWithCount": "رفع ({{count}})"
+  },
+  "confirmDelete": {
+    "title": "حذف الملف",
+    "body": "إزالة <1>{{name}}</1> من المكتبة؟ لا يمكن التراجع عن هذا الإجراء.",
+    "cancel": "إلغاء",
+    "confirm": "حذف"
+  },
+  "emptyState": {
+    "searchTitle": "لا توجد ملفات تطابق بحثك",
+    "emptyTitle": "لم يتم رفع أي ملفات بعد",
+    "searchDesc": "جرّب اسمًا أو رافعًا أو فئة مختلفة.",
+    "emptyDesc": "ارفع أول ملف لك لتراه مدرجًا هنا.",
+    "clearSearch": "مسح البحث",
+    "uploadFile": "رفع ملف"
+  },
+  "settings": {
+    "heading": "إعدادات الملف الشخصي",
+    "subtitle": "إدارة تفضيلات المؤسسة ومظهرها",
+    "changesSaved": "تم حفظ التغييرات",
+    "cancel": "إلغاء",
+    "save": "حفظ التغييرات",
+    "logoErrorType": "استخدم صورة بصيغة PNG أو JPG.",
+    "logoErrorSize": "يجب أن يكون حجم الصورة أقل من 1 ميجابايت.",
+    "logoErrorRead": "تعذّر قراءة تلك الصورة.",
+    "profilePicture": {
+      "title": "صورة الملف الشخصي",
+      "description": "ارفع شعارًا أو صورة رمزية لمؤسستك",
+      "change": "تغيير الصورة",
+      "remove": "إزالة الصورة",
+      "dropIdle": "انقر أو اسحب للرفع",
+      "dropActive": "أفلِت للرفع",
+      "hint": "PNG أو JPG · حتى 1 ميجابايت"
+    },
+    "company": {
+      "title": "معلومات الشركة",
+      "description": "حدّث الاسم المعروض لمؤسستك",
+      "nameLabel": "اسم الشركة",
+      "namePlaceholder": "مثال: XYZ Company"
+    },
+    "appMode": {
+      "title": "وضع التطبيق",
+      "description": "التبديل بين وضعي التشغيل ATP وC2M",
+      "ariaLabel": "وضع التطبيق"
+    }
+  }
+}

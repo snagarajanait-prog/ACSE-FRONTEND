@@ -1,0 +1,157 @@
+{
+  "login": {
+    "welcome": "Welcome back!",
+    "identifierLabel": "Email or Username",
+    "identifierPlaceholder": "you@company.com",
+    "passwordLabel": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "signingIn": "Signing in…",
+    "submit": "Log in",
+    "rememberMe": "Remember me",
+    "heroTitle": "Empowering the <1>utility management</1>",
+    "heroSubtitle": "Manage customer accounts, service requests, billing, outages, field operations, and analytics from a secure, centralized platform designed for modern utility providers."
+  },
+  "auth": {
+    "signedInTitle": "Signed in",
+    "signedInDesc": "Welcome back, {{name}}.",
+    "signInFailedTitle": "Sign in failed",
+    "signInFailedDesc": "Could not sign in. Please try again.",
+    "signedOut": "Signed out"
+  },
+  "shell": {
+    "adminNav": "Admin navigation",
+    "openNav": "Open navigation",
+    "closeNav": "Close navigation",
+    "closeDialog": "Close dialog",
+    "navigation": "Navigation",
+    "nav": {
+      "document": "Document",
+      "image": "Image",
+      "settings": "Settings"
+    },
+    "signOut": "Sign out",
+    "online": "Online",
+    "poweredBy": "Powered by",
+    "backTo": "Back to acsesolutions.com",
+    "userCard": {
+      "name": "Admin Console",
+      "role": "System Administrator"
+    },
+    "fileUploadTitle": "File Upload",
+    "settingsTitle": "Profile & Settings"
+  },
+  "files": {
+    "heading": "Internal File Upload",
+    "subtitle": {
+      "document": "Manage and organize uploaded company documents",
+      "image": "Manage and organize uploaded company images"
+    },
+    "searchLabel": "Search files",
+    "searchPlaceholder": "Search files…",
+    "clearSearch": "Clear search",
+    "uploadFile": "Upload File",
+    "columns": {
+      "uploadedAt": "Uploaded Date",
+      "uploadedBy": "Uploaded By",
+      "fileName": "Uploaded Files",
+      "category": "Uploaded Type",
+      "notes": "Notes",
+      "download": "Download",
+      "action": "Action"
+    },
+    "sortBy": "Sort by {{label}}",
+    "fileFallback": "file",
+    "downloadFile": "Download {{name}}",
+    "downloadTitle": "Download",
+    "deleteFile": "Delete {{name}}",
+    "deleteTitle": "Delete",
+    "summary": {
+      "showing": "Showing <1>{{shown}}</1> of {{total}}",
+      "total_one": "<1>{{count}}</1> file",
+      "total_other": "<1>{{count}}</1> files"
+    },
+    "stub": {
+      "file": "File: {{name}}",
+      "category": "Category: {{category}}",
+      "uploadedBy": "Uploaded by: {{name}}",
+      "uploadedAt": "Uploaded at: {{date}}",
+      "notes": "Notes: {{notes}}",
+      "placeholder": "This is a demo placeholder — the original file was not stored in the browser."
+    }
+  },
+  "upload": {
+    "title": {
+      "document": "Upload Document",
+      "image": "Upload Image"
+    },
+    "description": {
+      "document": "Add documents to the internal library.",
+      "image": "Add images to the internal library."
+    },
+    "hint": {
+      "document": "PDF, DOC, XLS, PPT, CSV, HTML — up to {{max}} files",
+      "image": "PNG, JPG, WEBP, GIF, SVG — up to {{max}} files"
+    },
+    "fileFieldLabel": "Upload File",
+    "dropIdle": "Drop your file here",
+    "dropActive": "Drop to add files",
+    "browsePrompt": "or <1>browse</1>",
+    "errorNoFiles": "Add at least one file to upload.",
+    "removeFile": "Remove {{name}}",
+    "uploadedByLabel": "Uploaded By",
+    "uploadedByPlaceholder": "e.g. John Doe",
+    "categoryLabel": "Category",
+    "uncategorized": "Uncategorized",
+    "notesLabel": "Notes",
+    "optional": "(optional)",
+    "notesPlaceholder": "Add any relevant notes here…",
+    "cancel": "Cancel",
+    "submit": "Upload File",
+    "submitWithCount": "Upload ({{count}})"
+  },
+  "confirmDelete": {
+    "title": "Delete file",
+    "body": "Remove <1>{{name}}</1> from the library? This can't be undone.",
+    "cancel": "Cancel",
+    "confirm": "Delete"
+  },
+  "emptyState": {
+    "searchTitle": "No files match your search",
+    "emptyTitle": "No files uploaded yet",
+    "searchDesc": "Try a different name, uploader, or category.",
+    "emptyDesc": "Upload your first file to see it listed here.",
+    "clearSearch": "Clear search",
+    "uploadFile": "Upload File"
+  },
+  "settings": {
+    "heading": "Profile Settings",
+    "subtitle": "Manage organization preferences and appearance",
+    "changesSaved": "Changes saved",
+    "cancel": "Cancel",
+    "save": "Save Changes",
+    "logoErrorType": "Use a PNG or JPG image.",
+    "logoErrorSize": "Image must be under 1 MB.",
+    "logoErrorRead": "Could not read that image.",
+    "profilePicture": {
+      "title": "Profile Picture",
+      "description": "Upload a logo or avatar for your organization",
+      "change": "Change Picture",
+      "remove": "Remove picture",
+      "dropIdle": "Click or drag to upload",
+      "dropActive": "Drop to upload",
+      "hint": "PNG or JPG · up to 1 MB"
+    },
+    "company": {
+      "title": "Company Information",
+      "description": "Update your organization's display name",
+      "nameLabel": "Company Name",
+      "namePlaceholder": "e.g. XYZ Company"
+    },
+    "appMode": {
+      "title": "Application Mode",
+      "description": "Switch between ATP and C2M operating modes",
+      "ariaLabel": "Application mode"
+    }
+  }
+}

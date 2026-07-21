@@ -1,0 +1,191 @@
+{
+  "poweredBy": "Con la tecnología de",
+  "header": {
+    "assistantMode": "Modo del asistente: {{system}}",
+    "mode": "Modo · {{short}}",
+    "openAccountDetails": "Abrir detalles de la cuenta",
+    "newChat": "Nuevo chat",
+    "backHome": "Volver a acsesolutions.com"
+  },
+  "hero": {
+    "greetingFallback": "¿Cómo puedo ayudarte hoy?",
+    "subtitle": "Pregúntame por una factura, inicia o detén un servicio, o reporta una fuga: te guío paso a paso."
+  },
+  "greeting": {
+    "morning": "Buenos días",
+    "afternoon": "Buenas tardes",
+    "evening": "Buenas noches",
+    "line": "{{part}}, {{name}}. ¿Cómo puedo ayudarte hoy?"
+  },
+  "composer": {
+    "placeholder": "Pide a ACSE AI iniciar un servicio, explicar una factura, reportar una fuga…",
+    "shortPlaceholder": "Pregunta a ACSE AI…",
+    "drawerPlaceholder": "Pregunta lo que quieras a ACSE AI…",
+    "responding": "El asistente está respondiendo…",
+    "send": "Enviar",
+    "disclaimer": "Conversación ilustrativa · datos no productivos · lee/escribe en {{source}}"
+  },
+  "chat": {
+    "you": "Tú",
+    "youSaid": "Dijiste: ",
+    "assistantSaid": "El asistente dijo: ",
+    "working": "El asistente está trabajando",
+    "freeReply": "Puedo ayudarte con eso. Estas son las cosas que puedo hacer ahora mismo: elige una para verla en acción:"
+  },
+  "think": {
+    "analysing": "Analizando tu solicitud",
+    "intent": "Entendiendo la intención",
+    "checkingAccount": "Comprobando la cuenta {account}",
+    "requesting": "Solicitando datos de {source}",
+    "processing": "Procesando registros",
+    "compiling": "Recopilando los detalles",
+    "summarising": "Resumiendo",
+    "matching": "Asociando a un flujo de trabajo"
+  },
+  "otp": {
+    "sms": "SMS",
+    "email": "Correo electrónico",
+    "identityVerified": "Identidad verificada · {{channel}}",
+    "verifyIdentity": "Verifica tu identidad · {{channel}}",
+    "codeLabel": "Código de verificación {{digits}}",
+    "digit": "Dígito {{index}} de {{total}}"
+  },
+  "actions": {
+    "copyLabel": "Copiar transcripción",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "copyFailed": "Error al copiar",
+    "shareLabel": "Compartir transcripción",
+    "share": "Compartir",
+    "sharedCopied": "Copiado: pégalo para compartir",
+    "shareFailed": "No se pudo compartir",
+    "exportLabel": "Exportar transcripción como PDF",
+    "exportPdf": "Exportar PDF",
+    "preparing": "Preparando…",
+    "downloaded": "Descargado",
+    "exportFailed": "Error al exportar"
+  },
+  "drawer": {
+    "assistantLabel": "Asistente de ACSE AI",
+    "accountDetails": "Detalles de la cuenta",
+    "closeAccountDetails": "Cerrar detalles de la cuenta",
+    "expand": "Expandir el asistente",
+    "shrink": "Contraer el asistente",
+    "expandShort": "Expandir",
+    "shrinkShort": "Contraer",
+    "close": "Cerrar el asistente",
+    "closeShort": "Cerrar",
+    "heroSubtitle": "Pregúntame por una factura, inicia o detén un servicio, o reporta una fuga."
+  },
+  "customerList": {
+    "title": "Selecciona un cliente",
+    "subtitle": "Elige una cuenta para establecer el contexto del asistente. Estos son registros de clientes no productivos: varios tienen varias cuentas.",
+    "searchLabel": "Buscar clientes",
+    "searchPlaceholder": "Busca por nombre, n.º de cliente o n.º de cuenta.",
+    "since": "{{id}} · desde {{since}}",
+    "accountCount_one": "{{count}} cuenta",
+    "accountCount_other": "{{count}} cuentas",
+    "due": "pendiente",
+    "settled": "saldado",
+    "noResults": "Ningún cliente coincide con «{{query}}»."
+  },
+  "account": {
+    "detailsTitle": "Detalles de la cuenta",
+    "customerSince": "{{id}} · Cliente desde {{since}}",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "serviceAddress": "Dirección de servicio",
+    "meter": "Medidor",
+    "balance": "Saldo",
+    "due": "Vence {{date}}",
+    "nothingDue": "Nada pendiente",
+    "autopayOn": "Pago automático activado",
+    "autopayOff": "Pago automático desactivado",
+    "usage": "Consumo",
+    "thisYear": "Este año",
+    "lastYear": "Año pasado",
+    "avgMonthly": "Prom. / mes",
+    "peakMonth": "Mes pico",
+    "notifications": "Notificaciones",
+    "noBaseline": "Aún no hay referencia del año anterior",
+    "yoy": "interanual"
+  },
+  "usage": {
+    "range": {
+      "6M": "6 meses",
+      "1Y": "1 año",
+      "2Y": "2 años"
+    }
+  },
+  "verify": {
+    "title": "Verifica tu identidad",
+    "stepEmail": "Paso 1 de 2 · Correo electrónico",
+    "stepCode": "Paso 2 de 2 · Código de un solo uso",
+    "emailLabel": "Correo electrónico",
+    "emailError": "Introduce un correo electrónico para poder enviarte el código.",
+    "emailHelp": "Enviaremos un código de 6 dígitos para confirmar que eres tú. Aquí se acepta cualquier dirección; en realidad no se envía nada.",
+    "sending": "Enviando código…",
+    "sendCode": "Enviar código",
+    "backToCustomers": "Volver a clientes",
+    "codeSent": "Enviamos un código de 6 dígitos a <1>{{email}}</1>. Introdúcelo abajo para abrir el asistente.",
+    "anyDigits": "Se acepta cualquier combinación de 6 dígitos.",
+    "differentEmail": "Usar otro correo electrónico",
+    "cancel": "Cancelar"
+  },
+  "receiptMenu": {
+    "about": "Acerca de \"{{title}}\" — y descargar como PDF",
+    "trigger": "Detalles y descarga",
+    "dialogLabel": "Comprobante de solicitud",
+    "recordWithRef": "Un registro de esta solicitud tal como se envió — referencia <1>{{reference}}</1>.",
+    "recordPlain": "Un registro de esta solicitud tal como se envió.",
+    "download": "Descargar comprobante (PDF)",
+    "preparing": "Preparando…",
+    "error": "No se pudo generar el PDF. Inténtalo de nuevo."
+  },
+  "slideOver": {
+    "close": "Cerrar {{title}}"
+  },
+  "pdf": {
+    "poweredBy": "Con la tecnología de {{vendor}}",
+    "page": "Página {{page}} de {{total}}",
+    "illustrative": "Conversación ilustrativa · datos no productivos",
+    "continued": "{{label}} (continuación)"
+  },
+  "receipt": {
+    "kind": "Comprobante de servicio",
+    "issued": "Emitido {{stamp}}",
+    "keep": "Guarda esto para tus registros.",
+    "customer": "Cliente",
+    "requestDetails": "Detalles de la solicitud",
+    "name": "Nombre",
+    "customerNumber": "Número de cliente",
+    "email": "Correo electrónico",
+    "phone": "Teléfono",
+    "disclaimer": "Este comprobante confirma que se registró una solicitud. No es una factura ni una confirmación de pago."
+  },
+  "transcript": {
+    "title": "Conversación con {{assistant}}",
+    "you": "Tú",
+    "kind": "Transcripción de la conversación",
+    "context": "Contexto",
+    "customer": "Cliente",
+    "account": "Cuenta",
+    "serviceAddress": "Dirección de servicio",
+    "handledBy": "Gestionado por",
+    "exported": "Exportado",
+    "identityVerifiedMd": "Identidad verificada · {{channel}} — {{text}}",
+    "identityVerifiedPlain": "Identidad verificada ({{channel}}) — {{text}}",
+    "disclaimer": "Esta transcripción es un registro de lo que se conversó. No es una factura ni una confirmación de pago.",
+    "disclaimerFull": "Conversación ilustrativa · datos no productivos. Esta transcripción es un registro de lo que se conversó. No es una factura ni una confirmación de pago."
+  },
+  "useCases": {
+    "start-service": "Iniciar servicio",
+    "stop-service": "Detener servicio",
+    "transfer-service": "Transferir servicio",
+    "high-bill": "¿Por qué es alta mi factura?",
+    "payment-arrangement": "Acuerdo de pago",
+    "report-outage": "Reportar / consultar corte",
+    "update-contact": "Actualizar datos de contacto",
+    "report-leak": "Reportar una fuga"
+  }
+}

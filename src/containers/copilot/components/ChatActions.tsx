@@ -20,6 +20,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Check, Copy, Download, Loader2, Share2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { Msg } from '@/containers/copilot/hooks/useChatEngine'
 import {
   buildTranscript,
@@ -49,6 +50,7 @@ const BUTTON_CLASS =
   'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-medium text-slate-500 outline-none ring-1 ring-transparent transition hover:bg-slate-100 hover:text-brand-navy focus-visible:ring-2 focus-visible:ring-brand-cyan active:scale-95 disabled:opacity-50 dark:text-slate-400 dark:hover:bg-white/[0.07] dark:hover:text-slate-100'
 
 export default function ChatActions({ messages, ...context }: ChatActionsProps) {
+  const { t } = useTranslation('copilot')
   const [feedback, setFeedback] = useState<Feedback | null>(null)
   const [busy, setBusy] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -74,14 +76,14 @@ export default function ChatActions({ messages, ...context }: ChatActionsProps) 
 
   async function handleCopy() {
     const ok = await copyText(transcript().text)
-    report('copy', ok ? 'Copied' : 'Copy failed', ok ? 'ok' : 'error')
+    report('copy', ok ? t('actions.copied') : t('actions.copyFailed'), ok ? 'ok' : 'error')
   }
 
   async function handleShare() {
-    const t = transcript()
+    const payload = transcript()
     if (typeof navigator.share === 'function') {
       try {
-        await navigator.share({ title: t.title, text: t.text })
+        await navigator.share({ title: payload.title, text: payload.text })
         return
       } catch (error) {
         // A dismissed share sheet is a decision, not a failure — say nothing.
@@ -89,10 +91,10 @@ export default function ChatActions({ messages, ...context }: ChatActionsProps) 
         console.error('[transcript] share failed', error)
       }
     }
-    const ok = await copyText(t.text)
+    const ok = await copyText(payload.text)
     report(
       'share',
-      ok ? 'Copied — paste to share' : 'Could not share',
+      ok ? t('actions.sharedCopied') : t('actions.shareFailed'),
       ok ? 'ok' : 'error',
     )
   }
@@ -101,11 +103,11 @@ export default function ChatActions({ messages, ...context }: ChatActionsProps) 
     setBusy(true)
     try {
       await downloadTranscriptPdf(transcript())
-      report('export', 'Downloaded')
+      report('export', t('actions.downloaded'))
     } catch (error) {
       // A failed download gives no signal of its own — this is the only feedback.
       console.error('[transcript] export failed', error)
-      report('export', 'Export failed', 'error')
+      report('export', t('actions.exportFailed'), 'error')
     } finally {
       setBusy(false)
     }
@@ -117,22 +119,32 @@ export default function ChatActions({ messages, ...context }: ChatActionsProps) 
   return (
     <div className="mt-8 pl-9 motion-safe:animate-rise-in">
       <div className="flex flex-wrap items-center gap-1 border-t border-slate-200/80 pt-3 dark:border-white/[0.07]">
-        <button type="button" onClick={handleCopy} className={BUTTON_CLASS} aria-label="Copy transcript">
+        <button
+          type="button"
+          onClick={handleCopy}
+          className={BUTTON_CLASS}
+          aria-label={t('actions.copyLabel')}
+        >
           {copied ? (
             <Check className="h-3.5 w-3.5 text-emerald-500 dark:text-emerald-400" />
           ) : (
             <Copy className="h-3.5 w-3.5" />
           )}
-          {copied ? 'Copied' : 'Copy'}
+          {copied ? t('actions.copied') : t('actions.copy')}
         </button>
 
-        <button type="button" onClick={handleShare} className={BUTTON_CLASS} aria-label="Share transcript">
+        <button
+          type="button"
+          onClick={handleShare}
+          className={BUTTON_CLASS}
+          aria-label={t('actions.shareLabel')}
+        >
           {shared ? (
             <Check className="h-3.5 w-3.5 text-emerald-500 dark:text-emerald-400" />
           ) : (
             <Share2 className="h-3.5 w-3.5" />
           )}
-          Share
+          {t('actions.share')}
         </button>
 
         <button
@@ -140,14 +152,14 @@ export default function ChatActions({ messages, ...context }: ChatActionsProps) 
           onClick={handleExport}
           disabled={busy}
           className={BUTTON_CLASS}
-          aria-label="Export transcript as PDF"
+          aria-label={t('actions.exportLabel')}
         >
           {busy ? (
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
           ) : (
             <Download className="h-3.5 w-3.5" />
           )}
-          {busy ? 'Preparing…' : 'Export PDF'}
+          {busy ? t('actions.preparing') : t('actions.exportPdf')}
         </button>
 
         {/* One live region for every outcome, so a screen reader hears the result

@@ -9,6 +9,7 @@
 
 import type { ReactNode } from 'react'
 import { ChevronDown, ChevronsUpDown, Download, FileText, Image as ImageIcon, Trash2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { FileRecord, SortKey, SortState } from '@/containers/admin/types'
 import { avatarTone, fileExt, formatBytes, formatDate, initials } from '@/containers/admin/utils/format'
 import { cn } from '@/utils/cn'
@@ -33,6 +34,7 @@ export default function FileTable({
   onDelete,
   empty,
 }: FileTableProps) {
+  const { t } = useTranslation('admin')
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-brand-navy/30">
       <div className="overflow-x-auto">
@@ -43,9 +45,9 @@ export default function FileTable({
               <HeaderCell label={sortLabels.uploadedBy} sortKey="uploadedBy" sort={sort} onToggle={onToggleSort} />
               <HeaderCell label={sortLabels.fileName} sortKey="fileName" sort={sort} onToggle={onToggleSort} />
               <HeaderCell label={sortLabels.category} sortKey="category" sort={sort} onToggle={onToggleSort} />
-              <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider">Notes</th>
-              <th className="px-4 py-3 text-center text-[11px] font-semibold uppercase tracking-wider">Download</th>
-              <th className="px-4 py-3 text-center text-[11px] font-semibold uppercase tracking-wider">Action</th>
+              <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider">{t('files.columns.notes')}</th>
+              <th className="px-4 py-3 text-center text-[11px] font-semibold uppercase tracking-wider">{t('files.columns.download')}</th>
+              <th className="px-4 py-3 text-center text-[11px] font-semibold uppercase tracking-wider">{t('files.columns.action')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100 dark:divide-white/[0.06]">
@@ -84,13 +86,14 @@ function HeaderCell({
   sort: SortState
   onToggle: (key: SortKey) => void
 }) {
+  const { t } = useTranslation('admin')
   const active = sort.key === sortKey
   return (
     <th className="px-4 py-3">
       <button
         type="button"
         onClick={() => onToggle(sortKey)}
-        aria-label={`Sort by ${label}`}
+        aria-label={t('files.sortBy', { label })}
         className="group inline-flex items-center gap-1.5 rounded text-[11px] font-semibold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-white/70"
       >
         {label}
@@ -118,6 +121,7 @@ function Row({
   onDownload: (record: FileRecord) => void
   onDelete: (record: FileRecord) => void
 }) {
+  const { t } = useTranslation('admin')
   const FileIcon = row.section === 'image' ? ImageIcon : FileText
   return (
     <tr
@@ -151,7 +155,7 @@ function Row({
           <span className="min-w-0">
             <span className="block truncate font-medium text-brand-navy dark:text-slate-200">{row.fileName}</span>
             <span className="text-[11px] uppercase tracking-wide text-slate-400">
-              {fileExt(row.fileName) || 'file'} · {formatBytes(row.size)}
+              {fileExt(row.fileName) || t('files.fileFallback')} · {formatBytes(row.size)}
             </span>
           </span>
         </span>
@@ -175,8 +179,8 @@ function Row({
         <button
           type="button"
           onClick={() => onDownload(row)}
-          aria-label={`Download ${row.fileName}`}
-          title="Download"
+          aria-label={t('files.downloadFile', { name: row.fileName })}
+          title={t('files.downloadTitle')}
           className="inline-grid h-8 w-8 place-items-center rounded-md text-brand-cyan outline-none transition-colors hover:bg-brand-cyan/10 focus-visible:ring-2 focus-visible:ring-brand-cyan"
         >
           <Download className="h-4 w-4" aria-hidden />
@@ -187,8 +191,8 @@ function Row({
         <button
           type="button"
           onClick={() => onDelete(row)}
-          aria-label={`Delete ${row.fileName}`}
-          title="Delete"
+          aria-label={t('files.deleteFile', { name: row.fileName })}
+          title={t('files.deleteTitle')}
           className="inline-grid h-8 w-8 place-items-center rounded-md text-brand-red outline-none transition-colors hover:bg-brand-red/10 focus-visible:ring-2 focus-visible:ring-brand-red"
         >
           <Trash2 className="h-4 w-4" aria-hidden />

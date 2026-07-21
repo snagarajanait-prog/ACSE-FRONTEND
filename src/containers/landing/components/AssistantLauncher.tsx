@@ -17,6 +17,7 @@
  */
 
 import { Sparkles } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/utils/cn'
 
 interface AssistantLauncherProps {
@@ -24,11 +25,12 @@ interface AssistantLauncherProps {
 }
 
 export default function AssistantLauncher({ onAskAcseAi }: AssistantLauncherProps) {
+  const { t } = useTranslation('landing')
   return (
     <button
       type="button"
       onClick={onAskAcseAi}
-      aria-label="Ask ACSE AI"
+      aria-label={t('common.askAcseAi')}
       className={cn(
         'group fixed bottom-5 right-5 z-30 inline-flex items-center rounded-full p-2.5',
         'bg-brand-navy text-white shadow-[0_10px_30px_-8px_rgba(10,30,53,0.55)] ring-1 ring-white/10',
@@ -66,7 +68,7 @@ export default function AssistantLauncher({ onAskAcseAi }: AssistantLauncherProp
           'group-focus-visible:max-w-36 group-focus-visible:pl-2.5 group-focus-visible:pr-1.5 group-focus-visible:opacity-100',
         )}
       >
-        Ask ACSE AI
+        {t('common.askAcseAi')}
       </span>
     </button>
   )

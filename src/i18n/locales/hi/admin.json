@@ -1,0 +1,157 @@
+{
+  "login": {
+    "welcome": "वापसी पर स्वागत है!",
+    "identifierLabel": "ईमेल या उपयोगकर्ता नाम",
+    "identifierPlaceholder": "you@company.com",
+    "passwordLabel": "पासवर्ड",
+    "showPassword": "पासवर्ड दिखाएं",
+    "hidePassword": "पासवर्ड छिपाएं",
+    "signingIn": "साइन इन हो रहा है…",
+    "submit": "लॉग इन करें",
+    "rememberMe": "मुझे याद रखें",
+    "heroTitle": "<1>यूटिलिटी प्रबंधन</1> को सशक्त बनाना",
+    "heroSubtitle": "आधुनिक यूटिलिटी प्रदाताओं के लिए डिज़ाइन किए गए एक सुरक्षित, केंद्रीकृत प्लेटफ़ॉर्म से ग्राहक खातों, सेवा अनुरोधों, बिलिंग, बिजली कटौती, फील्ड संचालन और एनालिटिक्स का प्रबंधन करें।"
+  },
+  "auth": {
+    "signedInTitle": "साइन इन हो गए",
+    "signedInDesc": "वापसी पर स्वागत है, {{name}}।",
+    "signInFailedTitle": "साइन इन विफल",
+    "signInFailedDesc": "साइन इन नहीं हो सका। कृपया पुनः प्रयास करें।",
+    "signedOut": "साइन आउट हो गए"
+  },
+  "shell": {
+    "adminNav": "एडमिन नेविगेशन",
+    "openNav": "नेविगेशन खोलें",
+    "closeNav": "नेविगेशन बंद करें",
+    "closeDialog": "संवाद बंद करें",
+    "navigation": "नेविगेशन",
+    "nav": {
+      "document": "दस्तावेज़",
+      "image": "छवि",
+      "settings": "सेटिंग्स"
+    },
+    "signOut": "साइन आउट",
+    "online": "ऑनलाइन",
+    "poweredBy": "द्वारा संचालित",
+    "backTo": "acsesolutions.com पर वापस जाएं",
+    "userCard": {
+      "name": "एडमिन कंसोल",
+      "role": "सिस्टम प्रशासक"
+    },
+    "fileUploadTitle": "फ़ाइल अपलोड",
+    "settingsTitle": "प्रोफ़ाइल और सेटिंग्स"
+  },
+  "files": {
+    "heading": "आंतरिक फ़ाइल अपलोड",
+    "subtitle": {
+      "document": "अपलोड किए गए कंपनी दस्तावेज़ों को प्रबंधित और व्यवस्थित करें",
+      "image": "अपलोड की गई कंपनी छवियों को प्रबंधित और व्यवस्थित करें"
+    },
+    "searchLabel": "फ़ाइलें खोजें",
+    "searchPlaceholder": "फ़ाइलें खोजें…",
+    "clearSearch": "खोज साफ़ करें",
+    "uploadFile": "फ़ाइल अपलोड करें",
+    "columns": {
+      "uploadedAt": "अपलोड तिथि",
+      "uploadedBy": "अपलोडकर्ता",
+      "fileName": "अपलोड की गई फ़ाइलें",
+      "category": "अपलोड प्रकार",
+      "notes": "टिप्पणियाँ",
+      "download": "डाउनलोड",
+      "action": "क्रिया"
+    },
+    "sortBy": "{{label}} के अनुसार क्रमबद्ध करें",
+    "fileFallback": "फ़ाइल",
+    "downloadFile": "{{name}} डाउनलोड करें",
+    "downloadTitle": "डाउनलोड",
+    "deleteFile": "{{name}} हटाएं",
+    "deleteTitle": "हटाएं",
+    "summary": {
+      "showing": "{{total}} में से <1>{{shown}}</1> दिखा रहे हैं",
+      "total_one": "<1>{{count}}</1> फ़ाइल",
+      "total_other": "<1>{{count}}</1> फ़ाइलें"
+    },
+    "stub": {
+      "file": "फ़ाइल: {{name}}",
+      "category": "श्रेणी: {{category}}",
+      "uploadedBy": "अपलोडकर्ता: {{name}}",
+      "uploadedAt": "अपलोड किया गया: {{date}}",
+      "notes": "टिप्पणियाँ: {{notes}}",
+      "placeholder": "यह एक डेमो प्लेसहोल्डर है — मूल फ़ाइल ब्राउज़र में संग्रहीत नहीं की गई थी।"
+    }
+  },
+  "upload": {
+    "title": {
+      "document": "दस्तावेज़ अपलोड करें",
+      "image": "छवि अपलोड करें"
+    },
+    "description": {
+      "document": "आंतरिक लाइब्रेरी में दस्तावेज़ जोड़ें।",
+      "image": "आंतरिक लाइब्रेरी में छवियां जोड़ें।"
+    },
+    "hint": {
+      "document": "PDF, DOC, XLS, PPT, CSV, HTML — {{max}} फ़ाइलों तक",
+      "image": "PNG, JPG, WEBP, GIF, SVG — {{max}} फ़ाइलों तक"
+    },
+    "fileFieldLabel": "फ़ाइल अपलोड करें",
+    "dropIdle": "अपनी फ़ाइल यहां छोड़ें",
+    "dropActive": "फ़ाइलें जोड़ने के लिए छोड़ें",
+    "browsePrompt": "या <1>ब्राउज़ करें</1>",
+    "errorNoFiles": "अपलोड करने के लिए कम से कम एक फ़ाइल जोड़ें।",
+    "removeFile": "{{name}} हटाएं",
+    "uploadedByLabel": "अपलोडकर्ता",
+    "uploadedByPlaceholder": "जैसे John Doe",
+    "categoryLabel": "श्रेणी",
+    "uncategorized": "अवर्गीकृत",
+    "notesLabel": "टिप्पणियाँ",
+    "optional": "(वैकल्पिक)",
+    "notesPlaceholder": "यहां कोई भी प्रासंगिक टिप्पणी जोड़ें…",
+    "cancel": "रद्द करें",
+    "submit": "फ़ाइल अपलोड करें",
+    "submitWithCount": "अपलोड ({{count}})"
+  },
+  "confirmDelete": {
+    "title": "फ़ाइल हटाएं",
+    "body": "लाइब्रेरी से <1>{{name}}</1> को हटाएं? इसे पूर्ववत नहीं किया जा सकता।",
+    "cancel": "रद्द करें",
+    "confirm": "हटाएं"
+  },
+  "emptyState": {
+    "searchTitle": "आपकी खोज से कोई फ़ाइल मेल नहीं खाती",
+    "emptyTitle": "अभी तक कोई फ़ाइल अपलोड नहीं की गई",
+    "searchDesc": "कोई भिन्न नाम, अपलोडकर्ता या श्रेणी आज़माएं।",
+    "emptyDesc": "इसे यहां सूचीबद्ध देखने के लिए अपनी पहली फ़ाइल अपलोड करें।",
+    "clearSearch": "खोज साफ़ करें",
+    "uploadFile": "फ़ाइल अपलोड करें"
+  },
+  "settings": {
+    "heading": "प्रोफ़ाइल सेटिंग्स",
+    "subtitle": "संगठन की प्राथमिकताएं और स्वरूप प्रबंधित करें",
+    "changesSaved": "परिवर्तन सहेजे गए",
+    "cancel": "रद्द करें",
+    "save": "परिवर्तन सहेजें",
+    "logoErrorType": "PNG या JPG छवि का उपयोग करें।",
+    "logoErrorSize": "छवि 1 MB से कम होनी चाहिए।",
+    "logoErrorRead": "उस छवि को पढ़ा नहीं जा सका।",
+    "profilePicture": {
+      "title": "प्रोफ़ाइल चित्र",
+      "description": "अपने संगठन के लिए एक लोगो या अवतार अपलोड करें",
+      "change": "चित्र बदलें",
+      "remove": "चित्र हटाएं",
+      "dropIdle": "अपलोड करने के लिए क्लिक करें या खींचें",
+      "dropActive": "अपलोड करने के लिए छोड़ें",
+      "hint": "PNG या JPG · 1 MB तक"
+    },
+    "company": {
+      "title": "कंपनी जानकारी",
+      "description": "अपने संगठन का प्रदर्शित नाम अपडेट करें",
+      "nameLabel": "कंपनी का नाम",
+      "namePlaceholder": "जैसे XYZ Company"
+    },
+    "appMode": {
+      "title": "एप्लिकेशन मोड",
+      "description": "ATP और C2M ऑपरेटिंग मोड के बीच स्विच करें",
+      "ariaLabel": "एप्लिकेशन मोड"
+    }
+  }
+}

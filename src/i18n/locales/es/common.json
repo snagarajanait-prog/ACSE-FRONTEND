@@ -1,0 +1,28 @@
+{
+  "language": {
+    "label": "Idioma"
+  },
+  "theme": {
+    "toLight": "Cambiar al tema claro",
+    "toDark": "Cambiar al tema oscuro"
+  },
+  "loader": {
+    "preparing": "Preparando tu espacio de trabajo"
+  },
+  "actions": {
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "upload": "Subir",
+    "edit": "Editar",
+    "back": "Atrás",
+    "retry": "Reintentar",
+    "loading": "Cargando"
+  },
+  "brand": {
+    "poweredBy": "Desarrollado por {{vendor}}"
+  }
+}

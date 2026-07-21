@@ -7,12 +7,14 @@
 
 import { useMemo, useState } from 'react'
 import { ChevronRight, Search, User } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useAccessGate } from '@/containers/copilot/hooks/useAccessGate'
 import { formatCurrency } from '@/containers/copilot/utils/formatCurrency'
 import { customers } from '@/data/customers'
 import { cn } from '@/utils/cn'
 
 export default function CustomerList() {
+  const { t } = useTranslation('copilot')
   const { pick } = useAccessGate()
   const [query, setQuery] = useState('')
 
@@ -31,19 +33,18 @@ export default function CustomerList() {
     <div className="mx-auto flex h-full w-full max-w-3xl flex-col px-4 md:px-6">
       <div className="shrink-0 pb-4 pt-8">
         <h2 className="text-xl font-semibold text-brand-navy dark:text-slate-100">
-          Select a customer
+          {t('customerList.title')}
         </h2>
         <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-          Pick an account to set the assistant&apos;s context. These are non-production customer
-          records — several have multiple accounts.
+          {t('customerList.subtitle')}
         </p>
         <div className="relative mt-4">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            aria-label="Search customers"
-            placeholder="Search by name, customer no. or account no."
+            aria-label={t('customerList.searchLabel')}
+            placeholder={t('customerList.searchPlaceholder')}
             className="h-11 w-full rounded-xl bg-white pl-9 pr-3 text-sm text-brand-navy outline-none ring-1 ring-slate-200 transition placeholder:text-slate-500 focus-visible:ring-2 focus-visible:ring-brand-cyan dark:bg-white/[0.04] dark:text-slate-100 dark:ring-white/10 dark:placeholder:text-slate-500"
           />
         </div>
@@ -62,11 +63,11 @@ export default function CustomerList() {
               <div className="min-w-0 flex-1">
                 <p className="truncate font-semibold text-brand-navy dark:text-slate-100">{c.name}</p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">
-                  {c.id} · since {c.since}
+                  {t('customerList.since', { id: c.id, since: c.since })}
                 </p>
               </div>
               <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600 dark:bg-white/10 dark:text-slate-300">
-                {c.accounts.length} account{c.accounts.length > 1 ? 's' : ''}
+                {t('customerList.accountCount', { count: c.accounts.length })}
               </span>
             </div>
 
@@ -100,7 +101,7 @@ export default function CustomerList() {
                       {a.balance > 0 ? formatCurrency(a.balance) : '$0.00'}
                     </p>
                     <p className="text-[10px] text-slate-500 dark:text-slate-400">
-                      {a.balance > 0 ? 'due' : 'settled'}
+                      {a.balance > 0 ? t('customerList.due') : t('customerList.settled')}
                     </p>
                   </div>
                   <span
@@ -125,7 +126,7 @@ export default function CustomerList() {
 
         {filtered.length === 0 && (
           <p className="py-10 text-center text-sm text-slate-500 dark:text-slate-400">
-            No customers match &ldquo;{query}&rdquo;.
+            {t('customerList.noResults', { query })}
           </p>
         )}
       </div>

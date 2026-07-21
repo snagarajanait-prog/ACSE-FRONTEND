@@ -10,6 +10,7 @@
  * ~350kB library must never enter the main bundle. Keep it that way.
  */
 
+import i18n from '@/i18n'
 import { ASSISTANT_NAME, channelLabel, type Transcript } from '@/containers/copilot/utils/transcript'
 import { VENDOR_NAME } from '@/constants/constants'
 import {
@@ -40,9 +41,6 @@ const TURN_GAP = 4.4
 /** Speaker labels and the summary grid indent from the left margin. */
 const INDENT = 4
 
-const DISCLAIMER =
-  'This transcript is a record of what was discussed. It is not a bill or a payment confirmation.'
-
 export async function buildTranscriptPdf(transcript: Transcript) {
   // Both awaited together: the logo fetch is independent of the library, and
   // serialising them would add a round trip to every download.
@@ -61,7 +59,7 @@ export async function buildTranscriptPdf(transcript: Transcript) {
   for (const entry of transcript.entries) {
     switch (entry.kind) {
       case 'user':
-        y = turn(doc, y, 'You', entry.text, 'customer')
+        y = turn(doc, y, i18n.t('copilot:transcript.you'), entry.text, 'customer')
         break
       case 'ai':
         y = turn(doc, y, ASSISTANT_NAME, entry.text, 'assistant')
@@ -70,7 +68,14 @@ export async function buildTranscriptPdf(transcript: Transcript) {
         y = aside(doc, y, entry.text)
         break
       case 'otp':
-        y = aside(doc, y, `Identity verified (${channelLabel(entry.channel)}) — ${entry.text}`)
+        y = aside(
+          doc,
+          y,
+          i18n.t('copilot:transcript.identityVerifiedPlain', {
+            channel: channelLabel(entry.channel),
+            text: entry.text,
+          }),
+        )
         break
       case 'summary':
         y = summary(doc, y, entry.title, entry.rows)
@@ -83,7 +88,7 @@ export async function buildTranscriptPdf(transcript: Transcript) {
 
   // Page numbers are stamped last: the total is only known once the flow has
   // been laid out, and a transcript's length is not knowable in advance.
-  paginate(doc, DISCLAIMER)
+  paginate(doc, i18n.t('copilot:transcript.disclaimer'))
 
   return { doc, fileName: `${transcript.fileBase}.pdf` }
 }
@@ -99,7 +104,7 @@ export async function downloadTranscriptPdf(transcript: Transcript): Promise<voi
 function header(doc: Doc, t: Transcript, logo: string | null): number {
   // The ACSE lockup is the masthead and the client is named as who the document
   // is for — see `masthead` in `pdfTheme.ts`.
-  let y = masthead(doc, { kind: 'Conversation transcript', company: t.company, logo })
+  let y = masthead(doc, { kind: i18n.t('copilot:transcript.kind'), company: t.company, logo })
 
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(15)
@@ -114,9 +119,10 @@ function header(doc: Doc, t: Transcript, logo: string | null): number {
   }
 
   /* ------------------------------ context ------------------------------- */
+  const contextLabel = i18n.t('copilot:transcript.context')
   y += 12
-  y = sectionHeading(doc, 'Context', y, CYAN)
-  y = fieldRows(doc, y, t.meta, continuePage, { label: 'Context', accent: CYAN })
+  y = sectionHeading(doc, contextLabel, y, CYAN)
+  y = fieldRows(doc, y, t.meta, continuePage, { label: contextLabel, accent: CYAN })
 
   return y + 11
 }

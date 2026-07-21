@@ -14,6 +14,8 @@ export const ROLES: Record<string, Role> = {
 export const STORAGE_KEYS = {
   token: 'acse.token',
   theme: 'acse.theme',
+  /** Chosen UI language (a code from `i18n/config`). Seeds i18next on boot. */
+  language: 'acse.lang',
   /** Signed-in admin user. Its presence rehydrates the session on refresh. */
   session: 'acse.session',
   /** Working set of admin-panel file rows (seed + uploads − deletions). */

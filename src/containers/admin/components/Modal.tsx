@@ -10,6 +10,7 @@
 import { useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
 import { X } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { cn } from '@/utils/cn'
 
 interface ModalProps {
@@ -32,6 +33,7 @@ export default function Modal({
   footer,
   className,
 }: ModalProps) {
+  const { t } = useTranslation('admin')
   const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -80,7 +82,7 @@ export default function Modal({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close dialog"
+            aria-label={t('shell.closeDialog')}
             className="-mr-1.5 -mt-1 grid h-8 w-8 shrink-0 place-items-center rounded-md text-slate-400 outline-none transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:ring-2 focus-visible:ring-brand-cyan dark:hover:bg-white/10 dark:hover:text-white"
           >
             <X className="h-4 w-4" />

@@ -9,6 +9,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import { ArrowLeft, Loader2, Mail, ShieldCheck } from 'lucide-react'
+import { Trans, useTranslation } from 'react-i18next'
 import OtpInput from '@/containers/copilot/components/OtpInput'
 import { useAccessGate } from '@/containers/copilot/hooks/useAccessGate'
 import { cn } from '@/utils/cn'
@@ -29,6 +30,7 @@ const GHOST_CLASS =
   'text-slate-500 hover:text-brand-navy dark:text-slate-400 dark:hover:text-white'
 
 export default function AccountVerify() {
+  const { t } = useTranslation('copilot')
   const gate = useAccessGate()
   const [email, setEmail] = useState(gate.email)
   const [error, setError] = useState<string | null>(null)
@@ -46,7 +48,7 @@ export default function AccountVerify() {
     e.preventDefault()
     const value = email.trim()
     if (!EMAIL_RE.test(value)) {
-      setError('Enter an email address so we can send your code.')
+      setError(t('verify.emailError'))
       return
     }
     setError(null)
@@ -66,11 +68,10 @@ export default function AccountVerify() {
           </span>
           <div className="min-w-0">
             <h2 className="text-lg font-semibold text-brand-navy dark:text-slate-100">
-              Verify your identity
+              {t('verify.title')}
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Step {gate.step === 'email' ? '1' : '2'} of 2 ·{' '}
-              {gate.step === 'email' ? 'Email address' : 'One-time code'}
+              {gate.step === 'email' ? t('verify.stepEmail') : t('verify.stepCode')}
             </p>
           </div>
         </div>
@@ -89,7 +90,7 @@ export default function AccountVerify() {
               htmlFor="verify-email"
               className="block text-xs font-medium text-slate-600 dark:text-slate-300"
             >
-              Email address
+              {t('verify.emailLabel')}
             </label>
             <div className="relative mt-1.5">
               <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500 dark:text-slate-400" />
@@ -117,8 +118,7 @@ export default function AccountVerify() {
             )}
 
             <p id="verify-email-help" className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-              We&apos;ll send a 6-digit code to confirm it&apos;s you. Any address is accepted here —
-              nothing is really sent.
+              {t('verify.emailHelp')}
             </p>
 
             <button
@@ -129,27 +129,32 @@ export default function AccountVerify() {
               {sending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Sending code…
+                  {t('verify.sending')}
                 </>
               ) : (
-                'Send code'
+                t('verify.sendCode')
               )}
             </button>
 
-            <BackButton onClick={gate.cancel}>Back to customers</BackButton>
+            <BackButton onClick={gate.cancel}>{t('verify.backToCustomers')}</BackButton>
           </form>
         ) : (
           <div className="mt-5">
             <p className="text-sm text-slate-700 dark:text-slate-300">
-              We sent a 6-digit code to{' '}
-              <span className="font-medium text-brand-navy dark:text-slate-100">{gate.email}</span>.
-              Enter it below to open the assistant.
+              <Trans
+                t={t}
+                i18nKey="verify.codeSent"
+                values={{ email: gate.email }}
+                components={{
+                  1: <span className="font-medium text-brand-navy dark:text-slate-100" />,
+                }}
+              />
             </p>
 
             <OtpInput onSubmit={gate.submitCode} className="mt-4" />
 
             <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
-              Any 6 digits are accepted.
+              {t('verify.anyDigits')}
             </p>
 
             <div className="mt-4 flex items-center justify-between gap-3">
@@ -161,7 +166,7 @@ export default function AccountVerify() {
                   GHOST_CLASS,
                 )}
               >
-                Use a different email
+                {t('verify.differentEmail')}
               </button>
               <button
                 type="button"
@@ -171,7 +176,7 @@ export default function AccountVerify() {
                   GHOST_CLASS,
                 )}
               >
-                Cancel
+                {t('verify.cancel')}
               </button>
             </div>
           </div>

@@ -14,6 +14,7 @@
  * document (the dashboard, an email attachment job, a print button).
  */
 
+import i18n from '@/i18n'
 import { CLIENT_NAME, VENDOR_NAME } from '@/constants/constants'
 import {
   CYAN,
@@ -56,9 +57,6 @@ export interface ReceiptInput {
   issuedAt?: Date
 }
 
-const DISCLAIMER =
-  'This receipt confirms a request was logged. It is not a bill or a payment confirmation.'
-
 export function receiptFileName(input: ReceiptInput, issuedAt: Date): string {
   const stamp = issuedAt.toISOString().slice(0, 10)
   const tail = input.reference ? slugify(input.reference) : stamp
@@ -87,9 +85,9 @@ export async function buildReceiptPdf(input: ReceiptInput) {
   })
 
   let y = masthead(doc, {
-    kind: 'Service receipt',
+    kind: i18n.t('copilot:receipt.kind'),
     company,
-    stamp: `Issued ${formatStamp(issuedAt)}`,
+    stamp: i18n.t('copilot:receipt.issued', { stamp: formatStamp(issuedAt) }),
     logo,
   })
 
@@ -109,32 +107,34 @@ export async function buildReceiptPdf(input: ReceiptInput) {
   doc.setFont('helvetica', 'normal')
   doc.setFontSize(9)
   doc.setTextColor(...SLATE)
-  doc.text('Keep this for your records.', MARGIN, y)
+  doc.text(i18n.t('copilot:receipt.keep'), MARGIN, y)
 
   /* ------------------------------ customer ------------------------------ */
   if (input.customer) {
+    const customerLabel = i18n.t('copilot:receipt.customer')
     y += 12
-    y = sectionHeading(doc, 'Customer', y, CYAN)
+    y = sectionHeading(doc, customerLabel, y, CYAN)
     y = fieldRows(
       doc,
       y,
       [
-        ['Name', input.customer.name],
-        ['Customer number', input.customer.id],
-        ['Email', input.customer.email],
-        ['Phone', input.customer.phone],
+        [i18n.t('copilot:receipt.name'), input.customer.name],
+        [i18n.t('copilot:receipt.customerNumber'), input.customer.id],
+        [i18n.t('copilot:receipt.email'), input.customer.email],
+        [i18n.t('copilot:receipt.phone'), input.customer.phone],
       ],
       resume,
-      { label: 'Customer', accent: CYAN },
+      { label: customerLabel, accent: CYAN },
     )
   }
 
   /* ------------------------------- details ------------------------------ */
+  const detailsLabel = i18n.t('copilot:receipt.requestDetails')
   y += 11
-  y = sectionHeading(doc, 'Request details', y, RED)
-  y = fieldRows(doc, y, input.rows, resume, { label: 'Request details', accent: RED })
+  y = sectionHeading(doc, detailsLabel, y, RED)
+  y = fieldRows(doc, y, input.rows, resume, { label: detailsLabel, accent: RED })
 
-  paginate(doc, DISCLAIMER)
+  paginate(doc, i18n.t('copilot:receipt.disclaimer'))
 
   return { doc, fileName: receiptFileName(input, issuedAt) }
 }

@@ -7,7 +7,9 @@
  */
 
 import { FlaskConical, PanelLeft, RotateCcw } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 import Logo from '@/components/Logo'
 import ThemeToggle from '@/components/ThemeToggle'
 import { CLIENT_NAME, ROUTE_PATHS } from '@/constants/constants'
@@ -37,6 +39,7 @@ export default function CopilotHeader({
   onOpenPanel,
   onReset,
 }: CopilotHeaderProps) {
+  const { t } = useTranslation('copilot')
   return (
     <header className="relative z-30 flex h-14 shrink-0 items-center gap-2 border-b border-slate-200/70 bg-white/70 px-3 backdrop-blur-xl transition-colors sm:gap-3 md:px-6 dark:border-white/[0.06] dark:bg-brand-navydeep/60">
       <ClientBrand />
@@ -44,13 +47,14 @@ export default function CopilotHeader({
       {/* `min-w-0` lets the brand truncate instead of the controls being squeezed. */}
       <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2">
         <SourcePill source={source} system={sourceSystem} short={sourceShort} />
+        <LanguageSwitcher />
         <ThemeToggle className="h-8 w-8" />
         {hasContext && (
           <>
             <button
               onClick={onOpenPanel}
               className={cn(ICON_BUTTON_CLASS, 'lg:hidden')}
-              aria-label="Open account details"
+              aria-label={t('header.openAccountDetails')}
             >
               <PanelLeft className="h-4 w-4" />
             </button>
@@ -58,8 +62,8 @@ export default function CopilotHeader({
               onClick={onReset}
               disabled={playing}
               className={cn(ICON_BUTTON_CLASS, 'disabled:opacity-40')}
-              aria-label="New chat"
-              title="New chat"
+              aria-label={t('header.newChat')}
+              title={t('header.newChat')}
             >
               <RotateCcw className="h-4 w-4" />
             </button>
@@ -93,16 +97,17 @@ function ClientBrand() {
 
 /** "Powered by ACSE" attribution, top-right. Doubles as the way back home. */
 function PoweredBy() {
+  const { t } = useTranslation('copilot')
   return (
     <Link
       to={ROUTE_PATHS.landing}
-      title="Back to acsesolutions.com"
+      title={t('header.backHome')}
       // `py-2 -my-2` grows the hit area to a comfortable 36px without changing
       // how the lockup sits in the header.
       className="-my-2 flex shrink-0 items-center gap-1.5 rounded-md py-2 outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan"
     >
       <span className="hidden text-[10px] font-medium uppercase tracking-wide text-slate-400 sm:inline">
-        Powered by
+        {t('poweredBy')}
       </span>
       <Logo className="h-7" />
     </Link>
@@ -110,10 +115,11 @@ function PoweredBy() {
 }
 
 function SourcePill({ source, system, short }: { source: string; system: string; short: string }) {
+  const { t } = useTranslation('copilot')
   const isLive = source === 'C2M'
   return (
     <span
-      aria-label={`Assistant mode: ${system}`}
+      aria-label={t('header.assistantMode', { system })}
       className={cn(
         'hidden items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium ring-1 sm:inline-flex',
         isLive
@@ -129,7 +135,7 @@ function SourcePill({ source, system, short }: { source: string; system: string;
       ) : (
         <FlaskConical className="h-3 w-3 text-brand-cyan" />
       )}
-      Mode · {short}
+      {t('header.mode', { short })}
     </span>
   )
 }

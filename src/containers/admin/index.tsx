@@ -11,6 +11,7 @@
  * deletes — lives in `useAdminFiles`.
  */
 
+import { Trans, useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import AdminGate from '@/containers/admin/auth/AdminGate'
 import {
@@ -33,6 +34,7 @@ export default function AdminPage() {
 }
 
 function Admin() {
+  const { t } = useTranslation('admin')
   const [params] = useSearchParams()
   const section: AdminSection = params.get('lib') === 'image' ? 'image' : 'document'
 
@@ -42,7 +44,7 @@ function Admin() {
   return (
     <AdminShell
       active={section === 'image' ? 'images' : 'documents'}
-      title="File Upload"
+      title={t('shell.fileUploadTitle')}
       counts={admin.counts}
     >
       <div className="mx-auto w-full max-w-6xl px-4 py-6 md:px-8">
@@ -102,18 +104,23 @@ function ResultsSummary({
   total: number
   searching: boolean
 }) {
+  const { t } = useTranslation('admin')
   return (
     <p className="mb-3 text-xs text-slate-500 dark:text-slate-400">
       {searching ? (
-        <>
-          Showing <span className="font-semibold text-brand-navy dark:text-slate-200">{shown}</span>{' '}
-          of {total}
-        </>
+        <Trans
+          t={t}
+          i18nKey="files.summary.showing"
+          values={{ shown, total }}
+          components={{ 1: <span className="font-semibold text-brand-navy dark:text-slate-200" /> }}
+        />
       ) : (
-        <>
-          <span className="font-semibold text-brand-navy dark:text-slate-200">{total}</span>{' '}
-          {total === 1 ? 'file' : 'files'}
-        </>
+        <Trans
+          t={t}
+          i18nKey="files.summary.total"
+          count={total}
+          components={{ 1: <span className="font-semibold text-brand-navy dark:text-slate-200" /> }}
+        />
       )}
     </p>
   )

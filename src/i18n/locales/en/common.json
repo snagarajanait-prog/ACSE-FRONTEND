@@ -1,0 +1,28 @@
+{
+  "language": {
+    "label": "Language"
+  },
+  "theme": {
+    "toLight": "Switch to light theme",
+    "toDark": "Switch to dark theme"
+  },
+  "loader": {
+    "preparing": "Preparing your workspace"
+  },
+  "actions": {
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "close": "Close",
+    "confirm": "Confirm",
+    "upload": "Upload",
+    "edit": "Edit",
+    "back": "Back",
+    "retry": "Retry",
+    "loading": "Loading"
+  },
+  "brand": {
+    "poweredBy": "Powered by {{vendor}}"
+  }
+}

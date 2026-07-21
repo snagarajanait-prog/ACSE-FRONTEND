@@ -21,6 +21,7 @@
 import { useMemo } from 'react'
 import { FileText, Image as ImageIcon, Settings } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { ROUTE_PATHS } from '@/constants/constants'
 import type { AdminSection } from '@/containers/admin/types'
@@ -42,13 +43,12 @@ interface LibraryItem {
   /** Slug the backend must return in `allowedPages` for this item to show. */
   page: Extract<PageSlug, 'document' | 'image'>
   section: AdminSection
-  label: string
   icon: LucideIcon
 }
 
 const LIBRARIES: LibraryItem[] = [
-  { id: 'documents', page: 'document', section: 'document', label: 'Document', icon: FileText },
-  { id: 'images', page: 'image', section: 'image', label: 'Image', icon: ImageIcon },
+  { id: 'documents', page: 'document', section: 'document', icon: FileText },
+  { id: 'images', page: 'image', section: 'image', icon: ImageIcon },
 ]
 
 interface AdminSidebarProps {
@@ -59,6 +59,7 @@ interface AdminSidebarProps {
 }
 
 export default function AdminSidebar({ active, counts, onNavigate }: AdminSidebarProps) {
+  const { t } = useTranslation('admin')
   const resolvedCounts = useMemo(() => counts ?? countBySection(), [counts])
 
   // The backend decides what this user may navigate to. RTK Query dedupes across
@@ -74,20 +75,20 @@ export default function AdminSidebar({ active, counts, onNavigate }: AdminSideba
   const canSeeSettings = allowed.has('settings')
 
   return (
-    <nav aria-label="Admin navigation" className="flex h-full flex-col p-4">
+    <nav aria-label={t('shell.adminNav')} className="flex h-full flex-col p-4">
       <p className="px-2 pb-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-        Navigation
+        {t('shell.navigation')}
       </p>
 
       {isLoading ? (
         <NavSkeleton />
       ) : (
         <ul className="space-y-1">
-          {libraries.map(({ id, section, label, icon }) => (
+          {libraries.map(({ id, section, icon }) => (
             <NavRow
               key={id}
               to={`${ROUTE_PATHS.admin}?lib=${section}`}
-              label={label}
+              label={t(`shell.nav.${section}`)}
               icon={icon}
               active={active === id}
               badge={resolvedCounts[section]}
@@ -97,7 +98,7 @@ export default function AdminSidebar({ active, counts, onNavigate }: AdminSideba
           {canSeeSettings && (
             <NavRow
               to={ROUTE_PATHS.adminSettings}
-              label="Settings"
+              label={t('shell.nav.settings')}
               icon={Settings}
               active={active === 'settings'}
               onNavigate={onNavigate}
@@ -182,14 +183,15 @@ function NavRow({
 
 /** Signed-in identity, pinned to the bottom of the rail. Placeholder until auth. */
 function UserCard() {
+  const { t } = useTranslation('admin')
   return (
     <div className="mt-auto flex items-center gap-2.5 rounded-lg border border-slate-200 bg-slate-50/70 px-3 py-2.5 dark:border-white/10 dark:bg-white/[0.03]">
       <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-brand-navy text-[11px] font-bold text-white dark:bg-brand-cyan/20 dark:text-brand-cyan">
         AC
       </span>
       <div className="min-w-0 leading-tight">
-        <p className="truncate text-sm font-semibold text-brand-navy dark:text-slate-100">Admin Console</p>
-        <p className="truncate text-[11px] text-slate-500 dark:text-slate-400">System Administrator</p>
+        <p className="truncate text-sm font-semibold text-brand-navy dark:text-slate-100">{t('shell.userCard.name')}</p>
+        <p className="truncate text-[11px] text-slate-500 dark:text-slate-400">{t('shell.userCard.role')}</p>
       </div>
     </div>
   )
