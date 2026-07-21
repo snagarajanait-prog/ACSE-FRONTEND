@@ -15,7 +15,7 @@
  */
 
 import { useCallback, useEffect, useState } from 'react'
-import AssistantOrbParticles from '@/components/AssistantOrbParticles'
+import AssistantOrbLottie from '@/components/AssistantOrbLottie'
 import {
   AccountPanel,
   AccountVerify,
@@ -116,7 +116,10 @@ export default function Copilot() {
             >
               {isHero ? (
                 <div className="mx-auto flex min-h-full w-full max-w-2xl flex-col items-center justify-center px-5 pb-16 pt-10 text-center">
-                  <AssistantOrbParticles size={80} className="mb-6" />
+                  {/* Sized larger than the old sphere: the Lottie's orb body fills
+                      only ~57% of its frame (the rest is drifting bubbles + glow),
+                      so the box runs well past the sphere it replaces. */}
+                  <AssistantOrbLottie size={160} className="mb-6" />
                   <h1 className="text-balance text-3xl font-semibold tracking-[-0.02em] text-brand-navy md:text-4xl dark:text-slate-100">
                     {greetingText}
                   </h1>

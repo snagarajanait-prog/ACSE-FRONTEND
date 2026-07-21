@@ -20,7 +20,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Maximize2, Minimize2, PanelRightClose, SlidersHorizontal, X } from 'lucide-react'
-import AssistantOrb3D from '@/components/AssistantOrb3D'
+import AssistantOrbLottie from '@/components/AssistantOrbLottie'
 import Logo from '@/components/Logo'
 import ThemeToggle from '@/components/ThemeToggle'
 import AccountPanel from '@/containers/copilot/components/AccountPanel'
@@ -224,7 +224,9 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
               >
                 {isHero ? (
                   <div className="flex min-h-full flex-col items-center justify-center px-4 pb-10 pt-8 text-center">
-                    <AssistantOrb3D size={84} className="mb-4" />
+                    {/* Box is larger than the sphere it replaces because the Lottie
+                        orb fills only ~57% of its frame — see the note in ../index.tsx. */}
+                    <AssistantOrbLottie size={140} className="mb-4" />
                     <h2 className="text-balance text-xl font-semibold tracking-[-0.01em] text-brand-navy dark:text-slate-100">
                       {greetingText}
                     </h2>

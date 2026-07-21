@@ -36,6 +36,14 @@ export const routes: RouteConfig[] = [
     component: lazy(() => import('@/containers/dashboard')),
   },
   {
+    // Internal file-upload admin panel. `isPublic` for now: there is no login yet,
+    // so hitting /admin drops you straight in. When auth lands, drop `isPublic`
+    // and add `allowed: [ROLES.ADMIN]` to gate it behind the admin role.
+    path: ROUTE_PATHS.admin,
+    component: lazy(() => import('@/containers/admin')),
+    isPublic: true,
+  },
+  {
     // Scratch screen — orb candidates for the copilot hero. `isPublic` matters:
     // without it the guard bounces you to the landing page. Delete this entry
     // and `containers/orb-lab` once one is picked.

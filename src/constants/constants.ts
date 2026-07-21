@@ -13,6 +13,8 @@ export const ROLES: Record<string, Role> = {
 export const STORAGE_KEYS = {
   token: 'acse.token',
   theme: 'acse.theme',
+  /** Working set of admin-panel file rows (seed + uploads − deletions). */
+  adminFiles: 'acse.admin.files',
 } as const
 
 /**
@@ -34,6 +36,8 @@ export const ROUTE_PATHS = {
   landing: '/',
   copilot: '/copilot',
   dashboard: '/dashboard',
+  /** Internal file-upload admin panel. Public for now (no auth yet) — see routes.ts. */
+  admin: '/admin',
   /** Scratch screen for choosing the copilot hero orb. Remove with the folder. */
   orbLab: '/orb-lab',
 } as const
