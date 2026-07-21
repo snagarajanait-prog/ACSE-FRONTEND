@@ -17,6 +17,15 @@
  *   - otherwise the loop is paused whenever the orb scrolls out of view or the
  *     tab is hidden, so it never burns frames no one is watching.
  *
+ * Theme parity via a light base: the artwork is a *translucent* soap bubble —
+ * gradients fade to zero alpha, layers sit as low as 10% opacity — so its colour
+ * is really the page bleeding THROUGH it. Left to composite over the page it
+ * glows on the white light theme and turns murky over the dark navy. We instead
+ * paint it over a fixed white wash of our own, so the identical bright, iridescent
+ * orb appears in both themes. The wash is white-on-white (invisible) in light and
+ * does all its work in dark; it's feathered to transparent around the bubble's
+ * edge so it reads as the bubble's own glow, never a hard disc on the navy page.
+ *
  * Falls back to the CSS `AssistantOrb` if the lazy chunk ever fails to load, so
  * the hero always has an orb, never a hole — the same guarantee `AssistantOrb3D`
  * makes for WebGL. The CSS orb is sized to the Lottie's ~57% core so the layout
@@ -128,10 +137,21 @@ export default function AssistantOrbLottie({ size = 96, className }: AssistantOr
 
   return (
     <div
-      ref={hostRef}
       aria-hidden
-      className={cn('block', className)}
+      className={cn('relative block', className)}
       style={{ width: size, height: size }}
-    />
+    >
+      {/* The fixed white base the translucent bubble composites over — see the file
+          header. Solid through the orb's ~57% body, then feathered out so its rim
+          melts into the page instead of ending on a visible edge. */}
+      <span
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(circle closest-side, #ffffff 0%, #ffffff 52%, rgba(255,255,255,0) 76%)',
+        }}
+      />
+      <div ref={hostRef} className="absolute inset-0" />
+    </div>
   )
 }
