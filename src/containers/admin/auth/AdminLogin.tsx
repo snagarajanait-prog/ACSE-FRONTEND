@@ -55,12 +55,13 @@ export default function AdminLogin() {
 
         <MarketingPane />
 
-        {/* Sign-in card */}
-        <section className="relative z-10 flex items-center justify-center px-5 py-12 sm:px-8 lg:py-14">
+        {/* Sign-in card — centred on small screens, nudged toward the right edge on
+            large ones to match the reference. */}
+        <section className="relative z-10 flex items-center justify-center px-5 py-12 sm:px-8 lg:justify-end lg:py-14 lg:pr-12 xl:pr-16">
           <div className="w-full max-w-sm rounded-2xl bg-white/80 p-6 shadow-lg shadow-slate-900/5 ring-1 ring-slate-200/80 backdrop-blur-xl sm:p-8 dark:bg-white/[0.04] dark:shadow-none dark:ring-white/10">
             <div className="flex items-center gap-1.5">
               <Logo className="h-8" />
-              <span className="text-sm font-bold tracking-tight text-brand-red">AI</span>
+              <span className="text-sm font-bold tracking-tight text-brand-cyan">AI</span>
             </div>
 
             <h1 className="mt-6 text-2xl font-bold tracking-tight text-brand-navy dark:text-slate-100">
@@ -177,22 +178,43 @@ function MarketingPane() {
 
 /**
  * The shared panel background: a light base, a soft brand wash, and the two
- * glass-ribbon SVGs bleeding in from opposite corners. Purely decorative and
- * dimmed on dark, where the ribbons' `darken` blend would otherwise vanish.
+ * glass-ribbon SVGs anchored to diagonally-opposite corners — left ribbon
+ * top-left, right ribbon bottom-right, matching the reference. Each is pulled
+ * off its corner with negative offsets so only the soft flowing part shows and
+ * the artwork's straight edge is clipped away by the panel's rounded overflow.
+ * Purely decorative and dimmed on dark, where the ribbons' `darken` blend would
+ * otherwise vanish.
  */
 function Backdrop() {
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 z-0 select-none overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(120%_90%_at_15%_10%,rgba(44,165,217,0.10),transparent_55%)] dark:bg-[radial-gradient(120%_90%_at_15%_10%,rgba(44,165,217,0.18),transparent_60%)]" />
-      <img
-        src={ribbonLeft}
-        alt=""
-        className="absolute -bottom-6 -left-8 w-[52%] max-w-[540px] opacity-90 dark:opacity-25"
-      />
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0 z-0 select-none overflow-hidden rounded-[1.75rem]"
+    >
+      {/* Corner washes echoing the ribbons so the tint reads even where the art is faint. */}
+      <div className="absolute inset-0 bg-[radial-gradient(75%_60%_at_0%_0%,rgba(44,165,217,0.12),transparent_60%),radial-gradient(70%_60%_at_100%_100%,rgba(139,120,220,0.10),transparent_60%)] dark:bg-[radial-gradient(75%_60%_at_0%_0%,rgba(44,165,217,0.20),transparent_62%)]" />
+      {/* Top-left ribbon (the `Right` artwork) — masked so its inner (bounding-box)
+          edge fades to nothing and only the soft corner flow shows. The tall art
+          suits the vertical left edge, so it's sized by height. */}
       <img
         src={ribbonRight}
         alt=""
-        className="absolute bottom-0 right-0 h-full w-auto max-w-[46%] object-contain object-right-bottom opacity-90 dark:opacity-25"
+        style={{
+          WebkitMaskImage: 'linear-gradient(to right, #000 42%, transparent 82%)',
+          maskImage: 'linear-gradient(to right, #000 42%, transparent 82%)',
+        }}
+        className="absolute -left-4 -top-8 h-[112%] w-auto dark:opacity-25"
+      />
+      {/* Bottom-right ribbon (the `Left` artwork) — same inward fade, opposite
+          corner. The wide art is sized by width. */}
+      <img
+        src={ribbonLeft}
+        alt=""
+        style={{
+          WebkitMaskImage: 'radial-gradient(140% 140% at 82% 78%, #000 40%, transparent 80%)',
+          maskImage: 'radial-gradient(140% 140% at 82% 78%, #000 40%, transparent 80%)',
+        }}
+        className="absolute -bottom-20 -right-16 w-[52%] max-w-[500px] dark:opacity-25"
       />
     </div>
   )
@@ -207,7 +229,7 @@ function RememberToggle({
   onChange: (next: boolean) => void
 }) {
   return (
-    <label className="inline-flex cursor-pointer select-none items-center gap-2">
+    <label className="inline-flex cursor-pointer select-none items-center gap-3">
       <button
         type="button"
         role="switch"
@@ -220,12 +242,14 @@ function RememberToggle({
       >
         <span
           className={cn(
-            'absolute top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform',
-            checked ? 'translate-x-[1.125rem]' : 'translate-x-0.5',
+            'absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform',
+            checked ? 'translate-x-4' : 'translate-x-0',
           )}
         />
       </button>
-      <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Remember me</span>
+      <span className="whitespace-nowrap text-xs font-medium text-slate-600 dark:text-slate-300">
+        Remember me
+      </span>
     </label>
   )
 }
