@@ -16,6 +16,7 @@ import {
   type OtpPrompt,
 } from '@/containers/copilot/hooks/useChatEngine'
 import { splitReference } from '@/containers/copilot/utils/splitReference'
+import { hasExportableContent } from '@/containers/copilot/utils/transcript'
 import type { Account, Customer } from '@/data/customers'
 import type { ChatStep } from '@/data/scenarios'
 import type { DataSource } from '@/redux/dataSourceSlice'
@@ -50,6 +51,29 @@ function referenceAfter(messages: Msg[], index: number): string | null {
   return null
 }
 
+/** One conversation's worth of turns, sliced out of the flat thread. */
+interface Segment {
+  conversationId: number
+  messages: Msg[]
+}
+
+/**
+ * Split the flat thread back into the separate conversations it holds, keyed by
+ * the `conversationId` the engine stamps on each turn. Every scenario run and
+ * every free-typed exchange is its own segment, so each can close with its own
+ * Copy / Share / Export bar — a single chat that started service *and* stopped
+ * service ends up with a take-away bar under each.
+ */
+function toSegments(messages: Msg[]): Segment[] {
+  const segments: Segment[] = []
+  for (const m of messages) {
+    const last = segments[segments.length - 1]
+    if (last && last.conversationId === m.conversationId) last.messages.push(m)
+    else segments.push({ conversationId: m.conversationId, messages: [m] })
+  }
+  return segments
+}
+
 export default function ChatThread({
   messages,
   source,
@@ -68,35 +92,65 @@ export default function ChatThread({
     phone: customer.phone,
   }
 
-  // Only offer the take-away bar once the thread is at rest. Mid-playback it
+  // Only offer a take-away bar once its conversation is at rest. Mid-playback it
   // would export half a conversation, and a row of controls sliding in under a
   // live assistant turn reads as part of that turn.
   const settled = !playing && !thinking && !typing && !otpPrompt
 
+  const segments = toSegments(messages)
+  // The active turn (a status line still shimmering, the in-flight indicators)
+  // always lives in the final segment. Track the very last message so a status
+  // node keeps its "working" state regardless of which segment it sits in.
+  const lastId = messages.length ? messages[messages.length - 1].id : -1
+
   return (
     <div className="relative mx-auto w-full max-w-2xl px-5 pb-10 pt-10 md:px-0">
       <Filament active={Boolean(thinking || typing)} />
-      <ol role="log" aria-live="polite" aria-relevant="additions" className="relative space-y-10">
-        {messages.map((m, i) => (
-          <Turn
-            key={m.id}
-            msg={m}
-            source={source}
-            isLast={i === messages.length - 1}
-            playing={playing}
-            customer={receiptCustomer}
-            reference={m.step.kind === 'summary' ? referenceAfter(messages, i) : null}
-          />
-        ))}
-        {otpPrompt && <OtpChallengeNode prompt={otpPrompt} onSubmit={onSubmitOtp} />}
-        {thinking && <ThinkingNode phrases={thinking} />}
-        {typing && <TypingNode />}
-      </ol>
+      {segments.map((segment, si) => {
+        const isLast = si === segments.length - 1
+        // Earlier conversations are, by definition, finished the moment a newer
+        // one begins, so their bar is always available. The live conversation
+        // earns its bar only once the whole thread comes to rest.
+        const showActions =
+          (isLast ? settled : true) && hasExportableContent(segment.messages)
+        return (
+          <section key={segment.conversationId} className={cn(si > 0 && 'mt-10')}>
+            <ol
+              // Only the live conversation announces; the settled ones above it
+              // are static history and must not re-read themselves on mount.
+              role="log"
+              aria-live={isLast ? 'polite' : 'off'}
+              aria-relevant="additions"
+              className="relative space-y-10"
+            >
+              {segment.messages.map((m, i) => (
+                <Turn
+                  key={m.id}
+                  msg={m}
+                  source={source}
+                  isLast={m.id === lastId}
+                  playing={playing}
+                  customer={receiptCustomer}
+                  reference={m.step.kind === 'summary' ? referenceAfter(segment.messages, i) : null}
+                />
+              ))}
+              {isLast && otpPrompt && <OtpChallengeNode prompt={otpPrompt} onSubmit={onSubmitOtp} />}
+              {isLast && thinking && <ThinkingNode phrases={thinking} />}
+              {isLast && typing && <TypingNode />}
+            </ol>
 
-      {/* Outside the <ol>: these are controls for the log, not an entry in it. */}
-      {settled && (
-        <ChatActions messages={messages} customer={customer} account={account} source={source} />
-      )}
+            {/* Outside the <ol>: these are controls for the log, not an entry in it. */}
+            {showActions && (
+              <ChatActions
+                messages={segment.messages}
+                customer={customer}
+                account={account}
+                source={source}
+              />
+            )}
+          </section>
+        )
+      })}
     </div>
   )
 }

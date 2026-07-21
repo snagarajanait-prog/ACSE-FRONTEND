@@ -25,6 +25,13 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
  */
 export interface Msg {
   id: number
+  /**
+   * Which conversation this entry belongs to. The seeded greeting is 0; every
+   * new scenario run or free exchange increments it. This is what lets a single
+   * settled thread be split back into the separate conversations it holds, so
+   * each one closes with its own Copy / Share / Export bar.
+   */
+  conversationId: number
   step: ChatStep
 }
 
@@ -181,6 +188,10 @@ export function useChatEngine(): ChatEngine {
   const [draft, setDraft] = useState('')
   const idRef = useRef(0)
   const runRef = useRef(0)
+  // Bumped at the start of every scenario run / free exchange, and stamped onto
+  // each pushed message, so the flat transcript carries its own conversation
+  // boundaries. The seeded greeting keeps the initial 0.
+  const convRef = useRef(0)
   const scrollRef = useRef<HTMLDivElement>(null)
   const otpResolveRef = useRef<((code: string | null) => void) | null>(null)
 
@@ -207,12 +218,15 @@ export function useChatEngine(): ChatEngine {
     setRenderedKey(contextKey)
     runRef.current++
     idRef.current = 0
+    convRef.current = 0
     setPlaying(false)
     setTyping(false)
     setThinking(null)
     settleOtp(null)
     setMessages(
-      customer ? [{ id: idRef.current++, step: { kind: 'ai', text: greeting(customer.name) } }] : [],
+      customer
+        ? [{ id: idRef.current++, conversationId: 0, step: { kind: 'ai', text: greeting(customer.name) } }]
+        : [],
     )
   }
 
@@ -258,7 +272,7 @@ export function useChatEngine(): ChatEngine {
   )
 
   const push = useCallback((step: ChatStep) => {
-    setMessages((m) => [...m, { id: idRef.current++, step }])
+    setMessages((m) => [...m, { id: idRef.current++, conversationId: convRef.current, step }])
   }, [])
 
   const delayFor = (step: ChatStep) => {
@@ -271,6 +285,9 @@ export function useChatEngine(): ChatEngine {
   const play = useCallback(
     async (steps: ChatStep[], firstUserText?: string, scenarioId?: string) => {
       const myRun = ++runRef.current
+      // A scenario is a fresh conversation: give it its own id so it settles
+      // with its own take-away bar rather than folding into the one before it.
+      convRef.current += 1
       // Abandon a challenge left held by the run we just superseded.
       settleOtp(null)
       setPlaying(true)
@@ -351,8 +368,11 @@ export function useChatEngine(): ChatEngine {
     setThinking(null)
     settleOtp(null)
     idRef.current = 0
+    convRef.current = 0
     setMessages(
-      customer ? [{ id: idRef.current++, step: { kind: 'ai', text: greeting(customer.name) } }] : [],
+      customer
+        ? [{ id: idRef.current++, conversationId: 0, step: { kind: 'ai', text: greeting(customer.name) } }]
+        : [],
     )
   }, [customer, settleOtp])
 
@@ -385,6 +405,9 @@ export function useChatEngine(): ChatEngine {
       return
     }
     const myRun = ++runRef.current
+    // A free-typed exchange is its own conversation too, so it can be taken away
+    // on its own once the assistant answers.
+    convRef.current += 1
     push({ kind: 'user', text })
     setPlaying(true)
     void (async () => {
