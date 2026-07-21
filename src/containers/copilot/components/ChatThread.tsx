@@ -8,6 +8,7 @@
 import { CheckCircle2, ClipboardCheck, KeyRound, Loader2, ShieldCheck } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import ChatActions from '@/containers/copilot/components/ChatActions'
+import Markdown from '@/containers/copilot/components/Markdown'
 import OtpInput from '@/containers/copilot/components/OtpInput'
 import ReceiptMenu from '@/containers/copilot/components/ReceiptMenu'
 import {
@@ -232,10 +233,10 @@ function Turn({
       return (
         <li className="relative pl-9 motion-safe:animate-rise-in">
           <Node />
-          <p className="max-w-[68ch] text-[15px] leading-7 text-slate-700 dark:text-slate-100/90">
+          <div className="max-w-[68ch] text-[15px] leading-7 text-slate-700 dark:text-slate-100/90">
             <span className="sr-only">{t('chat.assistantSaid')}</span>
-            <Lede text={step.text} />
-          </p>
+            {step.format === 'markdown' ? <Markdown text={step.text} /> : <Lede text={step.text} />}
+          </div>
         </li>
       )
     case 'status': {
@@ -519,20 +520,16 @@ function StreamingReasoningNode({ text }: { text: string }) {
   )
 }
 
-/** The ML answer as it streams in (SSE `token` events), with a live caret. */
+/** The ML answer as it streams in (SSE `token` events), Markdown with a live caret. */
 function StreamingAnswerNode({ text }: { text: string }) {
   const { t } = useTranslation('copilot')
   return (
     <li className="relative pl-9 motion-safe:animate-rise-in" role="status">
       <Node />
-      <p className="max-w-[68ch] text-[15px] leading-7 text-slate-700 dark:text-slate-100/90">
+      <div className="max-w-[68ch] text-[15px] leading-7 text-slate-700 dark:text-slate-100/90">
         <span className="sr-only">{t('chat.assistantSaid')}</span>
-        {text ? <Lede text={text} /> : null}
-        <span
-          aria-hidden
-          className="ml-0.5 inline-block h-4 w-0.5 translate-y-0.5 bg-brand-cyan motion-safe:animate-caret-blink"
-        />
-      </p>
+        <Markdown text={text} caret />
+      </div>
     </li>
   )
 }

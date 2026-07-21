@@ -58,6 +58,18 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
  */
 export const THINK_INTERVAL_MS = 750
 
+/**
+ * Typewriter pacing for streamed ML answers. Tokens arrive from the SSE feed in
+ * fast, uneven bursts — and the buffered-replay path delivers them all at once —
+ * so painting each one as it lands makes the reply appear suddenly. These decouple
+ * the on-screen reveal from network arrival: one character per tick for a small
+ * backlog (a steady, readable ~33 chars/sec), scaling up proportionally so a long
+ * or replayed answer still finishes within ~`STREAM_DRAIN_TICKS` ticks instead of
+ * crawling. Raise the tick, or the drain count, to slow the reveal further.
+ */
+const STREAM_TICK_MS = 30
+const STREAM_DRAIN_TICKS = 60
+
 /** The verification code shown on auto-verified OTP cards (presentation-only). */
 export const OTP_DIGITS = ['6', '2', '9', '1', '0', '4'] as const
 
@@ -423,7 +435,9 @@ export function useChatEngine(): ChatEngine {
 
       const requestId = newRequestId()
       let reasoning = ''
-      let answer = ''
+      let answer = '' // full answer text received so far — the typewriter's target
+      let shown = 0 // characters of `answer` currently revealed on screen
+      let received = false // network side done (stream + fallback settled)
       const isStale = () => runRef.current !== myRun || ac.signal.aborted
 
       // Fire the POST but don't block on it: a cooperative server streams tokens
@@ -445,47 +459,70 @@ export function useChatEngine(): ChatEngine {
             setStreamReasoning(reasoning)
           },
           onToken: (chunk) => {
+            // Just buffer it; the reveal loop paints `answer` at its own pace.
             if (isStale() || !chunk) return
             answer += chunk
-            setTyping(false)
-            setStreamAnswer(answer)
           },
         })
 
-      try {
-        await runStream()
-      } catch {
-        // Opened before the turn was registered, or a transport error — fall
-        // through and retry once the POST has definitely reached the server.
-      }
-
-      // Nothing streamed? Make sure the turn is registered by awaiting the POST,
-      // then replay the (now buffered) stream once.
-      if (!isStale() && !answer && !reasoning) {
-        await postPromise
-        if (!isStale()) {
-          try {
-            await runStream()
-          } catch {
-            // Stream still unavailable; the POST body below is the fallback.
+      // Typewriter: reveal `answer` toward completion at a steady rate, whatever
+      // speed the network delivered it. Runs alongside the network work below and
+      // exits once everything received has been shown.
+      const revealLoop = async () => {
+        for (;;) {
+          if (isStale()) return
+          const backlog = answer.length - shown
+          if (backlog > 0) {
+            shown = Math.min(answer.length, shown + Math.max(1, Math.ceil(backlog / STREAM_DRAIN_TICKS)))
+            setTyping(false)
+            setStreamAnswer(answer.slice(0, shown))
+            await sleep(STREAM_TICK_MS)
+          } else if (received) {
+            return
+          } else {
+            await sleep(STREAM_TICK_MS) // caught up — wait for the next token
           }
         }
       }
 
-      if (isStale()) return
-      const post = await postPromise
+      const networkWork = async () => {
+        try {
+          await runStream()
+        } catch {
+          // Opened before the turn was registered, or a transport error — fall
+          // through and retry once the POST has definitely reached the server.
+        }
+        // Nothing streamed? Make sure the turn is registered by awaiting the POST,
+        // then replay the (now buffered) stream once.
+        if (!isStale() && !answer && !reasoning) {
+          await postPromise
+          if (!isStale()) {
+            try {
+              await runStream()
+            } catch {
+              // Stream still unavailable; the POST body is the fallback.
+            }
+          }
+        }
+        const post = await postPromise
+        // Fall back to the POST body if the stream gave nothing — it types out too.
+        if (!answer && post?.content) answer = post.content
+        received = true
+      }
+
+      await Promise.all([networkWork(), revealLoop()])
       if (isStale()) return
 
       // Only relinquish the shared ref if it's still ours (a newer turn may own it).
       if (mlAbortRef.current === ac) mlAbortRef.current = null
-      const finalAnswer = answer || post?.content || ''
       setTyping(false)
       setStreamReasoning(null)
       setStreamAnswer(null)
       push({
         kind: 'ai',
+        format: 'markdown',
         text:
-          finalAnswer ||
+          answer ||
           i18n.t(
             'copilot:chat.mlError',
             'Sorry — I could not reach the assistant service just now. Please try again.',
