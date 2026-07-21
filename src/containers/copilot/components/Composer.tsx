@@ -19,7 +19,8 @@ interface ComposerProps {
   onSend: () => void
   playing: boolean
   pills: EnginePill[]
-  onStartScenario: (id: string) => void
+  /** Clicking a use-case pill sends its prompt to the assistant. */
+  onPickUseCase: (useCase: EnginePill) => void
   /** Neutral name of the active mode, shown in the disclaimer line. */
   sourceLabel: string
   /**
@@ -51,7 +52,7 @@ export default function Composer({
   onSend,
   playing,
   pills,
-  onStartScenario,
+  onPickUseCase,
   sourceLabel,
   placeholder,
 }: ComposerProps) {
@@ -81,7 +82,7 @@ export default function Composer({
               pill={u}
               label={t(`useCases.${u.id}`, u.label)}
               disabled={playing}
-              onClick={() => onStartScenario(u.id)}
+              onClick={() => onPickUseCase(u)}
             />
           ))}
         </div>
@@ -94,7 +95,7 @@ export default function Composer({
                 pill={u}
                 label={t(`useCases.${u.id}`, u.label)}
                 disabled={playing}
-                onClick={() => onStartScenario(u.id)}
+                onClick={() => onPickUseCase(u)}
                 className="shrink-0"
               />
             ))}

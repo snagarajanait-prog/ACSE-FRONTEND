@@ -40,6 +40,8 @@ export default function Copilot() {
     meta,
     messages,
     thinking,
+    streamReasoning,
+    streamAnswer,
     typing,
     playing,
     otpPrompt,
@@ -138,6 +140,8 @@ export default function Copilot() {
                   source={source}
                   playing={playing}
                   thinking={thinking}
+                  streamReasoning={streamReasoning}
+                  streamAnswer={streamAnswer}
                   typing={typing}
                   otpPrompt={otpPrompt}
                   onSubmitOtp={submitOtp}
@@ -192,7 +196,7 @@ function ComposerFor({
       onSend={engine.onSend}
       playing={engine.playing}
       pills={engine.pills}
-      onStartScenario={engine.startScenario}
+      onPickUseCase={(u) => engine.sendPrompt(u.prompt)}
       sourceLabel={engine.meta.chatLabel}
     />
   )

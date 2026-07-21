@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
-import { defineConfig, loadEnv, type Plugin } from 'vite'
+import { defineConfig, loadEnv, type Plugin, type ProxyOptions } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
@@ -51,6 +51,8 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_')
   const apiBase = env.VITE_API_BASE_URL?.trim() ?? ''
   const proxyTarget = env.VITE_DEV_PROXY_TARGET?.trim()
+  const mlBase = env.VITE_ML_API_BASE_URL?.trim() ?? ''
+  const mlProxyTarget = env.VITE_ML_DEV_PROXY_TARGET?.trim()
 
   // Dev-only reverse proxy. When VITE_API_BASE_URL is a same-origin PATH (e.g.
   // "/api/v1") and VITE_DEV_PROXY_TARGET names the real backend origin, the dev
@@ -63,17 +65,35 @@ export default defineConfig(({ mode }) => {
   //      header below opts out of it — injected here on the server→backend hop so
   //      it never rides on a browser request, where a custom header would itself
   //      force a preflight the backend rejects.
-  const proxy =
-    proxyTarget && apiBase.startsWith('/')
-      ? {
-          [apiBase]: {
-            target: proxyTarget,
-            changeOrigin: true,
-            secure: true,
-            headers: { 'ngrok-skip-browser-warning': 'true' },
-          },
-        }
-      : undefined
+  //
+  // The ML assistant service gets the SAME treatment on its own prefix. Its
+  // stream is Server-Sent Events, so `configure` disables buffering on that hop —
+  // otherwise the proxy could hold tokens back and defeat the live stream.
+  const proxy: Record<string, ProxyOptions> = {}
+  if (proxyTarget && apiBase.startsWith('/')) {
+    proxy[apiBase] = {
+      target: proxyTarget,
+      changeOrigin: true,
+      secure: true,
+      headers: { 'ngrok-skip-browser-warning': 'true' },
+    }
+  }
+  if (mlProxyTarget && mlBase.startsWith('/')) {
+    proxy[mlBase] = {
+      target: mlProxyTarget,
+      changeOrigin: true,
+      secure: true,
+      // Strip the local prefix so "/ml-api/chat" reaches the ML host as "/chat".
+      rewrite: (path) => path.replace(new RegExp(`^${mlBase}`), ''),
+      headers: { 'ngrok-skip-browser-warning': 'true' },
+      configure: (proxyServer) => {
+        // Keep SSE flowing token-by-token instead of being buffered/compressed.
+        proxyServer.on('proxyReq', (proxyReq) => {
+          proxyReq.setHeader('Accept-Encoding', 'identity')
+        })
+      },
+    }
+  }
 
   return {
     plugins: [react(), tailwindcss(), validateEnv(mode)],
@@ -82,6 +102,6 @@ export default defineConfig(({ mode }) => {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
-    server: { proxy },
+    server: { proxy: Object.keys(proxy).length ? proxy : undefined },
   }
 })

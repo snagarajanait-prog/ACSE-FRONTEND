@@ -168,6 +168,7 @@
   --animate-row-reveal: row-reveal 0.4s ease-out both;
   --animate-digit-pop: digit-pop 0.4s ease-out both;
   --animate-ring-out: ring-out 0.9s ease-out forwards;
+  --animate-caret-blink: caret-blink 1.1s steps(1) infinite;
 
   /**
    * Global loader — the logo assembly.
@@ -575,6 +576,18 @@
   }
   100% {
     transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+/* Blinking caret at the tail of a streaming assistant reply. */
+@keyframes caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
     opacity: 0;
   }
 }

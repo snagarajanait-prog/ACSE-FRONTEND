@@ -16,6 +16,10 @@ interface ImportMetaEnv {
   readonly VITE_API_BASE_URL: string
   readonly VITE_ENCRYPTION_ENABLED: string
   readonly VITE_RSA_PUBLIC_KEY: string
+  /** ML assistant service origin, or a same-origin dev-proxy path (e.g. "/ml-api"). */
+  readonly VITE_ML_API_BASE_URL: string
+  /** Dev-only: real ML origin the `VITE_ML_API_BASE_URL` path prefix proxies to. */
+  readonly VITE_ML_DEV_PROXY_TARGET: string
 }
 
 interface ImportMeta {

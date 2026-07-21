@@ -14,4 +14,13 @@ export const paths = {
     /** Page slugs the signed-in user may see — drives the admin sidebar. */
     myPermissions: '/permission/pages',
   },
+  /**
+   * The ML assistant service. A SEPARATE host from the main backend (see
+   * `config.mlBaseUrl`) — no Bearer auth, no encryption envelope. `chat` kicks a
+   * turn off; `chatStream` is the SSE feed of reasoning + answer tokens for it.
+   */
+  ml: {
+    chat: '/chat',
+    chatStream: '/chat/stream',
+  },
 } as const

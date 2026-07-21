@@ -48,6 +48,16 @@ function bool(key: EnvKey, fallback: boolean): boolean {
 const appEnv = (read('VITE_APP_ENV') || 'development') as AppEnv
 const baseUrl = required('VITE_API_BASE_URL').replace(/\/+$/, '')
 
+// The ML assistant service — a separate origin from the main backend. Optional:
+// when unset it falls back to the shared ngrok demo host so the copilot still
+// talks to something out of the box. In dev this is normally a same-origin PATH
+// (e.g. "/ml-api") that the Vite proxy forwards to the real ngrok origin, which
+// both dodges CORS and injects ngrok's skip-browser-warning header — the same
+// trick the main API uses (see VITE_DEV_PROXY_TARGET / vite.config.ts).
+const ML_FALLBACK_HOST = 'https://octagon-overpass-smuggling.ngrok-free.dev'
+const mlBaseUrl = (read('VITE_ML_API_BASE_URL') || ML_FALLBACK_HOST).replace(/\/+$/, '')
+const mlUrl = (path: string): string => `${mlBaseUrl}${path}`
+
 // Encryption defaults ON in production. Shipping prod with the layer silently off
 // should take an explicit `VITE_ENCRYPTION_ENABLED=false`, never an omission.
 const encryptionEnabled = bool('VITE_ENCRYPTION_ENABLED', appEnv === 'production')
@@ -70,6 +80,8 @@ export const config = {
   isProd: appEnv === 'production',
 
   baseUrl,
+  /** Origin (or dev-proxy path prefix) of the ML assistant service. */
+  mlBaseUrl,
 
   encryption: {
     enabled: encryptionEnabled,
@@ -86,6 +98,12 @@ export const config = {
 
   pages: {
     myPermissions: url(paths.pages.myPermissions),
+  },
+
+  /** ML assistant endpoints (built off `mlBaseUrl`, not the main `baseUrl`). */
+  ml: {
+    chat: mlUrl(paths.ml.chat),
+    chatStream: mlUrl(paths.ml.chatStream),
   },
 } as const
 

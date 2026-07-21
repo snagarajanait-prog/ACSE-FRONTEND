@@ -29,6 +29,10 @@ interface ChatThreadProps {
   source: DataSource
   playing: boolean
   thinking: string[] | null
+  /** Live ML reasoning text (SSE `reasoning` events), or null when not streaming. */
+  streamReasoning?: string | null
+  /** Live ML answer text (SSE `token` events), or null when not streaming. */
+  streamAnswer?: string | null
   typing: boolean
   otpPrompt: OtpPrompt | null
   onSubmitOtp: (code: string) => void
@@ -80,6 +84,8 @@ export default function ChatThread({
   source,
   playing,
   thinking,
+  streamReasoning,
+  streamAnswer,
   typing,
   otpPrompt,
   onSubmitOtp,
@@ -138,6 +144,8 @@ export default function ChatThread({
               {isLast && otpPrompt && <OtpChallengeNode prompt={otpPrompt} onSubmit={onSubmitOtp} />}
               {isLast && thinking && <ThinkingNode phrases={thinking} />}
               {isLast && typing && <TypingNode />}
+              {isLast && streamReasoning != null && <StreamingReasoningNode text={streamReasoning} />}
+              {isLast && streamAnswer != null && <StreamingAnswerNode text={streamAnswer} />}
             </ol>
 
             {/* Outside the <ol>: these are controls for the log, not an entry in it. */}
@@ -484,6 +492,47 @@ function TypingNode() {
           />
         ))}
       </span>
+    </li>
+  )
+}
+
+/**
+ * The ML model's live reasoning (SSE `reasoning` events). A transient panel — it
+ * clears the moment the answer settles — so it reads as the assistant's private
+ * thinking rather than part of the reply.
+ */
+function StreamingReasoningNode({ text }: { text: string }) {
+  const { t } = useTranslation('copilot')
+  return (
+    <li className="relative pl-9 motion-safe:animate-rise-in" role="status">
+      <Node />
+      <div className="rounded-xl border border-slate-200 bg-slate-50/70 px-3.5 py-2.5 dark:border-white/[0.06] dark:bg-white/[0.02]">
+        <div className="mb-1 flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wide">
+          <Loader2 className="h-3 w-3 shrink-0 animate-spin text-brand-cyan" />
+          <Shimmer>{t('chat.reasoning', 'Reasoning')}</Shimmer>
+        </div>
+        <p className="max-h-40 overflow-y-auto whitespace-pre-wrap text-[13px] leading-6 text-slate-500 dark:text-slate-400">
+          {text}
+        </p>
+      </div>
+    </li>
+  )
+}
+
+/** The ML answer as it streams in (SSE `token` events), with a live caret. */
+function StreamingAnswerNode({ text }: { text: string }) {
+  const { t } = useTranslation('copilot')
+  return (
+    <li className="relative pl-9 motion-safe:animate-rise-in" role="status">
+      <Node />
+      <p className="max-w-[68ch] text-[15px] leading-7 text-slate-700 dark:text-slate-100/90">
+        <span className="sr-only">{t('chat.assistantSaid')}</span>
+        {text ? <Lede text={text} /> : null}
+        <span
+          aria-hidden
+          className="ml-0.5 inline-block h-4 w-0.5 translate-y-0.5 bg-brand-cyan motion-safe:animate-caret-blink"
+        />
+      </p>
     </li>
   )
 }

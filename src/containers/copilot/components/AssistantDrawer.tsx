@@ -51,6 +51,8 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
     meta,
     messages,
     thinking,
+    streamReasoning,
+    streamAnswer,
     typing,
     playing,
     otpPrompt,
@@ -242,6 +244,8 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
                     source={source}
                     playing={playing}
                     thinking={thinking}
+                    streamReasoning={streamReasoning}
+                    streamAnswer={streamAnswer}
                     typing={typing}
                     otpPrompt={otpPrompt}
                     onSubmitOtp={submitOtp}
@@ -265,7 +269,7 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
                   onSend={engine.onSend}
                   playing={playing}
                   pills={engine.pills}
-                  onStartScenario={engine.startScenario}
+                  onPickUseCase={(u) => engine.sendPrompt(u.prompt)}
                   sourceLabel={meta.chatLabel}
                   placeholder={t('composer.drawerPlaceholder')}
                 />

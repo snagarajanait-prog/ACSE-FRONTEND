@@ -11,6 +11,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { RefObject } from 'react'
 import i18n from '@/i18n'
+import { newRequestId, sendChatMessage, streamChat } from '@/lib/mlChat'
 import { getIcon } from '@/containers/copilot/utils/iconMap'
 import { findAccount, findCustomer, type Account, type Customer } from '@/data/customers'
 import { getScenario, type ChatStep } from '@/data/scenarios'
@@ -85,25 +86,6 @@ export function useCyclingPhrase(phrases: string[], intervalMs = THINK_INTERVAL_
   return phrases[Math.min(i, phrases.length - 1)]
 }
 
-/** Prioritised keyword match from free-typed text to a scenario id. */
-function matchScenario(text: string): string | null {
-  const t = text.toLowerCase()
-  const rules: [string, string[]][] = [
-    ['report-leak', ['leak', 'burst', 'emergency', 'flood', 'main break']],
-    ['report-outage', ['outage', 'no water', 'water out', 'pressure', 'down']],
-    ['transfer-service', ['transfer', 'moving to', 'new home', 'new house']],
-    ['stop-service', ['stop', 'cancel', 'close', 'move out', 'disconnect', 'end service']],
-    ['start-service', ['start', 'new service', 'turn on', 'begin service']],
-    ['payment-arrangement', ['payment', 'arrangement', 'installment', 'plan', "can't pay", 'extension']],
-    ['high-bill', ['high', 'expensive', 'too much', 'why is my bill', 'bill so', 'overcharged']],
-    ['update-contact', ['update', 'change my', 'phone', 'email', 'contact', 'number']],
-  ]
-  for (const [id, keys] of rules) {
-    if (keys.some((k) => t.includes(k))) return id
-  }
-  return null
-}
-
 function greeting(name: string) {
   const h = new Date().getHours()
   const part =
@@ -125,7 +107,6 @@ const thinkIntent = () => [
 ]
 const thinkStatus = () => [i18n.t('copilot:think.requesting'), i18n.t('copilot:think.processing')]
 const thinkSummary = () => [i18n.t('copilot:think.compiling'), i18n.t('copilot:think.summarising')]
-const thinkFallback = () => [i18n.t('copilot:think.analysing'), i18n.t('copilot:think.matching')]
 
 /**
  * Which "thinking" phrases to shimmer before a step appears. Authored `think`
@@ -156,6 +137,17 @@ export interface ChatEngine {
   messages: Msg[]
   /** Sequence of shimmering "working" phrases, or null when not thinking. */
   thinking: string[] | null
+  /**
+   * The ML model's live reasoning, accumulated from the SSE `reasoning` events,
+   * or null when no ML turn is streaming. Rendered as a transient "thinking"
+   * panel that clears once the answer lands.
+   */
+  streamReasoning: string | null
+  /**
+   * The ML answer as it streams in from the SSE `token` events, or null when no
+   * ML turn is streaming. Becomes a settled `ai` message once the stream closes.
+   */
+  streamAnswer: string | null
   /** True while the simple typing-dots indicator should show. */
   typing: boolean
   /** True while a storyboard/response is playing (locks the composer). */
@@ -171,6 +163,8 @@ export interface ChatEngine {
   draft: string
   setDraft: (v: string) => void
   onSend: () => void
+  /** Send a message straight to the ML assistant and stream its reply. */
+  sendPrompt: (text: string) => void
   startScenario: (id: string, userText?: string) => void
   resetConversation: () => void
   /** Attach to the scrollable message container; auto-scrolls to newest. */
@@ -194,11 +188,19 @@ export function useChatEngine(): ChatEngine {
   const [messages, setMessages] = useState<Msg[]>([])
   const [typing, setTyping] = useState(false)
   const [thinking, setThinking] = useState<string[] | null>(null)
+  const [streamReasoning, setStreamReasoning] = useState<string | null>(null)
+  const [streamAnswer, setStreamAnswer] = useState<string | null>(null)
   const [playing, setPlaying] = useState(false)
   const [otpPrompt, setOtpPrompt] = useState<OtpPrompt | null>(null)
   const [draft, setDraft] = useState('')
   const idRef = useRef(0)
   const runRef = useRef(0)
+  // Aborts the in-flight ML request (POST + SSE) when a turn is superseded, the
+  // conversation is reset, or the context changes out from under it.
+  const mlAbortRef = useRef<AbortController | null>(null)
+  // Stable per conversation so the ML service keeps context across turns; rotated
+  // whenever the transcript is torn down (new chat / customer switch).
+  const threadIdRef = useRef<string>(newRequestId())
   // Bumped at the start of every scenario run / free exchange, and stamped onto
   // each pushed message, so the flat transcript carries its own conversation
   // boundaries. The seeded greeting keeps the initial 0.
@@ -220,6 +222,18 @@ export function useChatEngine(): ChatEngine {
 
   const submitOtp = useCallback((code: string) => settleOtp(code), [settleOtp])
 
+  /**
+   * Abort any in-flight ML turn and drop its transient stream state. Called
+   * before starting a new turn and whenever the transcript is torn down, so a
+   * stream can never keep painting into a conversation that has moved on.
+   */
+  const cancelMlStream = useCallback(() => {
+    mlAbortRef.current?.abort()
+    mlAbortRef.current = null
+    setStreamReasoning(null)
+    setStreamAnswer(null)
+  }, [])
+
   // Reset the conversation synchronously when the customer/account context
   // changes — DURING render, so a switch never paints the new account's context
   // alongside the previous account's transcript (a post-paint effect would).
@@ -234,6 +248,9 @@ export function useChatEngine(): ChatEngine {
     setTyping(false)
     setThinking(null)
     settleOtp(null)
+    cancelMlStream()
+    // A new context is a new conversation for the ML service too.
+    threadIdRef.current = newRequestId()
     setMessages(
       customer
         ? [{ id: idRef.current++, conversationId: 0, step: { kind: 'ai', text: greeting(customer.name) } }]
@@ -301,6 +318,8 @@ export function useChatEngine(): ChatEngine {
       convRef.current += 1
       // Abandon a challenge left held by the run we just superseded.
       settleOtp(null)
+      // A scripted storyboard and a live ML turn are mutually exclusive.
+      cancelMlStream()
       setPlaying(true)
       setTyping(false)
       setThinking(null)
@@ -359,7 +378,7 @@ export function useChatEngine(): ChatEngine {
       }
       setPlaying(false)
     },
-    [push, resolve, resolveStep, settleOtp],
+    [push, resolve, resolveStep, settleOtp, cancelMlStream],
   )
 
   const startScenario = useCallback(
@@ -371,6 +390,115 @@ export function useChatEngine(): ChatEngine {
     [play],
   )
 
+  /**
+   * Send a message to the real ML assistant and stream its reply into the thread.
+   *
+   * Two calls share one `request_id`: the POST returns the whole answer, the SSE
+   * GET streams the same turn token-by-token. We drive the UI from the stream and
+   * keep the POST body as a fallback — so this works whether the service streams
+   * live or only buffers the turn for replay after the POST completes.
+   *
+   * `reasoning` events paint the transient reasoning panel; `token` events grow
+   * the answer. When the stream closes, the accumulated answer (or the POST body
+   * if the stream gave nothing) settles as a normal `ai` message.
+   */
+  const sendToML = useCallback(
+    async (text: string) => {
+      const trimmed = text.trim()
+      if (!trimmed || playing) return
+
+      const myRun = ++runRef.current
+      // A fresh exchange is its own conversation, so it takes away on its own.
+      convRef.current += 1
+      cancelMlStream()
+      const ac = new AbortController()
+      mlAbortRef.current = ac
+
+      push({ kind: 'user', text: trimmed })
+      setPlaying(true)
+      setThinking(null)
+      setStreamReasoning(null)
+      setStreamAnswer(null)
+      setTyping(true) // "working" until the first token — or the POST fallback — lands
+
+      const requestId = newRequestId()
+      let reasoning = ''
+      let answer = ''
+      const isStale = () => runRef.current !== myRun || ac.signal.aborted
+
+      // Fire the POST but don't block on it: a cooperative server streams tokens
+      // over the SSE feed while this is still open. Its body is our fallback.
+      const postPromise = sendChatMessage({
+        message: trimmed,
+        requestId,
+        threadId: threadIdRef.current,
+        signal: ac.signal,
+      }).catch(() => null)
+
+      const runStream = () =>
+        streamChat(requestId, {
+          signal: ac.signal,
+          onReasoning: (chunk) => {
+            if (isStale() || !chunk) return
+            reasoning += chunk
+            setTyping(false)
+            setStreamReasoning(reasoning)
+          },
+          onToken: (chunk) => {
+            if (isStale() || !chunk) return
+            answer += chunk
+            setTyping(false)
+            setStreamAnswer(answer)
+          },
+        })
+
+      try {
+        await runStream()
+      } catch {
+        // Opened before the turn was registered, or a transport error — fall
+        // through and retry once the POST has definitely reached the server.
+      }
+
+      // Nothing streamed? Make sure the turn is registered by awaiting the POST,
+      // then replay the (now buffered) stream once.
+      if (!isStale() && !answer && !reasoning) {
+        await postPromise
+        if (!isStale()) {
+          try {
+            await runStream()
+          } catch {
+            // Stream still unavailable; the POST body below is the fallback.
+          }
+        }
+      }
+
+      if (isStale()) return
+      const post = await postPromise
+      if (isStale()) return
+
+      // Only relinquish the shared ref if it's still ours (a newer turn may own it).
+      if (mlAbortRef.current === ac) mlAbortRef.current = null
+      const finalAnswer = answer || post?.content || ''
+      setTyping(false)
+      setStreamReasoning(null)
+      setStreamAnswer(null)
+      push({
+        kind: 'ai',
+        text:
+          finalAnswer ||
+          i18n.t(
+            'copilot:chat.mlError',
+            'Sorry — I could not reach the assistant service just now. Please try again.',
+          ),
+      })
+      setPlaying(false)
+    },
+    [playing, push, cancelMlStream],
+  )
+
+  /** Fire-and-forget wrapper so views can call the streaming send synchronously. */
+  const sendPrompt = useCallback((text: string) => void sendToML(text), [sendToML])
+
   /** Imperative reset (the "New chat" control). */
   const resetConversation = useCallback(() => {
     runRef.current++
@@ -378,6 +506,9 @@ export function useChatEngine(): ChatEngine {
     setTyping(false)
     setThinking(null)
     settleOtp(null)
+    cancelMlStream()
+    // Start a new ML conversation so the assistant doesn't carry old context in.
+    threadIdRef.current = newRequestId()
     idRef.current = 0
     convRef.current = 0
     setMessages(
@@ -385,7 +516,7 @@ export function useChatEngine(): ChatEngine {
         ? [{ id: idRef.current++, conversationId: 0, step: { kind: 'ai', text: greeting(customer.name) } }]
         : [],
     )
-  }, [customer, settleOtp])
+  }, [customer, settleOtp, cancelMlStream])
 
   // Auto-play a scenario requested from elsewhere (e.g. the landing use-case
   // cards, which park the id in the store before navigating here).
@@ -404,35 +535,15 @@ export function useChatEngine(): ChatEngine {
   // final message of every storyboard sits clipped behind the composer.
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
-  }, [messages, typing, thinking, otpPrompt, playing])
+  }, [messages, typing, thinking, streamReasoning, streamAnswer, otpPrompt, playing])
 
   const onSend = useCallback(() => {
     const text = draft.trim()
     if (!text || playing) return
     setDraft('')
-    const id = matchScenario(text)
-    if (id) {
-      startScenario(id, text)
-      return
-    }
-    const myRun = ++runRef.current
-    // A free-typed exchange is its own conversation too, so it can be taken away
-    // on its own once the assistant answers.
-    convRef.current += 1
-    push({ kind: 'user', text })
-    setPlaying(true)
-    void (async () => {
-      setThinking(thinkFallback().map(resolve))
-      await sleep(1500)
-      if (runRef.current !== myRun) return
-      setThinking(null)
-      push({
-        kind: 'ai',
-        text: i18n.t('copilot:chat.freeReply'),
-      })
-      setPlaying(false)
-    })()
-  }, [draft, playing, push, resolve, startScenario])
+    // Every typed message goes to the real ML assistant and streams its reply.
+    void sendToML(text)
+  }, [draft, playing, sendToML])
 
   const meta = DATA_SOURCE_META[source]
 
@@ -449,6 +560,8 @@ export function useChatEngine(): ChatEngine {
     pills,
     messages,
     thinking,
+    streamReasoning,
+    streamAnswer,
     typing,
     playing,
     otpPrompt,
@@ -456,6 +569,7 @@ export function useChatEngine(): ChatEngine {
     draft,
     setDraft,
     onSend,
+    sendPrompt,
     startScenario,
     resetConversation,
     scrollRef,
