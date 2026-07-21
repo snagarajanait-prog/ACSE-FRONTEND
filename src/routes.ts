@@ -36,11 +36,20 @@ export const routes: RouteConfig[] = [
     component: lazy(() => import('@/containers/dashboard')),
   },
   {
-    // Internal file-upload admin panel. `isPublic` for now: there is no login yet,
-    // so hitting /admin drops you straight in. When auth lands, drop `isPublic`
-    // and add `allowed: [ROLES.ADMIN]` to gate it behind the admin role.
+    // Internal file-upload admin panel. The route is `isPublic` because auth is
+    // enforced INSIDE the feature by `AdminGate` (a demo sign-in, see
+    // `admin/auth`) rather than by the role-based route guard — hitting /admin
+    // shows the login until there's a session. Swap to the guard (drop `isPublic`,
+    // add `allowed: [ROLES.ADMIN]`) once a real backend login replaces the demo.
     path: ROUTE_PATHS.admin,
     component: lazy(() => import('@/containers/admin')),
+    isPublic: true,
+  },
+  {
+    // Admin → organisation profile & settings. Same `AdminGate` sign-in as /admin,
+    // so a direct hit here lands on the login too.
+    path: ROUTE_PATHS.adminSettings,
+    component: lazy(() => import('@/containers/admin/settings')),
     isPublic: true,
   },
   {

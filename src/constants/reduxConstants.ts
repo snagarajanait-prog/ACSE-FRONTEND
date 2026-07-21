@@ -7,4 +7,5 @@ export const reduxName = {
   user: 'userSlice',
   demo: 'demoSlice',
   dataSource: 'dataSourceSlice',
+  settings: 'settingsSlice',
 } as const

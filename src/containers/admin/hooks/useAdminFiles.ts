@@ -11,13 +11,13 @@
 
 import { useCallback, useMemo, useRef, useState } from 'react'
 import { STORAGE_KEYS } from '@/constants/constants'
-import { SEED_FILES } from '@/containers/admin/data'
 import type {
   AdminSection,
   FileRecord,
   SortKey,
   SortState,
 } from '@/containers/admin/types'
+import { loadFiles } from '@/containers/admin/utils/persistence'
 import { downloadTextFile } from '@/utils/download'
 import { storage } from '@/utils/storage'
 
@@ -27,12 +27,6 @@ export interface UploadPayload {
   uploadedBy: string
   category: string
   notes: string
-}
-
-/** Load the persisted working set, falling back to the seed on first run. */
-function loadFiles(): FileRecord[] {
-  const saved = storage.get<FileRecord[]>(STORAGE_KEYS.adminFiles)
-  return Array.isArray(saved) ? saved : SEED_FILES
 }
 
 /** Collision-resistant enough for an in-browser demo; no crypto needed. */
@@ -48,9 +42,13 @@ const SORT_LABELS: Record<SortKey, string> = {
   category: 'Uploaded Type',
 }
 
-export function useAdminFiles() {
+/**
+ * The active library (`section`) is CONTROLLED — the page derives it from the
+ * URL (`?lib=`) so the two libraries are distinct, linkable destinations. The
+ * hook owns everything else: the working set, search, sort, uploads, deletes.
+ */
+export function useAdminFiles(section: AdminSection) {
   const [files, setFiles] = useState<FileRecord[]>(loadFiles)
-  const [section, setSection] = useState<AdminSection>('document')
   const [query, setQuery] = useState('')
   const [sort, setSort] = useState<SortState>({ key: 'uploadedAt', dir: 'desc' })
   const [uploadOpen, setUploadOpen] = useState(false)
@@ -168,8 +166,6 @@ export function useAdminFiles() {
   }, [files, section, query, sort])
 
   return {
-    section,
-    setSection,
     query,
     setQuery,
     sort,
