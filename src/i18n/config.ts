@@ -7,7 +7,7 @@
  * steps: add a row below, then drop its JSON files under `locales/<code>/`.
  */
 
-export type LanguageCode = 'en' | 'es' | 'fr' | 'pt' | 'it'
+export type LanguageCode = 'en' | 'es' | 'de' | 'fr'
 export type Direction = 'ltr' | 'rtl'
 
 export interface LanguageMeta {
@@ -22,9 +22,8 @@ export interface LanguageMeta {
 export const LANGUAGES: readonly LanguageMeta[] = [
   { code: 'en', label: 'English', nativeLabel: 'English', dir: 'ltr' },
   { code: 'es', label: 'Spanish', nativeLabel: 'Español', dir: 'ltr' },
+  { code: 'de', label: 'German', nativeLabel: 'Deutsch', dir: 'ltr' },
   { code: 'fr', label: 'French', nativeLabel: 'Français', dir: 'ltr' },
-  { code: 'pt', label: 'Portuguese', nativeLabel: 'Português', dir: 'ltr' },
-  { code: 'it', label: 'Italian', nativeLabel: 'Italiano', dir: 'ltr' },
 ] as const
 
 export const DEFAULT_LANGUAGE: LanguageCode = 'en'
