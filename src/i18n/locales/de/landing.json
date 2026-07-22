@@ -1,0 +1,220 @@
+{
+  "common": {
+    "askAcseAi": "ACSE AI fragen"
+  },
+  "nav": {
+    "platform": "Plattform",
+    "useCases": "Anwendungsfälle",
+    "billing": "Abrechnung",
+    "about": "Über uns",
+    "toggleMenu": "Menü umschalten"
+  },
+  "hero": {
+    "badge": "Für Versorgungsunternehmen entwickelt · Mit AI",
+    "titleLine1": "Automatisieren Sie Ihren",
+    "titleLine2": "Versorgungsbetrieb",
+    "titleLine3": "mit AI",
+    "subtitle": "ACSE AI bearbeitet Serviceanfragen, kennzeichnet Abrechnungsausnahmen und erstellt Außendienstaktionen – vollständig automatisiert, rund um die Uhr.",
+    "seePlatform": "Plattform ansehen",
+    "stats": {
+      "callVolume": "Automatisiertes Anrufvolumen",
+      "alwaysOn": "Immer verfügbar",
+      "workflows": "Workflows"
+    }
+  },
+  "platform": {
+    "eyebrow": "Was wir tun",
+    "heading": "Eine AI-Plattform für Ihren gesamten Versorgungsbetrieb",
+    "subtitle": "ACSE AI integriert sich in Ihre bestehenden Systeme, um eingehende Kundenanfragen, Abrechnungsausnahmen und Außendienstaufträge zu automatisieren – und reduziert so den manuellen Aufwand in jeder Abteilung.",
+    "pillars": {
+      "customerService": {
+        "title": "AI für den Kundenservice",
+        "body": "Bearbeitet Start/Stopp/Übertragung, Kontoaktualisierungen und Ausfallanfragen durchgängig über jeden Kanal."
+      },
+      "billing": {
+        "title": "Abrechnungsautomatisierung",
+        "body": "Überwacht die Abrechnungswarteschlange kontinuierlich, kennzeichnet Anomalien und startet Ausnahme-Workflows in Echtzeit."
+      },
+      "field": {
+        "title": "Außendiensteinsätze",
+        "body": "Erstellt und verfolgt Zählerablesungen, Untersuchungen und Serviceaufträge – und hält Kunden auf dem Laufenden."
+      },
+      "integrations": {
+        "title": "Integrationen",
+        "body": "Verbindet sich mit Ihrer bestehenden C2M-Anwendung und Ihren Aufzeichnungssystemen. Läuft auf Oracle Cloud Infrastructure."
+      }
+    },
+    "promises": {
+      "handleService": "Bearbeitet Start, Stopp und Übertragung des Service ohne Beteiligung eines Agenten",
+      "autopay": "Kontaktiert Kunden mit ablaufendem Lastschriftverfahren proaktiv vor einer Unterbrechung",
+      "fieldActivities": "Erstellt automatisch Außendienstaktivitäten für Zähleruntersuchungen und -ablesungen",
+      "billingAnomalies": "Überwacht Abrechnungsanomalien und kennzeichnet Ausnahmen in Echtzeit"
+    }
+  },
+  "useCases": {
+    "eyebrow": "Kundenservice",
+    "heading": "Alles, was Ihre Kunden brauchen – automatisch erledigt",
+    "subtitle": "Von routinemäßigen Kontoaktualisierungen bis hin zu Notfallmeldungen bearbeitet ACSE AI Anfragen durchgängig, ohne Kunden in die Warteschleife zu setzen.",
+    "runScenario": "Dieses Szenario ausführen →",
+    "tryAll": "Probieren Sie eines davon mit dem Assistenten aus",
+    "cards": {
+      "startService": {
+        "title": "Service starten / stoppen / übertragen",
+        "body": "Kunden starten, beenden oder übertragen den Service über jeden Kanal – vollständig automatisiert."
+      },
+      "paymentArrangement": {
+        "title": "Zahlungsaufschub & -vereinbarung",
+        "body": "Die AI verhandelt und protokolliert Zahlungspläne auf Basis der Kontohistorie und der Richtlinienregeln."
+      },
+      "updateContact": {
+        "title": "Aktualisierung von Kontoinformationen",
+        "body": "Aktualisieren Sie Telefonnummern, fügen Sie Kontoinhaber hinzu und korrigieren Sie Postanschriften im Handumdrehen."
+      },
+      "reportOutage": {
+        "title": "Ausfallanfragen",
+        "body": "Echtzeit-Ausfallstatus, der Kunden ohne Eskalation an einen Agenten bereitgestellt wird."
+      },
+      "reportLeak": {
+        "title": "Notfall bei Leck & Rohrbruch",
+        "body": "Erfasst und leitet Notfallmeldungen zu niedrigem/fehlendem Wasserdruck, Lecks und Rohrbrüchen weiter."
+      },
+      "highBill": {
+        "title": "Untersuchung hoher Rechnungen",
+        "body": "Die AI prüft die Verbrauchshistorie und erstellt Außendienstaktivitäten bei Zähleranomalien."
+      },
+      "meterRead": {
+        "title": "Erstellung von Zählerablesungen",
+        "body": "Erstellt automatisch Zählerablesungen, wenn Konten das Ende ihres Abrechnungszeitraums erreichen."
+      },
+      "autopayOutreach": {
+        "title": "Benachrichtigung zum Ablauf des Lastschriftverfahrens",
+        "body": "Kontaktiert Kunden proaktiv, wenn das Lastschriftverfahren abläuft, um Unterbrechungen zu vermeiden."
+      },
+      "newService": {
+        "title": "Antrag auf neuen Service",
+        "body": "Führt Kunden durch Anträge auf neuen Service und verfolgt den Übermittlungsstatus."
+      }
+    }
+  },
+  "billing": {
+    "eyebrow": "Abrechnungsautomatisierung",
+    "heading": "Erkennen Sie Abrechnungsausnahmen, bevor sie zu Problemen werden",
+    "subtitle": "ACSE AI überwacht Ihre Abrechnungswarteschlange kontinuierlich, kennzeichnet Anomalien und ergreift Maßnahmen – damit nichts durchrutscht.",
+    "rows": {
+      "usageAlerts": {
+        "tag": "Ausnahmeerkennung",
+        "title": "Warnungen bei hohem / niedrigem Verbrauch",
+        "body": "Kennzeichnet automatisch Konten mit einem Verbrauch außerhalb der erwarteten Schwellenwerte und startet Untersuchungs-Workflows."
+      },
+      "maxBill": {
+        "tag": "Schwellenwertüberwachung",
+        "title": "Schwellenwert für Höchstrechnung",
+        "body": "Verhindert Abrechnungsfehler, indem Konten erkannt werden, die die maximalen Rechnungsgrenzen überschreiten, bevor die Abrechnungen versendet werden."
+      },
+      "zeroReads": {
+        "tag": "Verbrauchsüberwachung",
+        "title": "3 aufeinanderfolgende Nullablesungen",
+        "body": "Erkennt drei aufeinanderfolgende Ablesungen mit Nullverbrauch und erstellt einen Serviceauftrag zur Überprüfung vor Ort."
+      },
+      "schedule": {
+        "tag": "Terminplanung",
+        "title": "Ablese- und Abrechnungsplan",
+        "body": "Erstellt und verwaltet Zählerablese- und Abrechnungspläne und stellt sicher, dass Konten in jedem Zyklus pünktlich abgerechnet werden."
+      },
+      "orderStatus": {
+        "tag": "Außendiensteinsätze",
+        "title": "Status von Service- und Arbeitsaufträgen",
+        "body": "Verfolgt offene Aufträge und aktualisiert Kunden und Disponenten automatisch bei Statusänderungen."
+      }
+    },
+    "cta": {
+      "heading": "Bereit, Ihren Versorgungsbetrieb zu modernisieren?",
+      "subtitle": "Schließen Sie sich Wasserversorgern an, die ACSE AI bereits nutzen, um das Anrufvolumen zu reduzieren, Abrechnungsfehler zu vermeiden und schnelleren Service zu bieten.",
+      "seeItInAction": "In Aktion erleben",
+      "talkToUs": "Sprechen Sie mit uns"
+    }
+  },
+  "contact": {
+    "eyebrow": "Kontakt aufnehmen",
+    "heading": "ACSE AI in Aktion erleben",
+    "subtitle": "Wir arbeiten mit Wasser- und Versorgungsunternehmen jeder Größe zusammen. Erzählen Sie uns von Ihrem Betrieb, und wir zeigen Ihnen genau, wie ACSE AI dazu passt.",
+    "info": {
+      "emailLabel": "E-Mail",
+      "emailValue": "info@acsesolutions.com",
+      "coverageLabel": "Abdeckung",
+      "coverageValue": "Wir betreuen Versorgungsunternehmen in ganz Nordamerika",
+      "responseLabel": "Reaktionszeit",
+      "responseValue": "Innerhalb von 1 Werktag"
+    },
+    "form": {
+      "firstName": "Vorname",
+      "firstNamePlaceholder": "Jordan",
+      "lastName": "Nachname",
+      "lastNamePlaceholder": "Rivera",
+      "workEmail": "Geschäftliche E-Mail",
+      "workEmailPlaceholder": "jordan@utility.gov",
+      "organization": "Organisation",
+      "organizationPlaceholder": "Metro Water District",
+      "interest": "Ich interessiere mich für",
+      "notes": "Erzählen Sie uns von Ihrer aktuellen Konfiguration",
+      "notesPlaceholder": "Systeme, die Sie heute nutzen, Anrufvolumen, Problembereiche…",
+      "submit": "Nachricht senden"
+    },
+    "interests": {
+      "customerService": "Automatisierung des Kundenservice",
+      "billing": "Workflows für Abrechnungsausnahmen",
+      "both": "Beides – vollständige Plattform",
+      "walkthrough": "Eine Vorführung / Preise"
+    },
+    "sentMessage": "Vielen Dank – Ihre Angaben wurden erfasst. Für eine direkte Antwort schreiben Sie uns an<1> info@acsesolutions.com</1>."
+  },
+  "footer": {
+    "tagline": "AI-gestützte Automatisierung für Kundenservice, Abrechnungsausnahmen und Außendiensteinsätze von Versorgungsunternehmen.",
+    "groups": {
+      "platform": "Plattform",
+      "company": "Unternehmen",
+      "tryIt": "Ausprobieren"
+    },
+    "links": {
+      "customerServiceAi": "AI für den Kundenservice",
+      "billingAutomation": "Abrechnungsautomatisierung",
+      "fieldOperations": "Außendiensteinsätze",
+      "integrations": "Integrationen",
+      "aboutAcse": "Über ACSE",
+      "caseStudies": "Fallstudien",
+      "contact": "Kontakt",
+      "useCases": "Anwendungsfälle",
+      "platform": "Plattform"
+    },
+    "copyright": "© 2026 ACSE Solutions · Produktvorschau – alle angezeigten Daten sind nicht produktiv.",
+    "runsOn": "Läuft auf Oracle Cloud Infrastructure"
+  },
+  "preview": {
+    "chips": {
+      "resolvePayment": "Zahlungsanfrage bearbeiten",
+      "scheduleAppointment": "Termin planen",
+      "fieldVisit": "Kontakt für Außendienstbesuch"
+    },
+    "agentName": "ACSE AI <1>– Live-Agent</1>",
+    "active": "Aktiv",
+    "userMessage": "Meine automatische Rechnung diesen Monat scheint viel zu hoch zu sein.",
+    "agentMessage": "Ich sehe, dass Ihr Verbrauch im selben Abrechnungszeitraum um 148 % gegenüber dem Basiswert des letzten Monats gestiegen ist. Ich erstelle eine Außendienstuntersuchung zur Zählerprüfung.",
+    "workOrder": "Außendienst-Arbeitsauftrag {{order}} · Zugewiesen an Team {{team}}",
+    "steps": {
+      "identity": {
+        "label": "Identität bestätigt",
+        "status": "Konto abgeglichen"
+      },
+      "analysis": {
+        "label": "Analyse der Rechnungsausnahme",
+        "status": "Anomalie erkannt"
+      },
+      "escalation": {
+        "label": "Automatische Eskalation erstellt",
+        "status": "In Warteschlange"
+      }
+    },
+    "live": "Live",
+    "requestsResolved": "{{value}} Anfragen heute bearbeitet"
+  }
+}

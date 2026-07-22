@@ -505,8 +505,19 @@ export function useChatEngine(): ChatEngine {
           }
         }
         const post = await postPromise
-        // Fall back to the POST body if the stream gave nothing — it types out too.
-        if (!answer && post?.content) answer = post.content
+        // The POST body is the server's authoritative, cleanly-split answer; the SSE
+        // feed is only a live preview of the same turn. Prefer `content` over the
+        // accumulated tokens rather than treating it as a mere empty-stream fallback:
+        // the dual-mode stream can mislabel the reasoning→answer boundary and let a
+        // tail of the model's private reasoning bleed into the `token` feed (e.g.
+        // "…for OTP code." prepended to the reply). Trusting the streamed tokens for
+        // the settled message would surface that reasoning to the customer.
+        //
+        // `runStream` has fully awaited above, so no further `token` chunks can land
+        // after this — overwriting `answer` is safe and also self-heals the live
+        // preview (the reveal loop re-slices this string each tick). Falls through to
+        // the streamed text only when the POST itself returned no content.
+        if (post?.content) answer = post.content
         received = true
       }
 

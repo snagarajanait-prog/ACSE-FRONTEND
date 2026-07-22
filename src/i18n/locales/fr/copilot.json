@@ -30,6 +30,8 @@
     "youSaid": "Vous avez dit : ",
     "assistantSaid": "L'assistant a dit : ",
     "working": "L'assistant travaille",
+    "reasoning": "Raisonnement",
+    "mlError": "Désolé, je n'ai pas pu joindre le service de l'assistant pour le moment. Veuillez réessayer.",
     "freeReply": "Je peux vous aider. Voici ce que je peux faire dès maintenant — choisissez une option pour la voir en action :"
   },
   "think": {
