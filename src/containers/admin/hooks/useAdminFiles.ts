@@ -48,7 +48,7 @@ export function useAdminFiles(section: AdminSection) {
       uploadedAt: t('files.columns.uploadedAt'),
       uploadedBy: t('files.columns.uploadedBy'),
       fileName: t('files.columns.fileName'),
-      category: t('files.columns.category'),
+      section: t('files.columns.category'),
     }),
     [t],
   )

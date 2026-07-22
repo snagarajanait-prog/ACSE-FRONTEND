@@ -44,7 +44,7 @@ export default function FileTable({
               <HeaderCell label={sortLabels.uploadedAt} sortKey="uploadedAt" sort={sort} onToggle={onToggleSort} />
               <HeaderCell label={sortLabels.uploadedBy} sortKey="uploadedBy" sort={sort} onToggle={onToggleSort} />
               <HeaderCell label={sortLabels.fileName} sortKey="fileName" sort={sort} onToggle={onToggleSort} />
-              <HeaderCell label={sortLabels.category} sortKey="category" sort={sort} onToggle={onToggleSort} />
+              <HeaderCell label={sortLabels.section} sortKey="section" sort={sort} onToggle={onToggleSort} />
               <th className="px-4 py-3 text-[11px] font-semibold uppercase tracking-wider">{t('files.columns.notes')}</th>
               <th className="px-4 py-3 text-center text-[11px] font-semibold uppercase tracking-wider">{t('files.columns.download')}</th>
               <th className="px-4 py-3 text-center text-[11px] font-semibold uppercase tracking-wider">{t('files.columns.action')}</th>
@@ -157,7 +157,7 @@ function Row({
       </td>
 
       <td className="whitespace-nowrap px-4 py-3.5">
-        <CategoryBadge value={row.category} />
+        <TypeBadge section={row.section} />
       </td>
 
       <td className="max-w-[220px] px-4 py-3.5">
@@ -197,11 +197,17 @@ function Row({
   )
 }
 
-/** Uniform soft-blue tag, matching the file-library mockup. */
-function CategoryBadge({ value }: { value: string }) {
+/**
+ * The "Uploaded Type" tag: the kind of file (Document / Image), read from the
+ * record's `section` rather than its free-text category — so the column names a
+ * fixed, translatable type instead of an ad-hoc label. Uniform soft-blue pill,
+ * matching the file-library mockup.
+ */
+function TypeBadge({ section }: { section: FileRecord['section'] }) {
+  const { t } = useTranslation('admin')
   return (
     <span className="inline-flex items-center rounded-full bg-brand-cyan/10 px-2.5 py-1 text-[11px] font-semibold text-brand-cyan ring-1 ring-inset ring-brand-cyan/20 dark:bg-brand-cyan/15">
-      {value}
+      {t(`files.type.${section}`)}
     </span>
   )
 }

@@ -60,6 +60,10 @@
       "download": "Download",
       "action": "Action"
     },
+    "type": {
+      "document": "Document",
+      "image": "Image"
+    },
     "sortBy": "Sort by {{label}}",
     "fileFallback": "file",
     "downloadFile": "Download {{name}}",

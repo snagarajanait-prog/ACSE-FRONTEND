@@ -60,6 +60,10 @@
       "download": "Descargar",
       "action": "Acción"
     },
+    "type": {
+      "document": "Documento",
+      "image": "Imagen"
+    },
     "sortBy": "Ordenar por {{label}}",
     "fileFallback": "archivo",
     "downloadFile": "Descargar {{name}}",

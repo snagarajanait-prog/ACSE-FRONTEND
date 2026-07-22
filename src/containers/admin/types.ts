@@ -30,7 +30,7 @@ export interface FileRecord {
 }
 
 /** Columns the table can be sorted by. */
-export type SortKey = 'uploadedAt' | 'uploadedBy' | 'fileName' | 'category'
+export type SortKey = 'uploadedAt' | 'uploadedBy' | 'fileName' | 'section'
 export type SortDir = 'asc' | 'desc'
 
 export interface SortState {
