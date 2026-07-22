@@ -3,6 +3,8 @@
     "assistantMode": "Modo del asistente: {{system}}",
     "mode": "Modo · {{short}}",
     "openAccountDetails": "Abrir detalles de la cuenta",
+    "collapseSidebar": "Contraer barra lateral",
+    "expandSidebar": "Expandir barra lateral",
     "newChat": "Nuevo chat",
     "backHome": "Volver a acsesolutions.com"
   },
@@ -115,6 +117,15 @@
       "1Y": "1 año",
       "2Y": "2 años"
     }
+  },
+  "rail": {
+    "sectionLabel": "Contexto de la cuenta",
+    "expand": "Expandir barra lateral",
+    "open": "Abrir {{panel}}",
+    "contact": "Contacto y cuenta",
+    "balance": "Saldo y pago automático",
+    "usage": "Comparación de consumo",
+    "notifications": "Notificaciones"
   },
   "verify": {
     "title": "Verifica tu identidad",

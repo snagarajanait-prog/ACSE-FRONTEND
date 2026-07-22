@@ -24,6 +24,8 @@ export const STORAGE_KEYS = {
   adminFiles: 'acse.admin.files',
   /** Organisation branding set from the admin Settings page (name + logo). */
   adminSettings: 'acse.admin.settings',
+  /** Whether the copilot's desktop account sidebar is expanded (vs. collapsed to the rail). */
+  copilotSidebar: 'acse.copilot.sidebar',
 } as const
 
 /**

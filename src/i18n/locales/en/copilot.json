@@ -3,6 +3,8 @@
     "assistantMode": "Assistant mode: {{system}}",
     "mode": "Mode · {{short}}",
     "openAccountDetails": "Open account details",
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Expand sidebar",
     "newChat": "New chat",
     "backHome": "Back to acsesolutions.com"
   },
@@ -115,6 +117,15 @@
       "1Y": "1 year",
       "2Y": "2 years"
     }
+  },
+  "rail": {
+    "sectionLabel": "Account context",
+    "expand": "Expand sidebar",
+    "open": "Open {{panel}}",
+    "contact": "Contact & account",
+    "balance": "Balance & autopay",
+    "usage": "Usage comparison",
+    "notifications": "Notifications"
   },
   "verify": {
     "title": "Verify your identity",

@@ -6,7 +6,7 @@
  * `ClientBrand`) for the client's real name / logo artwork.
  */
 
-import { PanelLeft, RotateCcw } from 'lucide-react'
+import { RotateCcw } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
@@ -20,19 +20,13 @@ const ICON_BUTTON_CLASS =
   'grid h-8 w-8 shrink-0 place-items-center rounded-md text-slate-500 outline-none transition-colors hover:bg-slate-100 hover:text-brand-navy focus-visible:ring-2 focus-visible:ring-brand-cyan dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white'
 
 interface CopilotHeaderProps {
-  /** Whether a customer/account is in context (controls the panel + reset actions). */
+  /** Whether a customer/account is in context (controls the reset action). */
   hasContext: boolean
   playing: boolean
-  onOpenPanel: () => void
   onReset: () => void
 }
 
-export default function CopilotHeader({
-  hasContext,
-  playing,
-  onOpenPanel,
-  onReset,
-}: CopilotHeaderProps) {
+export default function CopilotHeader({ hasContext, playing, onReset }: CopilotHeaderProps) {
   const { t } = useTranslation('copilot')
   return (
     <header className="relative z-30 flex h-14 shrink-0 items-center gap-2 border-b border-slate-200/70 bg-white/70 px-3 backdrop-blur-xl transition-colors sm:gap-3 md:px-6 dark:border-white/[0.06] dark:bg-brand-navydeep/60">
@@ -43,24 +37,15 @@ export default function CopilotHeader({
         <LanguageSwitcher />
         <ThemeToggle className="h-8 w-8" />
         {hasContext && (
-          <>
-            <button
-              onClick={onOpenPanel}
-              className={cn(ICON_BUTTON_CLASS, 'lg:hidden')}
-              aria-label={t('header.openAccountDetails')}
-            >
-              <PanelLeft className="h-4 w-4" />
-            </button>
-            <button
-              onClick={onReset}
-              disabled={playing}
-              className={cn(ICON_BUTTON_CLASS, 'disabled:opacity-40')}
-              aria-label={t('header.newChat')}
-              title={t('header.newChat')}
-            >
-              <RotateCcw className="h-4 w-4" />
-            </button>
-          </>
+          <button
+            onClick={onReset}
+            disabled={playing}
+            className={cn(ICON_BUTTON_CLASS, 'disabled:opacity-40')}
+            aria-label={t('header.newChat')}
+            title={t('header.newChat')}
+          >
+            <RotateCcw className="h-4 w-4" />
+          </button>
         )}
         <span aria-hidden className="mx-0.5 hidden h-6 w-px bg-slate-200 sm:block dark:bg-white/10" />
         <PoweredBy />

@@ -3,6 +3,7 @@
  */
 
 export { default as AccountPanel } from '@/containers/copilot/components/AccountPanel'
+export { default as AccountRail } from '@/containers/copilot/components/AccountRail'
 export { default as AccountVerify } from '@/containers/copilot/components/AccountVerify'
 export { default as AmbientBackdrop } from '@/containers/copilot/components/AmbientBackdrop'
 /** The drawer presentation — the feature's entry point for other screens. */
