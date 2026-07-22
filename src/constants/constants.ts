@@ -43,7 +43,9 @@ export const VENDOR_NAME = 'ACSE Solutions'
  */
 export const ROUTE_PATHS = {
   landing: '/',
-  copilot: '/copilot',
+  // Public URL is `/chat`; the key stays `copilot` to match the feature folder,
+  // its i18n namespace and the "Ask ACSE AI" affordances that navigate here.
+  copilot: '/chat',
   dashboard: '/dashboard',
   /** Internal file-upload admin panel. Public for now (no auth yet) — see routes.ts. */
   admin: '/admin',

@@ -189,7 +189,7 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
             </button>
           )}
           <ThemeToggle className="h-8 w-8" />
-          {/* Expands the panel IN PLACE rather than routing to /copilot: the
+          {/* Expands the panel IN PLACE rather than routing to /chat: the
               transcript lives in the engine's local state, so navigating would
               remount it and silently drop the conversation. */}
           <button
