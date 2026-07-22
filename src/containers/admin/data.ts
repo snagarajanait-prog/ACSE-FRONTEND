@@ -77,6 +77,16 @@ export const SEED_FILES: FileRecord[] = [
     size: 1_658_880,
   },
   {
+    id: 'DOC-4807',
+    section: 'document',
+    fileName: 'Org_Chart.png',
+    category: 'Other',
+    uploadedBy: 'Sarah Kim',
+    uploadedAt: '2026-07-16T10:20:00.000Z',
+    size: 486_400,
+    notes: 'Company org chart',
+  },
+  {
     id: 'IMG-2201',
     section: 'image',
     fileName: 'Logo_Primary.png',

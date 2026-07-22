@@ -10,8 +10,8 @@
 import type { ReactNode } from 'react'
 import { ChevronDown, ChevronsUpDown, Download, FileText, Image as ImageIcon, Trash2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import type { FileRecord, SortKey, SortState } from '@/containers/admin/types'
-import { avatarTone, fileExt, formatBytes, formatDate, initials } from '@/containers/admin/utils/format'
+import type { FileRecord, FileType, SortKey, SortState } from '@/containers/admin/types'
+import { avatarTone, fileExt, fileType, formatBytes, formatDate, initials } from '@/containers/admin/utils/format'
 import { cn } from '@/utils/cn'
 
 interface FileTableProps {
@@ -122,7 +122,8 @@ function Row({
   onDelete: (record: FileRecord) => void
 }) {
   const { t } = useTranslation('admin')
-  const FileIcon = row.section === 'image' ? ImageIcon : FileText
+  const type = fileType(row.fileName)
+  const FileIcon = type === 'image' ? ImageIcon : FileText
   return (
     <tr className="group bg-white transition-colors hover:bg-sky-50/70 dark:bg-transparent dark:hover:bg-white/[0.04]">
       <td className="whitespace-nowrap border-l-2 border-transparent px-4 py-3.5 font-medium tabular-nums text-brand-navy group-hover:border-brand-cyan dark:text-slate-200">
@@ -157,7 +158,7 @@ function Row({
       </td>
 
       <td className="whitespace-nowrap px-4 py-3.5">
-        <TypeBadge section={row.section} />
+        <TypeBadge type={type} />
       </td>
 
       <td className="max-w-[220px] px-4 py-3.5">
@@ -198,16 +199,16 @@ function Row({
 }
 
 /**
- * The "Uploaded Type" tag: the kind of file (Document / Image), read from the
- * record's `section` rather than its free-text category — so the column names a
- * fixed, translatable type instead of an ad-hoc label. Uniform soft-blue pill,
- * matching the file-library mockup.
+ * The "Uploaded Type" tag: the real kind of file (Image / PDF / Spreadsheet /
+ * Presentation / Document), derived from the file's extension by `fileType` —
+ * so the column names the actual format rather than just echoing which library
+ * the row lives in. Uniform soft-blue pill, matching the file-library mockup.
  */
-function TypeBadge({ section }: { section: FileRecord['section'] }) {
+function TypeBadge({ type }: { type: FileType }) {
   const { t } = useTranslation('admin')
   return (
     <span className="inline-flex items-center rounded-full bg-brand-cyan/10 px-2.5 py-1 text-[11px] font-semibold text-brand-cyan ring-1 ring-inset ring-brand-cyan/20 dark:bg-brand-cyan/15">
-      {t(`files.type.${section}`)}
+      {t(`files.type.${type}`)}
     </span>
   )
 }

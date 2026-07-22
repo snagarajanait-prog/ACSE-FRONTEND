@@ -19,6 +19,7 @@ import type {
   SortKey,
   SortState,
 } from '@/containers/admin/types'
+import { fileType } from '@/containers/admin/utils/format'
 import { loadFiles } from '@/containers/admin/utils/persistence'
 import { downloadTextFile } from '@/utils/download'
 import { storage } from '@/utils/storage'
@@ -163,9 +164,12 @@ export function useAdminFiles(section: AdminSection) {
     })
 
     const dir = sort.dir === 'asc' ? 1 : -1
+    // The "Uploaded Type" column (`section` sort key) sorts by the badge's real,
+    // extension-derived type — not the row's library, which is constant here.
+    const valueOf = (r: FileRecord) => (sort.key === 'section' ? fileType(r.fileName) : (r[sort.key] ?? ''))
     return rows.sort((a, b) => {
-      const av = a[sort.key] ?? ''
-      const bv = b[sort.key] ?? ''
+      const av = valueOf(a)
+      const bv = valueOf(b)
       return av < bv ? -dir : av > bv ? dir : 0
     })
   }, [files, section, query, sort])

@@ -62,7 +62,10 @@
     },
     "type": {
       "document": "Dokument",
-      "image": "Bild"
+      "image": "Bild",
+      "pdf": "PDF",
+      "spreadsheet": "Tabelle",
+      "presentation": "Präsentation"
     },
     "sortBy": "Sortieren nach {{label}}",
     "fileFallback": "Datei",

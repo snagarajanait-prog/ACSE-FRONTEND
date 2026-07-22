@@ -2,6 +2,8 @@
  * Pure display helpers for the admin table. No React, no state.
  */
 
+import type { FileType } from '@/containers/admin/types'
+
 /** `07/07/2026` — matches the mockup's date column. */
 export function formatDate(iso: string): string {
   const d = new Date(iso)
@@ -50,4 +52,23 @@ export function avatarTone(name: string): string {
 export function fileExt(fileName: string): string {
   const dot = fileName.lastIndexOf('.')
   return dot === -1 ? '' : fileName.slice(dot + 1).toLowerCase()
+}
+
+const IMAGE_EXTS = new Set(['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'bmp', 'avif', 'ico', 'heic', 'tif', 'tiff'])
+const SPREADSHEET_EXTS = new Set(['xls', 'xlsx', 'xlsm', 'csv', 'ods'])
+const PRESENTATION_EXTS = new Set(['ppt', 'pptx', 'odp', 'key'])
+
+/**
+ * The kind badge shown in the "Uploaded Type" column, worked out from the file's
+ * extension — so the column names the real file kind (Image, PDF, Spreadsheet…)
+ * instead of just echoing which library it sits in. Anything unrecognised falls
+ * back to `document`. Each returned value must have a `files.type.<value>` key.
+ */
+export function fileType(fileName: string): FileType {
+  const ext = fileExt(fileName)
+  if (IMAGE_EXTS.has(ext)) return 'image'
+  if (ext === 'pdf') return 'pdf'
+  if (SPREADSHEET_EXTS.has(ext)) return 'spreadsheet'
+  if (PRESENTATION_EXTS.has(ext)) return 'presentation'
+  return 'document'
 }

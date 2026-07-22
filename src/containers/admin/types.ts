@@ -9,6 +9,15 @@
 export type AdminSection = 'document' | 'image'
 
 /**
+ * The kind shown in the "Uploaded Type" badge — derived from the file's
+ * extension (see `fileType` in utils/format), NOT from the library it lives in.
+ * So an image dropped into the Documents library still badges as `image`, and a
+ * spreadsheet reads as `spreadsheet` rather than a generic `document`. Each value
+ * must have a matching `files.type.<value>` translation key.
+ */
+export type FileType = 'image' | 'pdf' | 'spreadsheet' | 'presentation' | 'document'
+
+/**
  * One uploaded file as shown in the table. This is metadata only — the actual
  * bytes (when a real file was picked this session) are held separately in an
  * in-memory blob map by the hook, so the record stays JSON-serialisable for
