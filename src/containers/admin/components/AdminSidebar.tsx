@@ -1,6 +1,6 @@
 /**
- * Top-level admin navigation. Two upload libraries (Document, Image) as separate
- * destinations, then Settings, then the signed-in identity card at the bottom.
+ * Top-level admin navigation. The Document upload library, then Settings, then
+ * the signed-in identity card at the bottom.
  *
  * Which of those actually render is decided by the backend: `/pages/my-permissions`
  * returns the page slugs this user may see, and an item appears only when its
@@ -19,7 +19,7 @@
  */
 
 import { useMemo } from 'react'
-import { FileText, Image as ImageIcon, Settings } from 'lucide-react'
+import { FileText, Settings } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -48,7 +48,6 @@ interface LibraryItem {
 
 const LIBRARIES: LibraryItem[] = [
   { id: 'documents', page: 'document', section: 'document', icon: FileText },
-  { id: 'images', page: 'image', section: 'image', icon: ImageIcon },
 ]
 
 interface AdminSidebarProps {
