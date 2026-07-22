@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import Logo from '@/components/Logo'
 import ThemeToggle from '@/components/ThemeToggle'
-import { ROUTE_PATHS } from '@/constants/constants'
+import { POWERED_BY_LABEL, ROUTE_PATHS } from '@/constants/constants'
 import { useAppSelector } from '@/redux/hooks'
 import { useAdminAuth } from '@/containers/admin/auth/useAdminAuth'
 import { initials } from '@/containers/admin/utils/format'
@@ -122,7 +122,7 @@ function PoweredBy() {
       className="-my-2 flex shrink-0 items-center gap-1.5 rounded-md py-2 outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan"
     >
       <span className="hidden text-[10px] font-medium uppercase tracking-wide text-slate-400 sm:inline">
-        {t('shell.poweredBy')}
+        {POWERED_BY_LABEL}
       </span>
       <Logo className="h-7" />
     </Link>

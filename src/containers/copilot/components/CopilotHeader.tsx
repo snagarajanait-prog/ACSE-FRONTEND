@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import Logo from '@/components/Logo'
 import ThemeToggle from '@/components/ThemeToggle'
-import { CLIENT_NAME, ROUTE_PATHS } from '@/constants/constants'
+import { CLIENT_NAME, POWERED_BY_LABEL, ROUTE_PATHS } from '@/constants/constants'
 import { cn } from '@/utils/cn'
 
 /** `shrink-0` keeps these square at 320px, where the header runs out of room. */
@@ -107,7 +107,7 @@ function PoweredBy() {
       className="-my-2 flex shrink-0 items-center gap-1.5 rounded-md py-2 outline-none focus-visible:ring-2 focus-visible:ring-brand-cyan"
     >
       <span className="hidden text-[10px] font-medium uppercase tracking-wide text-slate-400 sm:inline">
-        {t('poweredBy')}
+        {POWERED_BY_LABEL}
       </span>
       <Logo className="h-7" />
     </Link>

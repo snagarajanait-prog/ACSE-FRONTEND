@@ -30,6 +30,7 @@ import ChatThread from '@/containers/copilot/components/ChatThread'
 import Composer from '@/containers/copilot/components/Composer'
 import CustomerList from '@/containers/copilot/components/CustomerList'
 import { useChatEngine } from '@/containers/copilot/hooks/useChatEngine'
+import { POWERED_BY_LABEL } from '@/constants/constants'
 import { useAppSelector } from '@/redux/hooks'
 import { cn } from '@/utils/cn'
 
@@ -173,7 +174,7 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
               XYZ Company
             </p>
             <p className="flex items-center gap-1 text-[10px] uppercase tracking-wide text-slate-400">
-              {t('poweredBy')} <Logo className="h-4" />
+              {POWERED_BY_LABEL} <Logo className="h-4" />
             </p>
           </div>
 

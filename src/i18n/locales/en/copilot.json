@@ -1,5 +1,4 @@
 {
-  "poweredBy": "Powered by",
   "header": {
     "assistantMode": "Assistant mode: {{system}}",
     "mode": "Mode · {{short}}",

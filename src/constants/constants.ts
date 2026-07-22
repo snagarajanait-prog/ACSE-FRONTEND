@@ -38,6 +38,14 @@ export const CLIENT_NAME = 'XYZ Company'
 export const VENDOR_NAME = 'ACSE Solutions'
 
 /**
+ * The "Powered by" credit that precedes the ACSE·AI logo lockup in the app
+ * headers. Deliberately NOT translated — it's part of the fixed brand mark, so
+ * it reads the same in every language (unlike the localized PDF-receipt credit,
+ * which is a full sentence and stays translatable).
+ */
+export const POWERED_BY_LABEL = 'Powered by'
+
+/**
  * Route paths, so no screen hard-codes a URL string. `routes.ts` builds the
  * table from these and navigation (`useNavigate`, `<Link>`) reads the same keys.
  */

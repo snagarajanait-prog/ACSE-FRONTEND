@@ -47,7 +47,7 @@ function Admin() {
       title={t(`shell.nav.${section}`)}
       counts={admin.counts}
     >
-      <div className="mx-auto w-full max-w-6xl px-4 py-6 md:px-8">
+      <div className="mx-auto w-full px-4 py-6 md:px-8">
         <FileToolbar
           section={section}
           query={admin.query}

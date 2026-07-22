@@ -12,6 +12,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { Check, Languages } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import Flag from '@/components/Flag'
 import { LANGUAGES } from '@/i18n/config'
 import { cn } from '@/utils/cn'
 
@@ -93,10 +94,13 @@ export default function LanguageSwitcher({ className }: LanguageSwitcherProps) {
                       : 'text-slate-600 dark:text-slate-300',
                   )}
                 >
-                  <span>
-                    {lng.label === lng.nativeLabel
-                      ? lng.label
-                      : `${lng.label} (${lng.nativeLabel})`}
+                  <span className="flex min-w-0 items-center gap-2.5">
+                    <Flag code={lng.code} />
+                    <span className="truncate">
+                      {lng.label === lng.nativeLabel
+                        ? lng.label
+                        : `${lng.label} (${lng.nativeLabel})`}
+                    </span>
                   </span>
                   {active && <Check className="h-4 w-4 shrink-0 text-brand-cyan" />}
                 </button>
