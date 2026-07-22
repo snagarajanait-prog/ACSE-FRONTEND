@@ -37,7 +37,6 @@ export default function Copilot() {
     customer,
     account,
     source,
-    meta,
     messages,
     thinking,
     typing,
@@ -87,9 +86,6 @@ export default function Copilot() {
 
       <CopilotHeader
         hasContext={hasContext}
-        source={source}
-        sourceSystem={meta.chatSystem}
-        sourceShort={meta.chatShort}
         playing={playing}
         onOpenPanel={() => setPanelOpen(true)}
         onReset={resetConversation}

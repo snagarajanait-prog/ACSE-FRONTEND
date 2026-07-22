@@ -6,7 +6,7 @@
  * `ClientBrand`) for the client's real name / logo artwork.
  */
 
-import { FlaskConical, PanelLeft, RotateCcw } from 'lucide-react'
+import { PanelLeft, RotateCcw } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
@@ -22,9 +22,6 @@ const ICON_BUTTON_CLASS =
 interface CopilotHeaderProps {
   /** Whether a customer/account is in context (controls the panel + reset actions). */
   hasContext: boolean
-  source: string
-  sourceSystem: string
-  sourceShort: string
   playing: boolean
   onOpenPanel: () => void
   onReset: () => void
@@ -32,9 +29,6 @@ interface CopilotHeaderProps {
 
 export default function CopilotHeader({
   hasContext,
-  source,
-  sourceSystem,
-  sourceShort,
   playing,
   onOpenPanel,
   onReset,
@@ -46,7 +40,6 @@ export default function CopilotHeader({
 
       {/* `min-w-0` lets the brand truncate instead of the controls being squeezed. */}
       <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2">
-        <SourcePill source={source} system={sourceSystem} short={sourceShort} />
         <LanguageSwitcher />
         <ThemeToggle className="h-8 w-8" />
         {hasContext && (
@@ -111,31 +104,5 @@ function PoweredBy() {
       </span>
       <Logo className="h-7" />
     </Link>
-  )
-}
-
-function SourcePill({ source, system, short }: { source: string; system: string; short: string }) {
-  const { t } = useTranslation('copilot')
-  const isLive = source === 'C2M'
-  return (
-    <span
-      aria-label={t('header.assistantMode', { system })}
-      className={cn(
-        'hidden items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium ring-1 sm:inline-flex',
-        isLive
-          ? 'bg-brand-red/5 text-brand-red ring-brand-red/25 dark:bg-brand-red/10 dark:ring-brand-red/40'
-          : 'bg-brand-cyan/5 text-brand-navy ring-brand-cyan/25 dark:bg-brand-cyan/10 dark:text-brand-cyan dark:ring-brand-cyan/30',
-      )}
-    >
-      {isLive ? (
-        <span className="relative flex h-1.5 w-1.5">
-          <span className="absolute inline-flex h-full w-full rounded-full bg-brand-red opacity-75 motion-safe:animate-ping" />
-          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-brand-red" />
-        </span>
-      ) : (
-        <FlaskConical className="h-3 w-3 text-brand-cyan" />
-      )}
-      {t('header.mode', { short })}
-    </span>
   )
 }
