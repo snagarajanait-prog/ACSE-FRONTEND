@@ -93,7 +93,11 @@ export default function LanguageSwitcher({ className }: LanguageSwitcherProps) {
                       : 'text-slate-600 dark:text-slate-300',
                   )}
                 >
-                  <span>{lng.nativeLabel}</span>
+                  <span>
+                    {lng.label === lng.nativeLabel
+                      ? lng.label
+                      : `${lng.label} (${lng.nativeLabel})`}
+                  </span>
                   {active && <Check className="h-4 w-4 shrink-0 text-brand-cyan" />}
                 </button>
               </li>
