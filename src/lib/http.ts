@@ -74,6 +74,17 @@ async function request<T>(url: string, options: RequestOptions = {}): Promise<T>
   const token = auth.getToken()
   if (token) headers.set('Authorization', `Bearer ${token}`)
 
+  // ngrok's free tier serves an HTML browser-warning interstitial (ERR_NGROK_6024)
+  // for browser requests — mostly GETs — unless this header is present. Without it
+  // that HTML reaches `response.json()` below and throws, which surfaces as a failed
+  // request (e.g. an empty admin sidebar). The dev server injects this in the Vite
+  // proxy; a deployed static build has no proxy, so we send it from here instead.
+  //
+  // This is a non-simple header: the backend MUST list `ngrok-skip-browser-warning`
+  // in `Access-Control-Allow-Headers`, or the CORS preflight blocks EVERY request.
+  // Harmless once past a non-ngrok origin; drop it when the backend leaves ngrok.
+  headers.set('ngrok-skip-browser-warning', 'true')
+
   // FormData is skipped: the browser must own the multipart boundary, and file
   // uploads are the one place where enveloping the body is a real cost.
   const isUpload = body instanceof FormData
