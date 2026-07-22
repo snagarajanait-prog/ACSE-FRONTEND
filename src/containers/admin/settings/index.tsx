@@ -32,7 +32,7 @@ function AdminSettings() {
   const { draft } = settings
 
   return (
-    <AdminShell active="settings" title={t('shell.settingsTitle')}>
+    <AdminShell active="settings" title={t('shell.nav.settings')}>
       <div className="mx-auto w-full max-w-3xl px-4 py-6 md:px-8">
         <header className="mb-6">
           <h1 className="text-xl font-semibold tracking-tight text-brand-navy sm:text-2xl dark:text-slate-100">

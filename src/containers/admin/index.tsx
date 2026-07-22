@@ -44,7 +44,7 @@ function Admin() {
   return (
     <AdminShell
       active={section === 'image' ? 'images' : 'documents'}
-      title={t('shell.fileUploadTitle')}
+      title={t(`shell.nav.${section}`)}
       counts={admin.counts}
     >
       <div className="mx-auto w-full max-w-6xl px-4 py-6 md:px-8">
