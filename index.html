@@ -35,18 +35,17 @@
     </script>
 
     <!--
-      Apply the stored language + writing direction BEFORE first paint, so an
-      Arabic (RTL) visitor never sees a flash of left-to-right layout. Mirrors
-      `initialLanguage()` in src/i18n/index.ts (same key, same fallback) and the
-      direction map in src/i18n/config.ts. `I18nProvider` re-stamps both on every
-      language change once React is mounted.
+      Apply the stored language + writing direction BEFORE first paint, so the
+      document's `lang`/`dir` are correct before React mounts (and an RTL visitor
+      would never flash left-to-right). Mirrors `initialLanguage()` in
+      src/i18n/index.ts (same key, same fallback) and the direction map in
+      src/i18n/config.ts — keep this list in sync with `LANGUAGES` there.
+      `I18nProvider` re-stamps both on every language change once React is mounted.
     -->
     <script>
       try {
         var dirs = {
-          en: 'ltr', es: 'ltr', ar: 'rtl', ta: 'ltr', hi: 'ltr',
-          fr: 'ltr', de: 'ltr', pt: 'ltr', zh: 'ltr', ru: 'ltr',
-          ja: 'ltr', ko: 'ltr', it: 'ltr', id: 'ltr', tr: 'ltr'
+          en: 'ltr', es: 'ltr', fr: 'ltr', pt: 'ltr', it: 'ltr'
         }
         var savedLng = localStorage.getItem('acse.lang')
         var lng = savedLng ? JSON.parse(savedLng) : null

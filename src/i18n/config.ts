@@ -7,22 +7,7 @@
  * steps: add a row below, then drop its JSON files under `locales/<code>/`.
  */
 
-export type LanguageCode =
-  | 'en'
-  | 'es'
-  | 'ar'
-  | 'ta'
-  | 'hi'
-  | 'fr'
-  | 'de'
-  | 'pt'
-  | 'zh'
-  | 'ru'
-  | 'ja'
-  | 'ko'
-  | 'it'
-  | 'id'
-  | 'tr'
+export type LanguageCode = 'en' | 'es' | 'fr' | 'pt' | 'it'
 export type Direction = 'ltr' | 'rtl'
 
 export interface LanguageMeta {
@@ -37,19 +22,9 @@ export interface LanguageMeta {
 export const LANGUAGES: readonly LanguageMeta[] = [
   { code: 'en', label: 'English', nativeLabel: 'English', dir: 'ltr' },
   { code: 'es', label: 'Spanish', nativeLabel: 'Español', dir: 'ltr' },
-  { code: 'ar', label: 'Arabic', nativeLabel: 'العربية', dir: 'rtl' },
-  { code: 'ta', label: 'Tamil', nativeLabel: 'தமிழ்', dir: 'ltr' },
-  { code: 'hi', label: 'Hindi', nativeLabel: 'हिन्दी', dir: 'ltr' },
   { code: 'fr', label: 'French', nativeLabel: 'Français', dir: 'ltr' },
-  { code: 'de', label: 'German', nativeLabel: 'Deutsch', dir: 'ltr' },
   { code: 'pt', label: 'Portuguese', nativeLabel: 'Português', dir: 'ltr' },
-  { code: 'zh', label: 'Chinese (Simplified)', nativeLabel: '简体中文', dir: 'ltr' },
-  { code: 'ru', label: 'Russian', nativeLabel: 'Русский', dir: 'ltr' },
-  { code: 'ja', label: 'Japanese', nativeLabel: '日本語', dir: 'ltr' },
-  { code: 'ko', label: 'Korean', nativeLabel: '한국어', dir: 'ltr' },
   { code: 'it', label: 'Italian', nativeLabel: 'Italiano', dir: 'ltr' },
-  { code: 'id', label: 'Indonesian', nativeLabel: 'Bahasa Indonesia', dir: 'ltr' },
-  { code: 'tr', label: 'Turkish', nativeLabel: 'Türkçe', dir: 'ltr' },
 ] as const
 
 export const DEFAULT_LANGUAGE: LanguageCode = 'en'
