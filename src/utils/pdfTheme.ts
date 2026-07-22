@@ -10,7 +10,7 @@
  * edit at a time.
  */
 
-import logoUrl from '@/assets/acse-solutions-logo.png'
+import logoUrl from '@/assets/logo/Main_logo.svg'
 import i18n from '@/i18n'
 import { VENDOR_NAME } from '@/constants/constants'
 
@@ -86,13 +86,17 @@ export function slugify(value: string): string {
 /* ---------------------------------- logo ---------------------------------- */
 
 /**
- * The ACSE lockup as a base64 PNG, which is the only form `addImage` accepts.
+ * The ACSE lockup as a base64 PNG data URI, which is the only form `addImage`
+ * accepts — it cannot render SVG.
  *
- * Fetched from the bundled asset rather than inlined as a string constant: at
- * 36KB the artwork would add ~48KB of base64 to the main bundle, which defeats
- * the point of loading `jspdf` lazily in the first place. Vite emits the PNG as
- * a normal fingerprinted file, so this is a same-origin hit that the browser
- * cache serves instantly on every subsequent download.
+ * The brand master is `logo/Main_logo.svg`, but that file is an SVG wrapper
+ * around a single embedded raster, so the PNG jsPDF needs is already sitting
+ * inside it as a `data:image/png;base64,…` `xlink:href`. We fetch the SVG and
+ * lift that data URI out verbatim — no decode/re-encode, and one source of truth
+ * shared with the on-screen `Logo`. Fetched from the bundled asset rather than
+ * inlined so the base64 never weighs down the main bundle (the point of loading
+ * `jspdf` lazily); Vite fingerprints the file and the browser cache serves it
+ * instantly on every subsequent download.
  *
  * Memoised because a customer who downloads a receipt usually downloads the
  * transcript too, and the second document should not re-fetch.
@@ -104,14 +108,9 @@ export function loadLogo(): Promise<string | null> {
     try {
       const response = await fetch(logoUrl)
       if (!response.ok) return null
-      const bytes = new Uint8Array(await response.arrayBuffer())
-      // Chunked: `String.fromCharCode(...bytes)` on a 36KB array overflows the
-      // argument limit in every engine.
-      let binary = ''
-      for (let i = 0; i < bytes.length; i += 0x8000) {
-        binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000))
-      }
-      return `data:image/png;base64,${btoa(binary)}`
+      const svg = await response.text()
+      const match = svg.match(/data:image\/png;base64,[A-Za-z0-9+/=]+/)
+      return match ? match[0] : null
     } catch {
       // A missing logo must never cost the customer their receipt — the masthead
       // falls back to a text lockup.
@@ -121,8 +120,8 @@ export function loadLogo(): Promise<string | null> {
   return logoPromise
 }
 
-/** Natural size of `acse-solutions-logo.png`, for aspect-correct placement. */
-const LOGO_ASPECT = 900 / 470
+/** Natural size of the embedded lockup, for aspect-correct placement. */
+const LOGO_ASPECT = 638 / 220
 
 /* --------------------------------- drawing -------------------------------- */
 

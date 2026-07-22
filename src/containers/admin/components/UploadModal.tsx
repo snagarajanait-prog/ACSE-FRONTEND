@@ -2,16 +2,15 @@
  * The "Upload Document" / "Upload Image" dialog.
  *
  * Drag-and-drop OR click-to-browse, a small picked-files list you can prune, and
- * the metadata fields (uploader, category, notes). Accept rules and copy switch
- * with the active section. State resets every time the dialog opens, so a
- * cancelled upload never bleeds into the next one.
+ * an optional notes field. Accept rules and copy switch with the active section.
+ * State resets every time the dialog opens, so a cancelled upload never bleeds
+ * into the next one.
  */
 
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
-import { FileText, Image as ImageIcon, Paperclip, UploadCloud, X } from 'lucide-react'
+import { FileText, Image as ImageIcon, UploadCloud, X } from 'lucide-react'
 import { Trans, useTranslation } from 'react-i18next'
-import { CATEGORY_OPTIONS } from '@/containers/admin/data'
 import type { AdminSection } from '@/containers/admin/types'
 import { formatBytes } from '@/containers/admin/utils/format'
 import type { UploadPayload } from '@/containers/admin/hooks/useAdminFiles'
@@ -36,20 +35,14 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
   const { t } = useTranslation('admin')
   const inputRef = useRef<HTMLInputElement>(null)
   const [picked, setPicked] = useState<File[]>([])
-  const [uploadedBy, setUploadedBy] = useState('')
-  const [category, setCategory] = useState('')
   const [notes, setNotes] = useState('')
   const [dragging, setDragging] = useState(false)
   const [error, setError] = useState('')
-
-  const categories = CATEGORY_OPTIONS[section]
 
   // Fresh form on every open.
   useEffect(() => {
     if (!open) return
     setPicked([])
-    setUploadedBy('')
-    setCategory('')
     setNotes('')
     setDragging(false)
     setError('')
@@ -81,7 +74,7 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
       setError(t('upload.errorNoFiles'))
       return
     }
-    onSubmit({ files: picked, uploadedBy, category, notes })
+    onSubmit({ files: picked, notes })
   }
 
   return (
@@ -89,7 +82,6 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
       open={open}
       onClose={onClose}
       title={t(`upload.title.${section}`)}
-      description={t(`upload.description.${section}`)}
       className="max-w-lg"
       footer={
         <>
@@ -199,36 +191,6 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
             })}
           </ul>
         )}
-
-        {/* Uploaded by */}
-        <Field label={t('upload.uploadedByLabel')}>
-          <input
-            type="text"
-            value={uploadedBy}
-            onChange={(e) => setUploadedBy(e.target.value)}
-            placeholder={t('upload.uploadedByPlaceholder')}
-            className="h-10 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm text-brand-navy outline-none transition-colors placeholder:text-slate-400 focus:border-brand-cyan focus:ring-2 focus:ring-brand-cyan/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:placeholder:text-slate-500"
-          />
-        </Field>
-
-        {/* Category */}
-        <Field label={t('upload.categoryLabel')}>
-          <div className="relative">
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="h-10 w-full appearance-none rounded-lg border border-slate-200 bg-white px-3 pr-9 text-sm text-brand-navy outline-none transition-colors focus:border-brand-cyan focus:ring-2 focus:ring-brand-cyan/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-100"
-            >
-              <option value="">{t('upload.uncategorized')}</option>
-              {categories.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-            <Paperclip className="pointer-events-none absolute right-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 rotate-90 text-slate-400" aria-hidden />
-          </div>
-        </Field>
 
         {/* Notes */}
         <Field label={t('upload.notesLabel')} optional>

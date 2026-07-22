@@ -40,7 +40,7 @@ export default function FileTable({
       <div className="overflow-x-auto">
         <table className="w-full min-w-[720px] border-collapse text-left text-sm">
           <thead>
-            <tr className="bg-gradient-to-r from-brand-navy via-[#0f5c7a] to-[#1b7fa8] text-white">
+            <tr className="border-b border-slate-200 bg-slate-50 text-slate-500 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-400">
               <HeaderCell label={sortLabels.uploadedAt} sortKey="uploadedAt" sort={sort} onToggle={onToggleSort} />
               <HeaderCell label={sortLabels.uploadedBy} sortKey="uploadedBy" sort={sort} onToggle={onToggleSort} />
               <HeaderCell label={sortLabels.fileName} sortKey="fileName" sort={sort} onToggle={onToggleSort} />
@@ -58,11 +58,10 @@ export default function FileTable({
                 </td>
               </tr>
             ) : (
-              rows.map((row, i) => (
+              rows.map((row) => (
                 <Row
                   key={row.id}
                   row={row}
-                  zebra={i % 2 === 1}
                   onDownload={onDownload}
                   onDelete={onDelete}
                 />
@@ -94,16 +93,19 @@ function HeaderCell({
         type="button"
         onClick={() => onToggle(sortKey)}
         aria-label={t('files.sortBy', { label })}
-        className="group inline-flex items-center gap-1.5 rounded text-[11px] font-semibold uppercase tracking-wider outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+        className={cn(
+          'group inline-flex items-center gap-1.5 rounded text-[11px] font-semibold uppercase tracking-wider outline-none transition-colors hover:text-brand-navy focus-visible:ring-2 focus-visible:ring-brand-cyan/50 dark:hover:text-slate-200',
+          active && 'text-brand-navy dark:text-slate-200',
+        )}
       >
         {label}
         {active ? (
           <ChevronDown
-            className={cn('h-3.5 w-3.5 transition-transform', sort.dir === 'asc' && 'rotate-180')}
+            className={cn('h-3.5 w-3.5 text-brand-cyan transition-transform', sort.dir === 'asc' && 'rotate-180')}
             aria-hidden
           />
         ) : (
-          <ChevronsUpDown className="h-3.5 w-3.5 text-white/50 transition-colors group-hover:text-white/80" aria-hidden />
+          <ChevronsUpDown className="h-3.5 w-3.5 text-slate-400 transition-colors group-hover:text-slate-600 dark:group-hover:text-slate-300" aria-hidden />
         )}
       </button>
     </th>
@@ -112,25 +114,18 @@ function HeaderCell({
 
 function Row({
   row,
-  zebra,
   onDownload,
   onDelete,
 }: {
   row: FileRecord
-  zebra: boolean
   onDownload: (record: FileRecord) => void
   onDelete: (record: FileRecord) => void
 }) {
   const { t } = useTranslation('admin')
   const FileIcon = row.section === 'image' ? ImageIcon : FileText
   return (
-    <tr
-      className={cn(
-        'transition-colors hover:bg-brand-cyan/[0.04] dark:hover:bg-white/[0.04]',
-        zebra ? 'bg-slate-50/60 dark:bg-white/[0.015]' : 'bg-white dark:bg-transparent',
-      )}
-    >
-      <td className="whitespace-nowrap px-4 py-3.5 font-medium tabular-nums text-brand-navy dark:text-slate-200">
+    <tr className="group bg-white transition-colors hover:bg-sky-50/70 dark:bg-transparent dark:hover:bg-white/[0.04]">
+      <td className="whitespace-nowrap border-l-2 border-transparent px-4 py-3.5 font-medium tabular-nums text-brand-navy group-hover:border-brand-cyan dark:text-slate-200">
         {formatDate(row.uploadedAt)}
       </td>
 
@@ -181,7 +176,7 @@ function Row({
           onClick={() => onDownload(row)}
           aria-label={t('files.downloadFile', { name: row.fileName })}
           title={t('files.downloadTitle')}
-          className="inline-grid h-8 w-8 place-items-center rounded-md text-brand-cyan outline-none transition-colors hover:bg-brand-cyan/10 focus-visible:ring-2 focus-visible:ring-brand-cyan"
+          className="inline-grid h-8 w-8 place-items-center rounded-md text-brand-cyan outline-none transition-colors group-hover:bg-brand-cyan/10 hover:bg-brand-cyan/20 focus-visible:ring-2 focus-visible:ring-brand-cyan"
         >
           <Download className="h-4 w-4" aria-hidden />
         </button>
@@ -193,7 +188,7 @@ function Row({
           onClick={() => onDelete(row)}
           aria-label={t('files.deleteFile', { name: row.fileName })}
           title={t('files.deleteTitle')}
-          className="inline-grid h-8 w-8 place-items-center rounded-md text-brand-red outline-none transition-colors hover:bg-brand-red/10 focus-visible:ring-2 focus-visible:ring-brand-red"
+          className="inline-grid h-8 w-8 place-items-center rounded-md text-brand-red outline-none transition-colors group-hover:bg-brand-red/15 hover:bg-brand-red/25 focus-visible:ring-2 focus-visible:ring-brand-red"
         >
           <Trash2 className="h-4 w-4" aria-hidden />
         </button>
@@ -202,26 +197,10 @@ function Row({
   )
 }
 
-/** A stable tint per category, hashed so the same tag always looks the same. */
-const BADGE_TONES = [
-  'bg-brand-cyan/10 text-brand-navy ring-brand-cyan/25 dark:bg-brand-cyan/15 dark:text-brand-cyan',
-  'bg-emerald-500/10 text-emerald-700 ring-emerald-500/25 dark:text-emerald-300',
-  'bg-violet-500/10 text-violet-700 ring-violet-500/25 dark:text-violet-300',
-  'bg-amber-500/10 text-amber-700 ring-amber-500/25 dark:text-amber-300',
-  'bg-rose-500/10 text-rose-700 ring-rose-500/25 dark:text-rose-300',
-  'bg-sky-500/10 text-sky-700 ring-sky-500/25 dark:text-sky-300',
-]
-
+/** Uniform soft-blue tag, matching the file-library mockup. */
 function CategoryBadge({ value }: { value: string }) {
-  let hash = 0
-  for (let i = 0; i < value.length; i++) hash = (hash * 31 + value.charCodeAt(i)) >>> 0
   return (
-    <span
-      className={cn(
-        'inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1 ring-inset',
-        BADGE_TONES[hash % BADGE_TONES.length],
-      )}
-    >
+    <span className="inline-flex items-center rounded-full bg-brand-cyan/10 px-2.5 py-1 text-[11px] font-semibold text-brand-cyan ring-1 ring-inset ring-brand-cyan/20 dark:bg-brand-cyan/15">
       {value}
     </span>
   )

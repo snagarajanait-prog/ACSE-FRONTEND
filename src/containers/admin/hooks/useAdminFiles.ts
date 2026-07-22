@@ -26,8 +26,6 @@ import { storage } from '@/utils/storage'
 /** Shape the upload form hands back. */
 export interface UploadPayload {
   files: File[]
-  uploadedBy: string
-  category: string
   notes: string
 }
 
@@ -73,7 +71,7 @@ export function useAdminFiles(section: AdminSection) {
   }, [])
 
   const addFiles = useCallback(
-    ({ files: picked, uploadedBy, category, notes }: UploadPayload) => {
+    ({ files: picked, notes }: UploadPayload) => {
       const now = new Date().toISOString()
       const created = picked.map<FileRecord>((file) => {
         const id = makeId(section)
@@ -82,8 +80,8 @@ export function useAdminFiles(section: AdminSection) {
           id,
           section,
           fileName: file.name,
-          category: category || 'Other',
-          uploadedBy: uploadedBy.trim() || 'Unknown',
+          category: 'Other',
+          uploadedBy: 'Unknown',
           uploadedAt: now,
           size: file.size,
           notes: notes.trim() || undefined,

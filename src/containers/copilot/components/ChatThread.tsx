@@ -61,9 +61,10 @@ interface Segment {
 /**
  * Split the flat thread back into the separate conversations it holds, keyed by
  * the `conversationId` the engine stamps on each turn. Every scenario run and
- * every free-typed exchange is its own segment, so each can close with its own
- * Copy / Share / Export bar — a single chat that started service *and* stopped
- * service ends up with a take-away bar under each.
+ * every free-typed exchange is its own segment — the split still drives the
+ * per-conversation spacing, the "only the live one announces" aria-live rule and
+ * the reference look-ahead. The Copy / Share / Export bar is NOT per-segment: it
+ * is drawn once, at the foot of the whole thread (see below).
  */
 function toSegments(messages: Msg[]): Segment[] {
   const segments: Segment[] = []
@@ -93,9 +94,10 @@ export default function ChatThread({
     phone: customer.phone,
   }
 
-  // Only offer a take-away bar once its conversation is at rest. Mid-playback it
-  // would export half a conversation, and a row of controls sliding in under a
-  // live assistant turn reads as part of that turn.
+  // The take-away bar appears once, at the very end of the conversation, and only
+  // once the thread is at rest. Mid-playback it would export half a conversation,
+  // and a row of controls sliding in under a live assistant turn reads as part of
+  // that turn.
   const settled = !playing && !thinking && !typing && !otpPrompt
 
   const segments = toSegments(messages)
@@ -109,11 +111,6 @@ export default function ChatThread({
       <Filament active={Boolean(thinking || typing)} />
       {segments.map((segment, si) => {
         const isLast = si === segments.length - 1
-        // Earlier conversations are, by definition, finished the moment a newer
-        // one begins, so their bar is always available. The live conversation
-        // earns its bar only once the whole thread comes to rest.
-        const showActions =
-          (isLast ? settled : true) && hasExportableContent(segment.messages)
         return (
           <section key={segment.conversationId} className={cn(si > 0 && 'mt-10')}>
             <ol
@@ -139,19 +136,20 @@ export default function ChatThread({
               {isLast && thinking && <ThinkingNode phrases={thinking} />}
               {isLast && typing && <TypingNode />}
             </ol>
-
-            {/* Outside the <ol>: these are controls for the log, not an entry in it. */}
-            {showActions && (
-              <ChatActions
-                messages={segment.messages}
-                customer={customer}
-                account={account}
-                source={source}
-              />
-            )}
           </section>
         )
       })}
+
+      {/* A single take-away bar for the whole conversation, at the very end and
+          only once the thread has come to rest — not one under every segment. */}
+      {settled && hasExportableContent(messages) && (
+        <ChatActions
+          messages={messages}
+          customer={customer}
+          account={account}
+          source={source}
+        />
+      )}
     </div>
   )
 }

@@ -111,7 +111,8 @@ function ClientBrand() {
   )
 }
 
-/** "Powered by ACSE · AI" attribution, doubling as the way back home. */
+/** "Powered by" + the ACSE·AI lockup, doubling as the way back home. The "AI"
+ *  is part of the logo artwork itself, so no separate label is appended here. */
 function PoweredBy() {
   const { t } = useTranslation('admin')
   return (
@@ -124,7 +125,6 @@ function PoweredBy() {
         {t('shell.poweredBy')}
       </span>
       <Logo className="h-7" />
-      <span className="text-xs font-bold tracking-tight text-brand-red">AI</span>
     </Link>
   )
 }

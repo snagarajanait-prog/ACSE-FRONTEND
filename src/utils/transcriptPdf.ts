@@ -28,7 +28,6 @@ import {
   fieldRows,
   loadLogo,
   masthead,
-  paginate,
   sectionHeading,
   type Doc,
 } from '@/utils/pdfTheme'
@@ -86,10 +85,8 @@ export async function buildTranscriptPdf(transcript: Transcript) {
     }
   }
 
-  // Page numbers are stamped last: the total is only known once the flow has
-  // been laid out, and a transcript's length is not knowable in advance.
-  paginate(doc, i18n.t('copilot:transcript.disclaimer'))
-
+  // No footer band: the downloaded conversation reads as clean prose, with none
+  // of the powered-by / page-number / disclaimer furniture the receipt carries.
   return { doc, fileName: `${transcript.fileBase}.pdf` }
 }
 
@@ -231,5 +228,6 @@ function done(doc: Doc, startY: number, text: string, reference: string | null):
   return y + height
 }
 
-/* The footer band and `Page n of m` are drawn by `paginate` in `pdfTheme.ts`,
- * so the receipt and the transcript close the same way. */
+/* The transcript intentionally omits the footer band and `Page n of m` — the
+ * downloaded conversation is left to close on its own last line. (The receipt
+ * still finishes with the shared `paginate` footer from `pdfTheme.ts`.) */

@@ -7,33 +7,27 @@ Files that must keep a stable, predictable public URL go in `/public` instead.
 
 ## Brand logo
 
+`logo/Main_logo.svg` is the current brand lockup and the **source of truth** for
+every rendered logo:
+
 | File | Role |
 | --- | --- |
-| `ACSE PNG.png` | **Source of truth.** The brand master: 8334×8334 RGBA, transparent. Not imported by any code. |
-| `ACSE SVG.svg` | Vector master (Adobe Illustrator export, true paths, 9KB). Not imported by any code — see the note below. |
-| `acse-solutions-logo.png` | **What `components/Logo.tsx` imports.** 900×470, derived from the master. |
-| `acse-logo.png` | Superseded artwork (the older lockup, with the `\| AI` suffix). Unreferenced — kept only because the loader's layer split in `assets/logo/` was originally traced from it. |
+| `logo/Main_logo.svg` | **Source of truth.** The brand lockup — an SVG wrapping a single 638×220 raster (~2.9 aspect). Imported by `components/Logo.tsx` (on-screen `<img>`) and `utils/pdfTheme.ts` (which lifts the embedded PNG data URI out for jsPDF, since `addImage` can't render SVG). |
+| `logo/acse-mark-silhouette.svg` | Mask for the loader's highlight sweep — a silhouette of the mark. Imported by `components/LogoAssembly.tsx`. |
+| `ACSE SVG.svg` | Vector export the animated loader is decomposed from — see `components/logo/pieces.tsx`. |
+| `ACSE PNG.png`, `acse-solutions-logo.png`, `acse-logo.png` | **Superseded** by `Main_logo.svg`. No longer imported by any code; kept only as historical brand masters. |
 
-### Why the logo is derived rather than imported directly
+### The animated loader still uses the old artwork
 
-In the master the mark occupies just **29% of the canvas** (ink box 6412×3351
-inside 8334×8334). Importing it and applying `h-8 w-auto` would size the *padded
-square*, rendering the mark at roughly 12px tall — and shipping 492KB to do it.
-`acse-solutions-logo.png` is that master trimmed to the ink box and downsampled
-to 900×470 (36KB), which is what every surface renders.
+`components/LogoAssembly.tsx` reassembles the lockup on screen from individually
+animatable vector pieces (`logo/pieces.tsx`), derived from `ACSE SVG.svg`. It is
+**not** driven by `Main_logo.svg` — a raster embedded in an SVG can't be split
+into animatable parts. If the brand geometry in `Main_logo.svg` differs from
+`ACSE SVG.svg`, the loader's entrance will look slightly different from the
+static logo until the pieces are re-derived from the new vector artwork.
 
-### Regenerating it
+### Favicons
 
-If the master is ever replaced, redo the trim. The one-off script alpha-weights
-its box filter — averaging straight RGB pulls the transparent white padding into
-the edges and haloes the artwork on the navy navbar and dark footer. Also
-regenerate `public/favicon.png` and `public/apple-touch-icon.png`, which are the
-same ink box centred on a transparent square.
-
-### Worth considering
-
-`ACSE SVG.svg` is genuine vector — 15 paths, no embedded bitmaps, brand hexes
-intact (`#2CA5D9`, `#E33935`, `#6D6E71`). At 9KB it is a quarter the size of the
-derived PNG, stays crisp at every size and DPR, and needs no regeneration step
-when the artwork changes (padding is trimmed losslessly via `viewBox`). Switching
-`Logo.tsx` to it would remove this whole derivation pipeline.
+`public/favicon.png` and `public/apple-touch-icon.png` are the mark centred on a
+transparent square, and were derived from the old master — regenerate them from
+`Main_logo.svg` if the icons should match the new lockup.

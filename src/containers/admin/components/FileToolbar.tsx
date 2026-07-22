@@ -26,7 +26,7 @@ export default function FileToolbar({
 }: FileToolbarProps) {
   const { t } = useTranslation('admin')
   return (
-    <div className="mb-5 flex flex-col gap-4">
+    <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h1 className="text-xl font-semibold tracking-tight text-brand-navy sm:text-2xl dark:text-slate-100">
           {t('files.heading')}
@@ -36,11 +36,11 @@ export default function FileToolbar({
         </p>
       </div>
 
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <label className="relative w-full sm:max-w-xs">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <label className="relative w-full sm:w-72">
           <span className="sr-only">{t('files.searchLabel')}</span>
           <Search
-            className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+            className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
             aria-hidden
           />
           <input
@@ -48,14 +48,14 @@ export default function FileToolbar({
             value={query}
             onChange={(e) => onQueryChange(e.target.value)}
             placeholder={t('files.searchPlaceholder')}
-            className="h-10 w-full rounded-lg border border-slate-200 bg-white pl-9 pr-9 text-sm text-brand-navy shadow-sm outline-none transition-colors placeholder:text-slate-400 focus:border-brand-cyan focus:ring-2 focus:ring-brand-cyan/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:placeholder:text-slate-500"
+            className="h-10 w-full rounded-full border border-slate-200 bg-white pl-10 pr-9 text-sm text-brand-navy shadow-sm outline-none transition-colors placeholder:text-slate-400 focus:border-brand-cyan focus:ring-2 focus:ring-brand-cyan/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:placeholder:text-slate-500"
           />
           {query && (
             <button
               type="button"
               onClick={() => onQueryChange('')}
               aria-label={t('files.clearSearch')}
-              className="absolute right-2 top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-md text-slate-400 outline-none hover:bg-slate-100 hover:text-slate-600 focus-visible:ring-2 focus-visible:ring-brand-cyan dark:hover:bg-white/10 dark:hover:text-slate-200"
+              className="absolute right-2.5 top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full text-slate-400 outline-none hover:bg-slate-100 hover:text-slate-600 focus-visible:ring-2 focus-visible:ring-brand-cyan dark:hover:bg-white/10 dark:hover:text-slate-200"
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -66,8 +66,8 @@ export default function FileToolbar({
           type="button"
           onClick={onUpload}
           className={cn(
-            'inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold text-white shadow-sm outline-none transition',
-            'bg-gradient-to-r from-brand-cyan to-[#1b7fa8] hover:brightness-110 focus-visible:ring-2 focus-visible:ring-brand-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+            'inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-full px-5 text-sm font-semibold text-white shadow-sm outline-none transition',
+            'bg-brand-cyan hover:bg-brand-cyan/90 focus-visible:ring-2 focus-visible:ring-brand-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-background',
           )}
         >
           <UploadCloud className="h-4 w-4" aria-hidden />
