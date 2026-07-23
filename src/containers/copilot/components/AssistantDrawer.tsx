@@ -269,6 +269,11 @@ export default function AssistantDrawer({ open, onClose }: AssistantDrawerProps)
                   onStartScenario={engine.startScenario}
                   sourceLabel={meta.chatLabel}
                   placeholder={t('composer.drawerPlaceholder')}
+                  awaitingUser={Boolean(engine.awaitingUser)}
+                  suggestion={engine.awaitingUser?.hint ?? null}
+                  onUseSuggestion={() => {
+                    if (engine.awaitingUser) engine.submitUserTurn(engine.awaitingUser.hint)
+                  }}
                 />
               </div>
             </>

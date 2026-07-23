@@ -23,6 +23,9 @@
     "shortPlaceholder": "ACSE AI fragen…",
     "drawerPlaceholder": "Fragen Sie ACSE AI alles…",
     "responding": "Der Assistent antwortet…",
+    "replyPlaceholder": "Antwort eingeben…",
+    "suggestedReply": "Antwortvorschlag",
+    "useSuggestion": "Diese Antwort verwenden",
     "send": "Senden",
     "disclaimer": "Beispielhafte Konversation · nicht produktive Daten · liest/schreibt {{source}}"
   },

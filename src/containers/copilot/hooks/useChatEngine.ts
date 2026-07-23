@@ -168,6 +168,16 @@ export interface ChatEngine {
   otpPrompt: OtpPrompt | null
   /** Accept the typed code and resume the held storyboard. */
   submitOtp: (code: string) => void
+  /**
+   * Set while the storyboard is held waiting for the customer to type their own
+   * turn — every scripted `user` line after the opening one becomes a real
+   * prompt. `hint` is that scripted line, offered as a one-tap suggested reply.
+   * `playing` stays true throughout, but the composer is UNLOCKED (unlike the
+   * OTP hold): the customer's reply is what resumes the conversation.
+   */
+  awaitingUser: { hint: string } | null
+  /** Accept a typed (or suggested) reply and resume the held storyboard. */
+  submitUserTurn: (text: string) => void
   draft: string
   setDraft: (v: string) => void
   onSend: () => void
@@ -196,6 +206,7 @@ export function useChatEngine(): ChatEngine {
   const [thinking, setThinking] = useState<string[] | null>(null)
   const [playing, setPlaying] = useState(false)
   const [otpPrompt, setOtpPrompt] = useState<OtpPrompt | null>(null)
+  const [awaitingUser, setAwaitingUser] = useState<{ hint: string } | null>(null)
   const [draft, setDraft] = useState('')
   const idRef = useRef(0)
   const runRef = useRef(0)
@@ -205,6 +216,7 @@ export function useChatEngine(): ChatEngine {
   const convRef = useRef(0)
   const scrollRef = useRef<HTMLDivElement>(null)
   const otpResolveRef = useRef<((code: string | null) => void) | null>(null)
+  const userResolveRef = useRef<((text: string | null) => void) | null>(null)
 
   /**
    * Settle a held challenge: `code` resumes the storyboard, null abandons it.
@@ -220,6 +232,27 @@ export function useChatEngine(): ChatEngine {
 
   const submitOtp = useCallback((code: string) => settleOtp(code), [settleOtp])
 
+  /**
+   * Settle a held customer turn: `text` resumes the storyboard with that reply,
+   * null abandons it. Like `settleOtp`, this MUST run on every teardown — a
+   * parked `play` is waiting on this promise and would otherwise hang with
+   * `playing` stuck true.
+   */
+  const settleUser = useCallback((text: string | null) => {
+    const resolve = userResolveRef.current
+    userResolveRef.current = null
+    setAwaitingUser(null)
+    resolve?.(text)
+  }, [])
+
+  const submitUserTurn = useCallback(
+    (text: string) => {
+      const trimmed = text.trim()
+      if (trimmed) settleUser(trimmed)
+    },
+    [settleUser],
+  )
+
   // Reset the conversation synchronously when the customer/account context
   // changes — DURING render, so a switch never paints the new account's context
   // alongside the previous account's transcript (a post-paint effect would).
@@ -234,6 +267,7 @@ export function useChatEngine(): ChatEngine {
     setTyping(false)
     setThinking(null)
     settleOtp(null)
+    settleUser(null)
     setMessages(
       customer
         ? [{ id: idRef.current++, conversationId: 0, step: { kind: 'ai', text: greeting(customer.name) } }]
@@ -299,8 +333,9 @@ export function useChatEngine(): ChatEngine {
       // A scenario is a fresh conversation: give it its own id so it settles
       // with its own take-away bar rather than folding into the one before it.
       convRef.current += 1
-      // Abandon a challenge left held by the run we just superseded.
+      // Abandon a challenge / reply hold left by the run we just superseded.
       settleOtp(null)
+      settleUser(null)
       setPlaying(true)
       setTyping(false)
       setThinking(null)
@@ -313,9 +348,26 @@ export function useChatEngine(): ChatEngine {
         const raw = steps[i]
 
         if (raw.kind === 'user') {
-          await sleep(i === 0 ? 200 : 550)
-          if (runRef.current !== myRun) return
-          push(firstUserText && i === 0 ? { kind: 'user', text: firstUserText } : resolveStep(raw))
+          if (i === 0) {
+            // The opening line IS the trigger — the pill tap or the message the
+            // customer typed to start this run. Show it and move on.
+            await sleep(200)
+            if (runRef.current !== myRun) return
+            push(firstUserText ? { kind: 'user', text: firstUserText } : resolveStep(raw))
+          } else {
+            // Every later customer turn is a real prompt: hold here and wait for
+            // the customer to type a reply (or tap the suggested one). Nothing
+            // but a submitted reply resumes this — that is what makes the
+            // conversation interactive rather than a canned playback.
+            const hint = (resolveStep(raw) as Extract<ChatStep, { kind: 'user' }>).text
+            setAwaitingUser({ hint })
+            const reply = await new Promise<string | null>((r) => {
+              userResolveRef.current = r
+            })
+            if (runRef.current !== myRun || reply === null) return
+            push({ kind: 'user', text: reply })
+            await sleep(400)
+          }
         } else if (raw.kind === 'otp' && raw.prompt && challenges) {
           // Hold here: no timer resumes this, only a submitted code does.
           setTyping(true)
@@ -359,7 +411,7 @@ export function useChatEngine(): ChatEngine {
       }
       setPlaying(false)
     },
-    [push, resolve, resolveStep, settleOtp],
+    [push, resolve, resolveStep, settleOtp, settleUser],
   )
 
   const startScenario = useCallback(
@@ -378,6 +430,7 @@ export function useChatEngine(): ChatEngine {
     setTyping(false)
     setThinking(null)
     settleOtp(null)
+    settleUser(null)
     idRef.current = 0
     convRef.current = 0
     setMessages(
@@ -385,7 +438,7 @@ export function useChatEngine(): ChatEngine {
         ? [{ id: idRef.current++, conversationId: 0, step: { kind: 'ai', text: greeting(customer.name) } }]
         : [],
     )
-  }, [customer, settleOtp])
+  }, [customer, settleOtp, settleUser])
 
   // Auto-play a scenario requested from elsewhere (e.g. the landing use-case
   // cards, which park the id in the store before navigating here).
@@ -404,11 +457,18 @@ export function useChatEngine(): ChatEngine {
   // final message of every storyboard sits clipped behind the composer.
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' })
-  }, [messages, typing, thinking, otpPrompt, playing])
+  }, [messages, typing, thinking, otpPrompt, awaitingUser, playing])
 
   const onSend = useCallback(() => {
     const text = draft.trim()
-    if (!text || playing) return
+    if (!text) return
+    // A reply to a held storyboard turn resumes it — it never starts a new run.
+    if (awaitingUser) {
+      setDraft('')
+      settleUser(text)
+      return
+    }
+    if (playing) return
     setDraft('')
     const id = matchScenario(text)
     if (id) {
@@ -432,7 +492,7 @@ export function useChatEngine(): ChatEngine {
       })
       setPlaying(false)
     })()
-  }, [draft, playing, push, resolve, startScenario])
+  }, [draft, awaitingUser, playing, push, resolve, settleUser, startScenario])
 
   const meta = DATA_SOURCE_META[source]
 
@@ -453,6 +513,8 @@ export function useChatEngine(): ChatEngine {
     playing,
     otpPrompt,
     submitOtp,
+    awaitingUser,
+    submitUserTurn,
     draft,
     setDraft,
     onSend,

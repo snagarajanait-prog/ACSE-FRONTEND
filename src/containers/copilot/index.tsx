@@ -47,6 +47,7 @@ export default function Copilot() {
     playing,
     otpPrompt,
     submitOtp,
+    awaitingUser,
     resetConversation,
   } = engine
 
@@ -84,7 +85,13 @@ export default function Copilot() {
     <div className="relative flex h-[100dvh] w-full flex-col overflow-hidden bg-white font-sans text-brand-navy antialiased transition-colors duration-300 dark:bg-brand-navydeep dark:text-slate-100">
       <AmbientBackdrop />
 
-      <CopilotHeader hasContext={hasContext} playing={playing} onReset={resetConversation} />
+      {/* While a reply is awaited the storyboard is technically `playing`, but the
+          customer must still be able to start over — so the reset stays live. */}
+      <CopilotHeader
+        hasContext={hasContext}
+        playing={playing && !awaitingUser}
+        onReset={resetConversation}
+      />
 
       {!hasContext ? (
         <div className="relative z-10 min-h-0 flex-1 overflow-hidden">
@@ -219,6 +226,11 @@ function ComposerFor({
       pills={engine.pills}
       onStartScenario={engine.startScenario}
       sourceLabel={engine.meta.chatLabel}
+      awaitingUser={Boolean(engine.awaitingUser)}
+      suggestion={engine.awaitingUser?.hint ?? null}
+      onUseSuggestion={() => {
+        if (engine.awaitingUser) engine.submitUserTurn(engine.awaitingUser.hint)
+      }}
     />
   )
 }

@@ -7,7 +7,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react'
-import { Send, Sparkles } from 'lucide-react'
+import { CornerDownLeft, Send, Sparkles } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { EnginePill } from '@/containers/copilot/hooks/useChatEngine'
 import { cn } from '@/utils/cn'
@@ -28,6 +28,16 @@ interface ComposerProps {
    * composer placeholder when omitted.
    */
   placeholder?: string
+  /**
+   * True while the storyboard is held for the customer's own reply. It UNLOCKS
+   * the input even though `playing` is set, and swaps the suggestion pills for a
+   * one-tap reply chip.
+   */
+  awaitingUser?: boolean
+  /** The scripted line offered as that one-tap suggested reply. */
+  suggestion?: string | null
+  /** Submit the suggested reply verbatim. */
+  onUseSuggestion?: () => void
 }
 
 function useNarrow(): boolean {
@@ -54,11 +64,18 @@ export default function Composer({
   onStartScenario,
   sourceLabel,
   placeholder,
+  awaitingUser = false,
+  suggestion = null,
+  onUseSuggestion,
 }: ComposerProps) {
   const { t } = useTranslation('copilot')
   const taRef = useRef<HTMLTextAreaElement>(null)
   const narrow = useNarrow()
   const roomyPlaceholder = placeholder ?? t('composer.placeholder')
+  // While a reply is being awaited the storyboard is still `playing`, but the
+  // input must accept the customer's turn — that hold is the whole point. Only a
+  // storyboard running WITHOUT a pending reply locks the composer.
+  const locked = playing && !awaitingUser
 
   // Auto-grow the textarea with the draft.
   useEffect(() => {
@@ -84,6 +101,15 @@ export default function Composer({
               onClick={() => onStartScenario(u.id)}
             />
           ))}
+        </div>
+      ) : awaitingUser && suggestion ? (
+        // Held for the customer's reply: offer the scripted line as one tap, so
+        // the demo can flow fast without anyone having to type the full answer.
+        <div className="mb-3 flex items-center gap-2">
+          <span className="shrink-0 text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500">
+            {t('composer.suggestedReply')}
+          </span>
+          <SuggestionChip text={suggestion} onClick={onUseSuggestion} />
         </div>
       ) : (
         !playing && (
@@ -115,19 +141,21 @@ export default function Composer({
               onSend()
             }
           }}
-          disabled={playing}
+          disabled={locked}
           placeholder={
-            playing
-              ? t('composer.responding')
-              : narrow
-                ? t('composer.shortPlaceholder')
-                : roomyPlaceholder
+            awaitingUser
+              ? t('composer.replyPlaceholder')
+              : playing
+                ? t('composer.responding')
+                : narrow
+                  ? t('composer.shortPlaceholder')
+                  : roomyPlaceholder
           }
           className="max-h-[200px] min-h-[40px] flex-1 resize-none bg-transparent py-2 text-[15px] leading-6 text-brand-navy outline-none placeholder:text-slate-400 dark:text-slate-100 dark:placeholder:text-slate-500"
         />
         <button
           onClick={onSend}
-          disabled={playing || !draft.trim()}
+          disabled={locked || !draft.trim()}
           aria-label={t('composer.send')}
           className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-brand-cyan text-white shadow-[0_6px_16px_-6px_rgba(44,165,217,0.7)] outline-none transition hover:brightness-105 focus-visible:ring-2 focus-visible:ring-brand-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:opacity-30 disabled:shadow-none dark:text-brand-navydeep dark:shadow-[0_0_20px_-4px_rgba(44,165,217,0.7)] dark:hover:scale-105 dark:focus-visible:ring-offset-brand-navydeep"
         >
@@ -165,6 +193,25 @@ function Chip({
     >
       <pill.Icon className="h-3.5 w-3.5 text-brand-cyan" />
       {label}
+    </button>
+  )
+}
+
+/**
+ * The scripted reply, offered as a single tap while the assistant waits for the
+ * customer's turn. Truncates so a long answer (an address) never breaks the row;
+ * the full text stays reachable via the title/hover.
+ */
+function SuggestionChip({ text, onClick }: { text: string; onClick?: () => void }) {
+  const { t } = useTranslation('copilot')
+  return (
+    <button
+      onClick={onClick}
+      title={t('composer.useSuggestion')}
+      className="group inline-flex min-w-0 items-center gap-1.5 rounded-full bg-brand-cyan/6 px-3.5 py-2 text-[13px] font-medium text-brand-navy outline-none ring-1 ring-brand-cyan/30 transition hover:bg-brand-cyan/10 hover:ring-brand-cyan focus-visible:ring-2 focus-visible:ring-brand-cyan active:scale-95 dark:bg-brand-cyan/10 dark:text-slate-100 dark:ring-brand-cyan/30 dark:hover:bg-brand-cyan/20"
+    >
+      <CornerDownLeft className="h-3.5 w-3.5 shrink-0 text-brand-cyan" />
+      <span className="truncate">{text}</span>
     </button>
   )
 }

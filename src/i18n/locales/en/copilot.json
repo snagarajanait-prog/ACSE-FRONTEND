@@ -23,6 +23,9 @@
     "shortPlaceholder": "Ask ACSE AI…",
     "drawerPlaceholder": "Ask ACSE AI anything…",
     "responding": "Assistant is responding…",
+    "replyPlaceholder": "Type your reply…",
+    "suggestedReply": "Suggested reply",
+    "useSuggestion": "Use this reply",
     "send": "Send",
     "disclaimer": "Illustrative conversation · non-production data · reads/writes {{source}}"
   },
