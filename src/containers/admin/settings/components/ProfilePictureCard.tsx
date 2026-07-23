@@ -13,7 +13,7 @@ import { cn } from '@/utils/cn'
 
 interface ProfilePictureCardProps {
   companyName: string
-  logoDataUrl: string | null
+  logoUrl: string | null
   error: string
   onPick: (file: File) => void
   onRemove: () => void
@@ -21,7 +21,7 @@ interface ProfilePictureCardProps {
 
 export default function ProfilePictureCard({
   companyName,
-  logoDataUrl,
+  logoUrl,
   error,
   onPick,
   onRemove,
@@ -39,9 +39,9 @@ export default function ProfilePictureCard({
       <div className="flex flex-col items-center gap-5 sm:flex-row sm:items-start">
         {/* Avatar + change button */}
         <div className="flex shrink-0 flex-col items-center gap-3">
-          {logoDataUrl ? (
+          {logoUrl ? (
             <img
-              src={logoDataUrl}
+              src={logoUrl}
               alt={companyName}
               className="h-24 w-24 rounded-full object-cover shadow-sm ring-2 ring-white dark:ring-white/10"
             />
@@ -59,7 +59,7 @@ export default function ProfilePictureCard({
               <UploadCloud className="h-3.5 w-3.5" aria-hidden />
               {t('settings.profilePicture.change')}
             </button>
-            {logoDataUrl && (
+            {logoUrl && (
               <button
                 type="button"
                 onClick={onRemove}

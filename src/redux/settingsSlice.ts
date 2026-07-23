@@ -18,15 +18,19 @@ import { storage } from '@/utils/storage'
 export interface SettingsState {
   /** Client display name shown in the admin topbar (and, later, app-wide). */
   companyName: string
-  /** A data-URL logo, or null to fall back to the initials monogram. */
-  logoDataUrl: string | null
+  /**
+   * The organisation logo image URL — a remote URL from the profile API, or a
+   * `data:` URL while a freshly-picked file is previewed. Null falls back to the
+   * initials monogram.
+   */
+  logoUrl: string | null
 }
 
 function loadInitial(): SettingsState {
   const saved = storage.get<Partial<SettingsState>>(STORAGE_KEYS.adminSettings)
   return {
     companyName: saved?.companyName?.trim() || CLIENT_NAME,
-    logoDataUrl: saved?.logoDataUrl ?? null,
+    logoUrl: saved?.logoUrl ?? null,
   }
 }
 

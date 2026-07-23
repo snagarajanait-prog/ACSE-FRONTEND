@@ -87,6 +87,10 @@ export const config = {
   pages: {
     myPermissions: url(paths.pages.myPermissions),
   },
+
+  organizations: {
+    profile: url(paths.organizations.profile),
+  },
 } as const
 
 export default config

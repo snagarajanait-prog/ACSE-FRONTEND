@@ -80,7 +80,7 @@ function SignOutButton() {
 function ClientBrand() {
   const { t } = useTranslation('admin')
   const companyName = useAppSelector((s) => s.settingsSlice.companyName)
-  const logo = useAppSelector((s) => s.settingsSlice.logoDataUrl)
+  const logo = useAppSelector((s) => s.settingsSlice.logoUrl)
 
   return (
     <div className="flex min-w-0 items-center gap-2.5">

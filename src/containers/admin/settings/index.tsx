@@ -6,7 +6,7 @@
  * the state (draft, dirty, persistence, dispatch) lives in `useSettings`.
  */
 
-import { Check } from 'lucide-react'
+import { Check, Loader2 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import AdminGate from '@/containers/admin/auth/AdminGate'
 import { AdminShell } from '@/containers/admin/components'
@@ -46,7 +46,7 @@ function AdminSettings() {
         <div className="space-y-5">
           <ProfilePictureCard
             companyName={draft.companyName}
-            logoDataUrl={draft.logoDataUrl}
+            logoUrl={draft.logoUrl}
             error={settings.logoError}
             onPick={settings.pickLogo}
             onRemove={settings.removeLogo}
@@ -70,7 +70,7 @@ function AdminSettings() {
           <button
             type="button"
             onClick={settings.cancel}
-            disabled={!settings.dirty}
+            disabled={!settings.dirty || settings.saving}
             className="inline-flex h-10 items-center rounded-lg border border-slate-200 px-4 text-sm font-medium text-slate-600 outline-none transition-colors hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-brand-cyan disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/5"
           >
             {t('settings.cancel')}
@@ -78,13 +78,14 @@ function AdminSettings() {
           <button
             type="button"
             onClick={settings.save}
-            disabled={!settings.dirty}
+            disabled={!settings.dirty || settings.saving}
             className={cn(
               'inline-flex h-10 items-center gap-2 rounded-lg bg-gradient-to-r from-brand-cyan to-[#1b7fa8] px-5 text-sm font-semibold text-white shadow-sm outline-none transition hover:brightness-110 focus-visible:ring-2 focus-visible:ring-brand-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-background',
               'disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:brightness-100',
             )}
           >
-            {t('settings.save')}
+            {settings.saving && <Loader2 className="h-4 w-4 animate-spin" aria-hidden />}
+            {settings.saving ? t('settings.saving') : t('settings.save')}
           </button>
         </div>
       </div>

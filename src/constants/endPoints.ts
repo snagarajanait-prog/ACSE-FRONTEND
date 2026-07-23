@@ -14,4 +14,8 @@ export const paths = {
     /** Page slugs the signed-in user may see — drives the admin sidebar. */
     myPermissions: '/permission/pages',
   },
+  organizations: {
+    /** Org display name + logo shown app-wide. GET reads it; PATCH (multipart) updates it. */
+    profile: '/organizations/profile',
+  },
 } as const

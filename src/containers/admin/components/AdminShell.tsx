@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next'
 import AdminSidebar from '@/containers/admin/components/AdminSidebar'
 import type { AdminNav } from '@/containers/admin/components/AdminSidebar'
 import AdminTopbar from '@/containers/admin/components/AdminTopbar'
+import { useOrgProfileSync } from '@/containers/admin/hooks/useOrgProfileSync'
 import type { AdminSection } from '@/containers/admin/types'
 import { cn } from '@/utils/cn'
 
@@ -28,6 +29,9 @@ interface AdminShellProps {
 export default function AdminShell({ active, title, counts, children }: AdminShellProps) {
   const [navOpen, setNavOpen] = useState(false)
   const closeNav = useCallback(() => setNavOpen(false), [])
+
+  // Keep the topbar brand (name + logo) in sync with the server on every admin page.
+  useOrgProfileSync()
 
   // Don't let the mobile drawer linger open across a resize into desktop, where
   // the rail is already persistent.
