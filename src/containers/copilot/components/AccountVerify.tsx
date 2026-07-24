@@ -1,21 +1,22 @@
 /**
  * The identity gate: an account picked from the list is held here until the
- * customer confirms an email and keys the one-time code in. Shown in place of
- * the list.
+ * visitor confirms an email and keys the one-time code in. Shown in place of the
+ * list.
+ *
+ * Both steps are wired to the real backend (see `useAccessGate`): the email step
+ * calls `send-code`, the code step calls `verify-code`. There is no real inbox,
+ * so the code `send-code` returns is shown on screen for the visitor to enter.
  *
  * Modes wired to a live session never reach this screen; see `useAccessGate`.
  */
 
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import { ArrowLeft, Loader2, Mail, ShieldCheck } from 'lucide-react'
 import { Trans, useTranslation } from 'react-i18next'
 import OtpInput from '@/containers/copilot/components/OtpInput'
 import { useAccessGate } from '@/containers/copilot/hooks/useAccessGate'
 import { cn } from '@/utils/cn'
-
-/** How long the "Sending code…" state is held before the entry boxes appear. */
-const SEND_MS = 700
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -34,17 +35,13 @@ export default function AccountVerify() {
   const gate = useAccessGate()
   const [email, setEmail] = useState(gate.email)
   const [error, setError] = useState<string | null>(null)
-  const [sending, setSending] = useState(false)
-  const timerRef = useRef<number | undefined>(undefined)
-
-  // The gate can be torn down mid-send (Cancel, or the mode being switched), so
-  // never let a pending timer fire into an unmounted panel.
-  useEffect(() => () => window.clearTimeout(timerRef.current), [])
+  // Bumped on a rejected code so the OtpInput remounts empty for another try.
+  const [attempt, setAttempt] = useState(0)
 
   if (!gate.pending) return null
   const { customer, account } = gate.pending
 
-  const handleEmail = (e: FormEvent) => {
+  const handleEmail = async (e: FormEvent) => {
     e.preventDefault()
     const value = email.trim()
     if (!EMAIL_RE.test(value)) {
@@ -52,11 +49,22 @@ export default function AccountVerify() {
       return
     }
     setError(null)
-    setSending(true)
-    timerRef.current = window.setTimeout(() => {
-      setSending(false)
-      gate.sendCode(value)
-    }, SEND_MS)
+    try {
+      await gate.sendCode(value)
+    } catch {
+      setError(t('verify.sendError'))
+    }
+  }
+
+  const handleCode = async (code: string) => {
+    setError(null)
+    try {
+      await gate.submitCode(code)
+      // On success the context is granted and this screen unmounts.
+    } catch {
+      setError(t('verify.codeError'))
+      setAttempt((n) => n + 1)
+    }
   }
 
   return (
@@ -123,10 +131,10 @@ export default function AccountVerify() {
 
             <button
               type="submit"
-              disabled={sending}
+              disabled={gate.sending}
               className="mt-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-brand-cyan text-sm font-semibold text-white outline-none transition-colors hover:bg-brand-cyan/90 focus-visible:ring-2 focus-visible:ring-brand-cyan focus-visible:ring-offset-2 disabled:opacity-60"
             >
-              {sending ? (
+              {gate.sending ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
                   {t('verify.sending')}
@@ -151,16 +159,46 @@ export default function AccountVerify() {
               />
             </p>
 
-            <OtpInput onSubmit={gate.submitCode} className="mt-4" />
+            {/* No real inbox: the code the backend generated is shown here for the
+                visitor to key into the boxes below. */}
+            <div className="mt-4 rounded-xl border border-dashed border-brand-cyan/50 bg-brand-cyan/5 px-4 py-3 text-center dark:border-brand-cyan/40 dark:bg-brand-cyan/10">
+              <p className="text-[11px] font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                {t('verify.yourCode')}
+              </p>
+              <p className="mt-1 font-mono text-2xl font-bold tracking-[0.4em] text-brand-cyan">
+                {gate.displayCode}
+              </p>
+            </div>
 
-            <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
-              {t('verify.anyDigits')}
-            </p>
+            <OtpInput
+              key={attempt}
+              onSubmit={handleCode}
+              disabled={gate.verifying}
+              className="mt-4"
+            />
+
+            {gate.verifying ? (
+              <p className="mt-3 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                {t('verify.verifying')}
+              </p>
+            ) : error ? (
+              <p role="alert" className="mt-3 text-xs text-red-600 dark:text-red-400">
+                {error}
+              </p>
+            ) : (
+              <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
+                {t('verify.codeHint')}
+              </p>
+            )}
 
             <div className="mt-4 flex items-center justify-between gap-3">
               <button
                 type="button"
-                onClick={gate.editEmail}
+                onClick={() => {
+                  setError(null)
+                  gate.editEmail()
+                }}
                 className={cn(
                   '-mx-2 inline-flex min-h-[32px] items-center rounded-md px-2 text-xs font-medium underline-offset-4 outline-none transition-colors hover:underline focus-visible:ring-2 focus-visible:ring-brand-cyan',
                   GHOST_CLASS,

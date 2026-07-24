@@ -18,4 +18,10 @@ export const paths = {
     /** Org display name + logo shown app-wide. GET reads it; PATCH (multipart) updates it. */
     profile: '/organizations/profile',
   },
+  assistant: {
+    /** Emails (and, for the demo, returns) the 6-digit code that gates the chat. */
+    sendCode: '/assistant/send-code',
+    /** Exchanges the code for an assistant token once the visitor keys it in. */
+    verifyCode: '/assistant/verify-code',
+  },
 } as const

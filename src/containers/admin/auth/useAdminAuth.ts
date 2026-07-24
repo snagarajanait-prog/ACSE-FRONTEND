@@ -21,6 +21,7 @@ import { auth } from '@/middleware/auth'
 import { apiSlice } from '@/redux/api/apiSlice'
 import { useLoginMutation, useLogoutMutation } from '@/redux/api/authApi'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { setOrgSettings, type SettingsState } from '@/redux/settingsSlice'
 import { clearUser, setUser } from '@/redux/userSlice'
 import type { ApiError } from '@/types'
 import { storage } from '@/utils/storage'
@@ -54,6 +55,19 @@ export function useAdminAuth() {
         // the gate swaps this form out, so nothing is written after the unmount.
         storage.set(STORAGE_KEYS.session, user)
         dispatch(setUser(user))
+
+        // The org name is authoritative branding — seed it so the admin topbar and
+        // copilot header show it at once, before `useOrgProfileSync`'s GET lands
+        // (that GET is authoritative and reconciles the logo login doesn't carry).
+        // Merge into stored settings so the name also survives a refresh, without
+        // clobbering a saved logo.
+        if (user.organization?.name) {
+          const brand: Partial<SettingsState> = { companyName: user.organization.name }
+          dispatch(setOrgSettings(brand))
+          const saved = storage.get<Partial<SettingsState>>(STORAGE_KEYS.adminSettings) ?? {}
+          storage.set(STORAGE_KEYS.adminSettings, { ...saved, ...brand })
+        }
+
         toast.success(i18n.t('admin:auth.signedInTitle'), {
           description: i18n.t('admin:auth.signedInDesc', { name: user.name }),
         })
