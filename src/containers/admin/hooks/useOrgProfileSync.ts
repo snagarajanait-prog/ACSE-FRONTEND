@@ -12,7 +12,6 @@
 
 import { useEffect } from 'react'
 import { STORAGE_KEYS } from '@/constants/constants'
-import { auth } from '@/middleware/auth'
 import { useGetOrgProfileQuery } from '@/redux/api/organizationApi'
 import { useAppDispatch } from '@/redux/hooks'
 import { setOrgSettings } from '@/redux/settingsSlice'
@@ -20,10 +19,7 @@ import { storage } from '@/utils/storage'
 
 export function useOrgProfileSync() {
   const dispatch = useAppDispatch()
-  // The endpoint is Bearer-only; firing it without a token just 401s (and the
-  // 401 handler clears the token anyway). Skip until there's one to send — a
-  // fresh sign-in remounts the admin area, which re-evaluates this and fetches.
-  const { data } = useGetOrgProfileQuery(undefined, { skip: !auth.isAuthenticated() })
+  const { data } = useGetOrgProfileQuery()
 
   useEffect(() => {
     if (!data) return

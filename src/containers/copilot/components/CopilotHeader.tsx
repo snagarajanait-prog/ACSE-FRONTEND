@@ -2,9 +2,8 @@
  * The copilot's top bar.
  *
  * White-label by design: the CLIENT's brand sits top-left and ACSE is credited
- * as "Powered by" on the right. The brand (name + logo) is live from
- * `settingsSlice` — the same source the admin topbar reads — so a rebrand saved
- * on the Settings page shows here too; CLIENT_NAME is only the first-run default.
+ * as "Powered by" on the right. Swap CLIENT_NAME (and the monogram in
+ * `ClientBrand`) for the client's real name / logo artwork.
  */
 
 import { RotateCcw } from 'lucide-react'
@@ -14,7 +13,6 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 import Logo from '@/components/Logo'
 import ThemeToggle from '@/components/ThemeToggle'
 import { CLIENT_NAME, POWERED_BY_LABEL, ROUTE_PATHS } from '@/constants/constants'
-import { useAppSelector } from '@/redux/hooks'
 import { cn } from '@/utils/cn'
 
 /** `shrink-0` keeps these square at 320px, where the header runs out of room. */
@@ -57,30 +55,19 @@ export default function CopilotHeader({ hasContext, playing, onReset }: CopilotH
 }
 
 /**
- * The client's own brand, top-left (white-label). Name + logo come live from
- * `settingsSlice`; when no logo is set it falls back to a monogram of the name's
- * first letter, and the name itself falls back to the CLIENT_NAME default.
+ * The client's own brand, top-left (white-label). The mark is a placeholder
+ * monogram derived from CLIENT_NAME — replace it with an `<img>` of the client's
+ * real logo when supplied.
  */
 function ClientBrand() {
-  const companyName = useAppSelector((s) => s.settingsSlice.companyName) || CLIENT_NAME
-  const logo = useAppSelector((s) => s.settingsSlice.logoUrl)
-
   return (
     <div className="flex min-w-0 items-center gap-2.5">
-      {logo ? (
-        <img
-          src={logo}
-          alt={companyName}
-          className="h-8 w-8 shrink-0 rounded-lg object-cover shadow-sm dark:ring-1 dark:ring-white/10"
-        />
-      ) : (
-        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-brand-cyan to-brand-navy text-sm font-bold text-white shadow-sm dark:shadow-none dark:ring-1 dark:ring-white/10">
-          {companyName.charAt(0)}
-        </span>
-      )}
+      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-brand-cyan to-brand-navy text-sm font-bold text-white shadow-sm dark:shadow-none dark:ring-1 dark:ring-white/10">
+        {CLIENT_NAME.charAt(0)}
+      </span>
       {/* Truncates rather than pushing the controls off the header on phones. */}
       <span className="truncate text-[15px] font-semibold tracking-tight text-brand-navy dark:text-slate-100">
-        {companyName}
+        {CLIENT_NAME}
       </span>
     </div>
   )

@@ -26,11 +26,6 @@ export interface GrantPayload {
   customerId: string
   accountId: string
   via: VerifiedVia
-  /**
-   * The assistant token minted by `verify-code` on the challenge path. Absent on
-   * the session path (that mode inherits an already-authenticated session).
-   */
-  assistantToken?: string | null
 }
 
 /** A contact-form submission captured by the landing page. */
@@ -53,19 +48,10 @@ interface DemoState {
   pendingCustomerId: string | null
   pendingAccountId: string | null
   verifyStep: VerifyStep
-  /** Address the code was sent to — echoed on the code step and after. */
+  /** Address the code was "sent" to — echoed on the code step and after. */
   verifyEmail: string
-  /** Session handle from `send-code`; the token `verify-code` matches against. */
-  verifySessionId: string | null
-  /**
-   * The 6-digit code `send-code` returned. The demo has no real inbox, so it is
-   * shown on the code step for the visitor to key in.
-   */
-  verifyDisplayCode: string | null
   /** How the live context was verified; null when there is no context. */
   verifiedVia: VerifiedVia | null
-  /** Assistant token from `verify-code`; authorizes the chat backend. */
-  assistantToken: string | null
   /** A use-case the user asked to auto-play (storyboard), or null. */
   activeScenarioId: string | null
   /** Captured contact/demo-request leads. */
@@ -79,29 +65,19 @@ const initialState: DemoState = {
   pendingAccountId: null,
   verifyStep: 'email',
   verifyEmail: '',
-  verifySessionId: null,
-  verifyDisplayCode: null,
   verifiedVia: null,
-  assistantToken: null,
   activeScenarioId: null,
   leads: [],
 }
 
 /** Promote the pending pick to the live chat context and tear the gate down. */
-function grantContext(
-  state: DemoState,
-  { customerId, accountId, via, assistantToken }: GrantPayload,
-) {
+function grantContext(state: DemoState, { customerId, accountId, via }: GrantPayload) {
   state.selectedCustomerId = customerId
   state.selectedAccountId = accountId
   state.verifiedVia = via
-  // Keep the challenge token; the session path passes none, so don't wipe it.
-  if (assistantToken) state.assistantToken = assistantToken
   state.pendingCustomerId = null
   state.pendingAccountId = null
   state.verifyStep = 'email'
-  state.verifySessionId = null
-  state.verifyDisplayCode = null
   // NOTE: `activeScenarioId` is deliberately NOT cleared here. A use-case card on
   // the landing page queues a scenario and *then* sends the visitor through the
   // list and the identity gate, so the queue has to outlive the grant — clearing
@@ -115,10 +91,7 @@ function resetVerification(state: DemoState) {
   state.pendingAccountId = null
   state.verifyStep = 'email'
   state.verifyEmail = ''
-  state.verifySessionId = null
-  state.verifyDisplayCode = null
   state.verifiedVia = null
-  state.assistantToken = null
 }
 
 const demoSlice = createSlice({
@@ -134,20 +107,10 @@ const demoSlice = createSlice({
       state.pendingAccountId = action.payload.accountId
       state.verifyStep = 'email'
       state.verifyEmail = ''
-      state.verifySessionId = null
-      state.verifyDisplayCode = null
     },
-    /**
-     * `send-code` succeeded: record the session, stash the returned code so the
-     * code step can show it, and move to the entry boxes.
-     */
-    sendVerificationCode(
-      state,
-      action: PayloadAction<{ email: string; sessionId: string; code: string }>,
-    ) {
-      state.verifyEmail = action.payload.email
-      state.verifySessionId = action.payload.sessionId
-      state.verifyDisplayCode = action.payload.code
+    /** Address keyed in: "send" the code and move to the entry boxes. */
+    sendVerificationCode(state, action: PayloadAction<string>) {
+      state.verifyEmail = action.payload
       state.verifyStep = 'otp'
     },
     /** Step back from the entry boxes to correct the address. */

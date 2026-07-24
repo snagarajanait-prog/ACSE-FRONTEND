@@ -16,12 +16,10 @@ export const OTP_LENGTH = 6
 
 interface OtpInputProps {
   onSubmit: (code: string) => void
-  /** Locks every box — e.g. while the entered code is being verified. */
-  disabled?: boolean
   className?: string
 }
 
-export default function OtpInput({ onSubmit, disabled = false, className }: OtpInputProps) {
+export default function OtpInput({ onSubmit, className }: OtpInputProps) {
   const { t } = useTranslation('copilot')
   const [digits, setDigits] = useState<string[]>(() => Array(OTP_LENGTH).fill(''))
   const refs = useRef<(HTMLInputElement | null)[]>([])
@@ -98,7 +96,6 @@ export default function OtpInput({ onSubmit, disabled = false, className }: OtpI
           }}
           value={d}
           autoFocus={i === 0}
-          disabled={disabled}
           inputMode="numeric"
           autoComplete={i === 0 ? 'one-time-code' : 'off'}
           aria-label={t('otp.digit', { index: i + 1, total: OTP_LENGTH })}
@@ -111,7 +108,6 @@ export default function OtpInput({ onSubmit, disabled = false, className }: OtpI
             'h-11 w-full rounded-xl text-center text-lg font-semibold outline-none ring-1 transition',
             'bg-white text-brand-navy ring-slate-200 placeholder:text-slate-300 focus:ring-2 focus:ring-brand-cyan',
             'dark:bg-white/[0.05] dark:font-mono dark:text-brand-cyan dark:ring-white/10',
-            'disabled:cursor-not-allowed disabled:opacity-60',
           )}
         />
       ))}
