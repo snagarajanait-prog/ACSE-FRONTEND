@@ -32,4 +32,12 @@ export const paths = {
      */
     root: '/documents',
   },
+  chat: {
+    /**
+     * The copilot prompt goes here (`{ sessionId, requestId, prompt }`, authed).
+     * The backend forwards it to the ML service, whose reply streams back over the
+     * ML host's `/chat/stream?request_id=…` (see `config.mlChat` + `lib/mlChat`).
+     */
+    message: '/chatbot/message',
+  },
 } as const

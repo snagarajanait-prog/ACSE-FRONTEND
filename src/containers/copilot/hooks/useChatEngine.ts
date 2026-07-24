@@ -10,8 +10,10 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { RefObject } from 'react'
+import { toast } from 'sonner'
 import i18n from '@/i18n'
 import { getIcon } from '@/containers/copilot/utils/iconMap'
+import { postChatbotMessage, streamChat } from '@/lib/mlChat'
 import { findAccount, findCustomer, type Account, type Customer } from '@/data/customers'
 import { getScenario, type ChatStep } from '@/data/scenarios'
 import { useCases, type UseCase } from '@/data/useCases'
@@ -83,25 +85,6 @@ export function useCyclingPhrase(phrases: string[], intervalMs = THINK_INTERVAL_
     return () => clearInterval(t)
   }, [phrases, intervalMs])
   return phrases[Math.min(i, phrases.length - 1)]
-}
-
-/** Prioritised keyword match from free-typed text to a scenario id. */
-function matchScenario(text: string): string | null {
-  const t = text.toLowerCase()
-  const rules: [string, string[]][] = [
-    ['report-leak', ['leak', 'burst', 'emergency', 'flood', 'main break']],
-    ['report-outage', ['outage', 'no water', 'water out', 'pressure', 'down']],
-    ['transfer-service', ['transfer', 'moving to', 'new home', 'new house']],
-    ['stop-service', ['stop', 'cancel', 'close', 'move out', 'disconnect', 'end service']],
-    ['start-service', ['start', 'new service', 'turn on', 'begin service']],
-    ['payment-arrangement', ['payment', 'arrangement', 'installment', 'plan', "can't pay", 'extension']],
-    ['high-bill', ['high', 'expensive', 'too much', 'why is my bill', 'bill so', 'overcharged']],
-    ['update-contact', ['update', 'change my', 'phone', 'email', 'contact', 'number']],
-  ]
-  for (const [id, keys] of rules) {
-    if (keys.some((k) => t.includes(k))) return id
-  }
-  return null
 }
 
 function greeting(name: string) {
@@ -217,6 +200,21 @@ export function useChatEngine(): ChatEngine {
   const scrollRef = useRef<HTMLDivElement>(null)
   const otpResolveRef = useRef<((code: string | null) => void) | null>(null)
   const userResolveRef = useRef<((text: string | null) => void) | null>(null)
+  // Aborts an in-flight ML stream when the run is torn down or superseded.
+  const streamAbortRef = useRef<AbortController | null>(null)
+  // True while the live conversation is a real chatbot thread, so consecutive
+  // turns share one conversation id (and one `sessionId`) instead of each opening
+  // its own segment. Cleared whenever a scripted run / context switch / reset
+  // starts something else.
+  const chatConvActiveRef = useRef(false)
+  // The backend `sessionId` for the active chatbot conversation — minted fresh
+  // when a new thread opens and reused by its follow-up turns for continuity.
+  const sessionIdRef = useRef('')
+
+  const abortStream = useCallback(() => {
+    streamAbortRef.current?.abort()
+    streamAbortRef.current = null
+  }, [])
 
   /**
    * Settle a held challenge: `code` resumes the storyboard, null abandons it.
@@ -268,6 +266,8 @@ export function useChatEngine(): ChatEngine {
     setThinking(null)
     settleOtp(null)
     settleUser(null)
+    abortStream()
+    chatConvActiveRef.current = false
     setMessages(
       customer
         ? [{ id: idRef.current++, conversationId: 0, step: { kind: 'ai', text: greeting(customer.name) } }]
@@ -336,6 +336,10 @@ export function useChatEngine(): ChatEngine {
       // Abandon a challenge / reply hold left by the run we just superseded.
       settleOtp(null)
       settleUser(null)
+      abortStream()
+      // A scripted storyboard is not a chatbot thread — the next chatbot turn
+      // should open a fresh conversation rather than fold into this one.
+      chatConvActiveRef.current = false
       setPlaying(true)
       setTyping(false)
       setThinking(null)
@@ -411,7 +415,119 @@ export function useChatEngine(): ChatEngine {
       }
       setPlaying(false)
     },
-    [push, resolve, resolveStep, settleOtp, settleUser],
+    [push, resolve, resolveStep, settleOtp, settleUser, abortStream],
+  )
+
+  /**
+   * A real chatbot turn. POST the prompt to the backend (`/chatbot/message`,
+   * authed) and read the reply off the ML SSE stream, rendering tokens live. The
+   * two share a per-message `requestId`; every turn of a conversation reuses the
+   * same minted `sessionId` (see `lib/mlChat`). The visible reply is answer-only —
+   * the stream drops `reasoning`/`done`, so the model's thinking never shows.
+   */
+  const sendToChatbot = useCallback(
+    async (prompt: string) => {
+      const myRun = ++runRef.current
+      // The chatbot thread is ONE continuous conversation: only the opening turn
+      // starts a fresh segment and mints the `sessionId`; later turns append to it
+      // and reuse the id so the backend keeps context. A scripted run, a context
+      // switch or a reset clears the flag so the next turn opens a new conversation.
+      if (!chatConvActiveRef.current) {
+        convRef.current += 1
+        chatConvActiveRef.current = true
+        sessionIdRef.current = crypto.randomUUID()
+      }
+      const sessionId = sessionIdRef.current
+      settleOtp(null)
+      settleUser(null)
+      abortStream()
+      setPlaying(true)
+      setTyping(false)
+      setThinking(null)
+
+      push({ kind: 'user', text: prompt })
+      // Working shimmer until the first answer token lands.
+      setThinking(thinkFallback().map(resolve))
+
+      const requestId = crypto.randomUUID()
+      const controller = new AbortController()
+      streamAbortRef.current = controller
+
+      // Created lazily on the first token, so the thinking shimmer isn't replaced
+      // by an empty bubble while we wait.
+      let aiId = -1
+      const setAiText = (text: string) =>
+        setMessages((m) =>
+          m.map((msg) =>
+            msg.id === aiId && msg.step.kind === 'ai' ? { ...msg, step: { ...msg.step, text } } : msg,
+          ),
+        )
+      const appendToken = (chunk: string) => {
+        if (runRef.current !== myRun) return
+        if (aiId === -1) {
+          setThinking(null)
+          aiId = idRef.current++
+          setMessages((m) => [
+            ...m,
+            { id: aiId, conversationId: convRef.current, step: { kind: 'ai', text: chunk, format: 'markdown' } },
+          ])
+          return
+        }
+        setMessages((m) =>
+          m.map((msg) =>
+            msg.id === aiId && msg.step.kind === 'ai'
+              ? { ...msg, step: { ...msg.step, text: msg.step.text + chunk } }
+              : msg,
+          ),
+        )
+      }
+
+      // Open the stream FIRST (so it's connected before the turn starts and reads
+      // live frames, not a late `done` replay), then fire the backend POST. The
+      // stream is best-effort scenery — its failure must not sink the turn — so it
+      // resolves to '' on any error.
+      const streamReq = streamChat(requestId, { onToken: appendToken, signal: controller.signal }).catch(
+        () => '',
+      )
+      const postReq = postChatbotMessage({ sessionId, requestId, prompt, signal: controller.signal })
+
+      try {
+        const [posted, streamed] = await Promise.all([postReq, streamReq])
+        if (runRef.current !== myRun) return
+        // Prefer an answer echoed by the backend; otherwise settle on the live
+        // token text. Either way the reasoning was never in it.
+        const answer = (posted || streamed).trim()
+        setThinking(null)
+        if (!answer) {
+          if (aiId === -1) push({ kind: 'ai', text: i18n.t('copilot:chat.mlError') })
+        } else if (aiId === -1) {
+          aiId = idRef.current++
+          setMessages((m) => [
+            ...m,
+            { id: aiId, conversationId: convRef.current, step: { kind: 'ai', text: answer, format: 'markdown' } },
+          ])
+        } else {
+          setAiText(answer)
+        }
+      } catch (err) {
+        if (runRef.current !== myRun) return
+        // A supersede/teardown aborts the fetch — not an error worth surfacing.
+        if ((err as Error)?.name === 'AbortError') return
+        // The POST failed; stop the still-open stream so a late token can't race a
+        // second bubble in behind the error line.
+        controller.abort()
+        setThinking(null)
+        if (aiId === -1) push({ kind: 'ai', text: i18n.t('copilot:chat.mlError') })
+        toast.error(i18n.t('copilot:chat.mlError'))
+      } finally {
+        if (runRef.current === myRun) {
+          setThinking(null)
+          setPlaying(false)
+          streamAbortRef.current = null
+        }
+      }
+    },
+    [push, resolve, settleOtp, settleUser, abortStream],
   )
 
   const startScenario = useCallback(
@@ -431,6 +547,8 @@ export function useChatEngine(): ChatEngine {
     setThinking(null)
     settleOtp(null)
     settleUser(null)
+    abortStream()
+    chatConvActiveRef.current = false
     idRef.current = 0
     convRef.current = 0
     setMessages(
@@ -438,7 +556,7 @@ export function useChatEngine(): ChatEngine {
         ? [{ id: idRef.current++, conversationId: 0, step: { kind: 'ai', text: greeting(customer.name) } }]
         : [],
     )
-  }, [customer, settleOtp, settleUser])
+  }, [customer, settleOtp, settleUser, abortStream])
 
   // Auto-play a scenario requested from elsewhere (e.g. the landing use-case
   // cards, which park the id in the store before navigating here).
@@ -470,29 +588,10 @@ export function useChatEngine(): ChatEngine {
     }
     if (playing) return
     setDraft('')
-    const id = matchScenario(text)
-    if (id) {
-      startScenario(id, text)
-      return
-    }
-    const myRun = ++runRef.current
-    // A free-typed exchange is its own conversation too, so it can be taken away
-    // on its own once the assistant answers.
-    convRef.current += 1
-    push({ kind: 'user', text })
-    setPlaying(true)
-    void (async () => {
-      setThinking(thinkFallback().map(resolve))
-      await sleep(1500)
-      if (runRef.current !== myRun) return
-      setThinking(null)
-      push({
-        kind: 'ai',
-        text: i18n.t('copilot:chat.freeReply'),
-      })
-      setPlaying(false)
-    })()
-  }, [draft, awaitingUser, playing, push, resolve, settleUser, startScenario])
+    // Every typed message is a real chatbot turn — POST it to the backend and
+    // stream the reply. The scripted storyboards stay behind the use-case pills.
+    void sendToChatbot(text)
+  }, [draft, awaitingUser, playing, settleUser, sendToChatbot])
 
   const meta = DATA_SOURCE_META[source]
 

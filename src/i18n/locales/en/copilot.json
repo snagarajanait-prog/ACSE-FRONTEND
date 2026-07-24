@@ -34,6 +34,7 @@
     "youSaid": "You said: ",
     "assistantSaid": "Assistant said: ",
     "working": "Assistant is working",
+    "mlError": "The assistant is unavailable right now. Please try again.",
     "freeReply": "I can help with that. Here are the things I can do right now — pick one to see it in action:"
   },
   "think": {

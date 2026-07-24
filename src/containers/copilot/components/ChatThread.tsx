@@ -8,6 +8,7 @@
 import { CheckCircle2, ClipboardCheck, KeyRound, Loader2, ShieldCheck } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import ChatActions from '@/containers/copilot/components/ChatActions'
+import Markdown from '@/containers/copilot/components/Markdown'
 import OtpInput from '@/containers/copilot/components/OtpInput'
 import ReceiptMenu from '@/containers/copilot/components/ReceiptMenu'
 import {
@@ -222,10 +223,10 @@ function Turn({
       return (
         <li className="relative pl-9 motion-safe:animate-rise-in">
           <Node />
-          <p className="max-w-[68ch] text-[15px] leading-7 text-slate-700 dark:text-slate-100/90">
+          <div className="max-w-[68ch] text-[15px] leading-7 text-slate-700 dark:text-slate-100/90">
             <span className="sr-only">{t('chat.assistantSaid')}</span>
-            <Lede text={step.text} />
-          </p>
+            {step.format === 'markdown' ? <Markdown text={step.text} /> : <Lede text={step.text} />}
+          </div>
         </li>
       )
     case 'status': {

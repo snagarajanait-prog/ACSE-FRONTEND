@@ -22,7 +22,9 @@
 
 export type ChatStep =
   | { kind: "user"; text: string }
-  | { kind: "ai"; text: string; think?: string[] }
+  /** `format: "markdown"` renders the text through the Markdown component (used by
+   *  live ML replies, which come back as markdown); omitted = plain typeset prose. */
+  | { kind: "ai"; text: string; think?: string[]; format?: "markdown" }
   /** A system status line (renders with a small activity indicator). */
   | { kind: "status"; text: string; think?: string[] }
   /**

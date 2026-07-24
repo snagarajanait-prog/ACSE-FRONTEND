@@ -48,6 +48,11 @@ function bool(key: EnvKey, fallback: boolean): boolean {
 const appEnv = (read('VITE_APP_ENV') || 'development') as AppEnv
 const baseUrl = required('VITE_API_BASE_URL').replace(/\/+$/, '')
 
+// The ML assistant service (SSE streaming). A same-origin `/ml-api` path in dev
+// (proxied by Vite to the ML origin); falls back to the ML host if unset.
+const mlBaseUrl = (read('VITE_ML_API_BASE_URL') || 'https://octagon-overpass-smuggling.ngrok-free.dev')
+  .replace(/\/+$/, '')
+
 // Encryption defaults ON in production. Shipping prod with the layer silently off
 // should take an explicit `VITE_ENCRYPTION_ENABLED=false`, never an omission.
 const encryptionEnabled = bool('VITE_ENCRYPTION_ENABLED', appEnv === 'production')
@@ -99,6 +104,16 @@ export const config = {
 
   documents: {
     root: url(paths.documents.root),
+  },
+
+  chat: {
+    /** Backend endpoint the prompt is POSTed to (authed); it forwards to ML. */
+    message: url(paths.chat.message),
+  },
+
+  mlChat: {
+    /** ML SSE stream, read with `?request_id=…`. Same-origin `/ml-api` in dev. */
+    stream: `${mlBaseUrl}/chat/stream`,
   },
 } as const
 
