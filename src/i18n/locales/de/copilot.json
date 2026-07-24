@@ -34,6 +34,7 @@
     "youSaid": "Sie sagten: ",
     "assistantSaid": "Der Assistent sagte: ",
     "working": "Der Assistent arbeitet",
+    "reasoning": "Überlegung",
     "mlError": "Der Assistent ist derzeit nicht verfügbar. Bitte versuchen Sie es erneut.",
     "freeReply": "Dabei kann ich Ihnen helfen. Hier ist, was ich gerade tun kann – wählen Sie eine Option, um es in Aktion zu sehen:"
   },

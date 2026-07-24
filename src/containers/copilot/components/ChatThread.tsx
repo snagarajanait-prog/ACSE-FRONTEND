@@ -5,7 +5,16 @@
  * own voice rather than a participant in a messenger.
  */
 
-import { CheckCircle2, ClipboardCheck, KeyRound, Loader2, ShieldCheck } from 'lucide-react'
+import {
+  BrainCircuit,
+  CheckCircle2,
+  ChevronDown,
+  ClipboardCheck,
+  KeyRound,
+  Loader2,
+  ShieldCheck,
+} from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ChatActions from '@/containers/copilot/components/ChatActions'
 import Markdown from '@/containers/copilot/components/Markdown'
@@ -225,7 +234,11 @@ function Turn({
           <Node />
           <div className="max-w-[68ch] text-[15px] leading-7 text-slate-700 dark:text-slate-100/90">
             <span className="sr-only">{t('chat.assistantSaid')}</span>
-            {step.format === 'markdown' ? <Markdown text={step.text} /> : <Lede text={step.text} />}
+            {step.reasoning?.trim() && (
+              <ReasoningBlock text={step.reasoning} live={isLast && playing} />
+            )}
+            {step.text &&
+              (step.format === 'markdown' ? <Markdown text={step.text} /> : <Lede text={step.text} />)}
           </div>
         </li>
       )
@@ -284,6 +297,44 @@ function Lede({ text }: { text: string }) {
       {m[2]}
       {m[3]}
     </>
+  )
+}
+
+/**
+ * The model's private reasoning, above the answer. It streams open while the turn
+ * is `live`, then AUTO-COLLAPSES the moment the turn settles — so a finished turn
+ * shows only the answer, with a "Reasoning" toggle to re-open on demand. Controlled
+ * (not a bare `<details>`) so the auto-collapse and manual toggle can coexist.
+ */
+function ReasoningBlock({ text, live }: { text: string; live: boolean }) {
+  const { t } = useTranslation('copilot')
+  // Open while streaming; a settled turn (history, or this one once done) starts folded.
+  const [open, setOpen] = useState(live)
+  const wasLive = useRef(live)
+  useEffect(() => {
+    // Fold once — the moment this turn stops being the live one.
+    if (wasLive.current && !live) setOpen(false)
+    wasLive.current = live
+  }, [live])
+
+  return (
+    <div className="mb-3 rounded-xl border border-slate-200/70 bg-slate-50/70 px-3 py-2 dark:border-white/10 dark:bg-white/[0.03]">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        className="flex w-full items-center gap-1.5 text-[11px] font-medium uppercase tracking-wide text-slate-400 dark:text-slate-500"
+      >
+        <BrainCircuit className="h-3.5 w-3.5" />
+        {t('chat.reasoning')}
+        <ChevronDown className={cn('h-3 w-3 transition-transform', open && 'rotate-180')} />
+      </button>
+      {open && (
+        <div className="mt-2 whitespace-pre-wrap text-[13px] leading-6 text-slate-500 dark:text-slate-400">
+          {text}
+        </div>
+      )}
+    </div>
   )
 }
 

@@ -457,60 +457,62 @@ export function useChatEngine(): ChatEngine {
       const controller = new AbortController()
       streamAbortRef.current = controller
 
-      // Created lazily on the first token, so the thinking shimmer isn't replaced
-      // by an empty bubble while we wait.
+      // The bubble is created lazily on the FIRST frame — reasoning or token — so
+      // the thinking shimmer isn't replaced by an empty bubble while we wait, and
+      // the reasoning can stream into its own block before the answer begins.
       let aiId = -1
-      const setAiText = (text: string) =>
+      const ensureBubble = () => {
+        if (aiId !== -1) return
+        setThinking(null)
+        aiId = idRef.current++
+        setMessages((m) => [
+          ...m,
+          {
+            id: aiId,
+            conversationId: convRef.current,
+            step: { kind: 'ai', text: '', reasoning: '', format: 'markdown' },
+          },
+        ])
+      }
+      const patchAi = (fn: (s: Extract<ChatStep, { kind: 'ai' }>) => Extract<ChatStep, { kind: 'ai' }>) =>
         setMessages((m) =>
-          m.map((msg) =>
-            msg.id === aiId && msg.step.kind === 'ai' ? { ...msg, step: { ...msg.step, text } } : msg,
-          ),
+          m.map((msg) => (msg.id === aiId && msg.step.kind === 'ai' ? { ...msg, step: fn(msg.step) } : msg)),
         )
+      const setAiText = (text: string) => patchAi((s) => ({ ...s, text }))
       const appendToken = (chunk: string) => {
         if (runRef.current !== myRun) return
-        if (aiId === -1) {
-          setThinking(null)
-          aiId = idRef.current++
-          setMessages((m) => [
-            ...m,
-            { id: aiId, conversationId: convRef.current, step: { kind: 'ai', text: chunk, format: 'markdown' } },
-          ])
-          return
-        }
-        setMessages((m) =>
-          m.map((msg) =>
-            msg.id === aiId && msg.step.kind === 'ai'
-              ? { ...msg, step: { ...msg.step, text: msg.step.text + chunk } }
-              : msg,
-          ),
-        )
+        ensureBubble()
+        patchAi((s) => ({ ...s, text: s.text + chunk }))
+      }
+      const appendReasoning = (chunk: string) => {
+        if (runRef.current !== myRun) return
+        ensureBubble()
+        patchAi((s) => ({ ...s, reasoning: (s.reasoning ?? '') + chunk }))
       }
 
       // Open the stream FIRST (so it's connected before the turn starts and reads
       // live frames, not a late `done` replay), then fire the backend POST. The
       // stream is best-effort scenery — its failure must not sink the turn — so it
-      // resolves to '' on any error.
-      const streamReq = streamChat(requestId, { onToken: appendToken, signal: controller.signal }).catch(
-        () => '',
-      )
+      // resolves to '' on any error. Reasoning and answer land in separate fields.
+      const streamReq = streamChat(requestId, {
+        onToken: appendToken,
+        onReasoning: appendReasoning,
+        signal: controller.signal,
+      }).catch(() => '')
       const postReq = postChatbotMessage({ sessionId, requestId, prompt, signal: controller.signal })
 
       try {
         const [posted, streamed] = await Promise.all([postReq, streamReq])
         if (runRef.current !== myRun) return
         // Prefer an answer echoed by the backend; otherwise settle on the live
-        // token text. Either way the reasoning was never in it.
-        const answer = (posted || streamed).trim()
+        // token text. The reasoning lives in its own field, never in the answer.
+        const answer = (posted || streamed).trim() || i18n.t('copilot:chat.mlError')
         setThinking(null)
-        if (!answer) {
-          if (aiId === -1) push({ kind: 'ai', text: i18n.t('copilot:chat.mlError') })
-        } else if (aiId === -1) {
-          aiId = idRef.current++
-          setMessages((m) => [
-            ...m,
-            { id: aiId, conversationId: convRef.current, step: { kind: 'ai', text: answer, format: 'markdown' } },
-          ])
+        if (aiId === -1) {
+          // Nothing streamed at all (no reasoning, no tokens).
+          push({ kind: 'ai', text: answer, format: 'markdown' })
         } else {
+          // Bubble exists (reasoning and/or tokens streamed) — settle its answer.
           setAiText(answer)
         }
       } catch (err) {

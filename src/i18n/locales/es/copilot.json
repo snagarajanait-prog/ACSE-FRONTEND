@@ -34,6 +34,7 @@
     "youSaid": "Dijiste: ",
     "assistantSaid": "El asistente dijo: ",
     "working": "El asistente está trabajando",
+    "reasoning": "Razonamiento",
     "mlError": "El asistente no está disponible en este momento. Inténtalo de nuevo.",
     "freeReply": "Puedo ayudarte con eso. Estas son las cosas que puedo hacer ahora mismo: elige una para verla en acción:"
   },
