@@ -84,18 +84,6 @@
       "uploadedAt": "Uploaded at: {{date}}",
       "notes": "Notes: {{notes}}",
       "placeholder": "This is a demo placeholder — the original file was not stored in the browser."
-    },
-    "loading": "Loading documents…",
-    "loadError": "Couldn't load documents.",
-    "retry": "Retry",
-    "toast": {
-      "uploaded_one": "{{count}} document uploaded.",
-      "uploaded_other": "{{count}} documents uploaded.",
-      "uploadError_one": "Couldn't upload {{count}} document.",
-      "uploadError_other": "Couldn't upload {{count}} documents.",
-      "deleted": "Document deleted.",
-      "deleteError": "Couldn't delete the document.",
-      "downloadError": "Couldn't open the document."
     }
   },
   "upload": {
@@ -108,8 +96,8 @@
       "image": "Add images to the internal library."
     },
     "hint": {
-      "document": "PDF, DOC, XLS, PPT, CSV, HTML — up to {{max}} files, {{size}} MB max each",
-      "image": "PNG, JPG, WEBP, GIF, SVG — up to {{max}} files, {{size}} MB max each"
+      "document": "PDF, DOC, XLS, PPT, CSV, HTML — up to {{max}} files",
+      "image": "PNG, JPG, WEBP, GIF, SVG — up to {{max}} files"
     },
     "fileFieldLabel": "Upload File",
     "dropIdle": "Drop your file here",
@@ -126,10 +114,7 @@
     "notesPlaceholder": "Add any relevant notes here…",
     "cancel": "Cancel",
     "submit": "Upload File",
-    "submitWithCount": "Upload ({{count}})",
-    "uploading": "Uploading…",
-    "errorTooLarge_one": "That file exceeds the {{size}} MB limit and wasn't added.",
-    "errorTooLarge_other": "{{count}} files exceed the {{size}} MB limit and weren't added."
+    "submitWithCount": "Upload ({{count}})"
   },
   "confirmDelete": {
     "title": "Delete file",

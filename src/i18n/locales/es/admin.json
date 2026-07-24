@@ -84,18 +84,6 @@
       "uploadedAt": "Cargado el: {{date}}",
       "notes": "Notas: {{notes}}",
       "placeholder": "Este es un marcador de posición de demostración: el archivo original no se guardó en el navegador."
-    },
-    "loading": "Cargando documentos…",
-    "loadError": "No se pudieron cargar los documentos.",
-    "retry": "Reintentar",
-    "toast": {
-      "uploaded_one": "{{count}} documento subido.",
-      "uploaded_other": "{{count}} documentos subidos.",
-      "uploadError_one": "No se pudo subir {{count}} documento.",
-      "uploadError_other": "No se pudieron subir {{count}} documentos.",
-      "deleted": "Documento eliminado.",
-      "deleteError": "No se pudo eliminar el documento.",
-      "downloadError": "No se pudo abrir el documento."
     }
   },
   "upload": {
@@ -108,8 +96,8 @@
       "image": "Añada imágenes a la biblioteca interna."
     },
     "hint": {
-      "document": "PDF, DOC, XLS, PPT, CSV, HTML — hasta {{max}} archivos, {{size}} MB máx. cada uno",
-      "image": "PNG, JPG, WEBP, GIF, SVG — hasta {{max}} archivos, {{size}} MB máx. cada uno"
+      "document": "PDF, DOC, XLS, PPT, CSV, HTML — hasta {{max}} archivos",
+      "image": "PNG, JPG, WEBP, GIF, SVG — hasta {{max}} archivos"
     },
     "fileFieldLabel": "Cargar archivo",
     "dropIdle": "Suelte su archivo aquí",
@@ -126,10 +114,7 @@
     "notesPlaceholder": "Añada aquí cualquier nota relevante…",
     "cancel": "Cancelar",
     "submit": "Cargar archivo",
-    "submitWithCount": "Cargar ({{count}})",
-    "uploading": "Subiendo…",
-    "errorTooLarge_one": "Ese archivo supera el límite de {{size}} MB y no se añadió.",
-    "errorTooLarge_other": "{{count}} archivos superan el límite de {{size}} MB y no se añadieron."
+    "submitWithCount": "Cargar ({{count}})"
   },
   "confirmDelete": {
     "title": "Eliminar archivo",

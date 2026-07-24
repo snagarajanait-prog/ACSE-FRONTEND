@@ -14,10 +14,8 @@ import { useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import { ArrowLeft, Loader2, Mail, ShieldCheck } from 'lucide-react'
 import { Trans, useTranslation } from 'react-i18next'
-import { toast } from 'sonner'
 import OtpInput from '@/containers/copilot/components/OtpInput'
 import { useAccessGate } from '@/containers/copilot/hooks/useAccessGate'
-import type { ApiError } from '@/types'
 import { cn } from '@/utils/cn'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -47,28 +45,24 @@ export default function AccountVerify() {
     e.preventDefault()
     const value = email.trim()
     if (!EMAIL_RE.test(value)) {
-      // Instant field-level feedback for a client-side format slip.
       setError(t('verify.emailError'))
       return
     }
     setError(null)
     try {
       await gate.sendCode(value)
-      toast.success(t('verify.toast.codeSent'))
-    } catch (err) {
-      // Prefer the backend's message; fall back to a generic line.
-      toast.error((err as ApiError)?.message || t('verify.sendError'))
+    } catch {
+      setError(t('verify.sendError'))
     }
   }
 
   const handleCode = async (code: string) => {
+    setError(null)
     try {
       await gate.submitCode(code)
       // On success the context is granted and this screen unmounts.
-      toast.success(t('verify.toast.verified'))
-    } catch (err) {
-      // e.g. "Invalid or expired verification code" (HTTP 401) straight from the API.
-      toast.error((err as ApiError)?.message || t('verify.codeError'))
+    } catch {
+      setError(t('verify.codeError'))
       setAttempt((n) => n + 1)
     }
   }
@@ -188,8 +182,11 @@ export default function AccountVerify() {
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 {t('verify.verifying')}
               </p>
+            ) : error ? (
+              <p role="alert" className="mt-3 text-xs text-red-600 dark:text-red-400">
+                {error}
+              </p>
             ) : (
-              // A wrong/expired code surfaces as a toast (see `handleCode`), not here.
               <p className="mt-3 text-xs text-slate-500 dark:text-slate-400">
                 {t('verify.codeHint')}
               </p>

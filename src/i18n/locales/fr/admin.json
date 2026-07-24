@@ -84,18 +84,6 @@
       "uploadedAt": "Téléversé le : {{date}}",
       "notes": "Notes : {{notes}}",
       "placeholder": "Ceci est un espace réservé de démonstration : le fichier original n'a pas été enregistré dans le navigateur."
-    },
-    "loading": "Chargement des documents…",
-    "loadError": "Impossible de charger les documents.",
-    "retry": "Réessayer",
-    "toast": {
-      "uploaded_one": "{{count}} document téléversé.",
-      "uploaded_other": "{{count}} documents téléversés.",
-      "uploadError_one": "Impossible de téléverser {{count}} document.",
-      "uploadError_other": "Impossible de téléverser {{count}} documents.",
-      "deleted": "Document supprimé.",
-      "deleteError": "Impossible de supprimer le document.",
-      "downloadError": "Impossible d'ouvrir le document."
     }
   },
   "upload": {
@@ -108,8 +96,8 @@
       "image": "Ajoutez des images à la bibliothèque interne."
     },
     "hint": {
-      "document": "PDF, DOC, XLS, PPT, CSV, HTML — jusqu'à {{max}} fichiers, {{size}} Mo max. chacun",
-      "image": "PNG, JPG, WEBP, GIF, SVG — jusqu'à {{max}} fichiers, {{size}} Mo max. chacun"
+      "document": "PDF, DOC, XLS, PPT, CSV, HTML — jusqu'à {{max}} fichiers",
+      "image": "PNG, JPG, WEBP, GIF, SVG — jusqu'à {{max}} fichiers"
     },
     "fileFieldLabel": "Téléverser un fichier",
     "dropIdle": "Déposez votre fichier ici",
@@ -126,10 +114,7 @@
     "notesPlaceholder": "Ajoutez ici toute note pertinente…",
     "cancel": "Annuler",
     "submit": "Téléverser le fichier",
-    "submitWithCount": "Téléverser ({{count}})",
-    "uploading": "Téléversement…",
-    "errorTooLarge_one": "Ce fichier dépasse la limite de {{size}} Mo et n'a pas été ajouté.",
-    "errorTooLarge_other": "{{count}} fichiers dépassent la limite de {{size}} Mo et n'ont pas été ajoutés."
+    "submitWithCount": "Téléverser ({{count}})"
   },
   "confirmDelete": {
     "title": "Supprimer le fichier",

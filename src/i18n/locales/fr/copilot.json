@@ -147,11 +147,7 @@
     "codeError": "Ce code n'est pas correct. Vérifiez-le et réessayez.",
     "verifying": "Vérification…",
     "differentEmail": "Utiliser une autre adresse e-mail",
-    "cancel": "Annuler",
-    "toast": {
-      "codeSent": "Code de vérification généré.",
-      "verified": "E-mail vérifié."
-    }
+    "cancel": "Annuler"
   },
   "receiptMenu": {
     "about": "À propos de « {{title}} » — et télécharger au format PDF",

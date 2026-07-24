@@ -84,18 +84,6 @@
       "uploadedAt": "Hochgeladen am: {{date}}",
       "notes": "Notizen: {{notes}}",
       "placeholder": "Dies ist ein Demo-Platzhalter – die Originaldatei wurde nicht im Browser gespeichert."
-    },
-    "loading": "Dokumente werden geladen…",
-    "loadError": "Dokumente konnten nicht geladen werden.",
-    "retry": "Erneut versuchen",
-    "toast": {
-      "uploaded_one": "{{count}} Dokument hochgeladen.",
-      "uploaded_other": "{{count}} Dokumente hochgeladen.",
-      "uploadError_one": "{{count}} Dokument konnte nicht hochgeladen werden.",
-      "uploadError_other": "{{count}} Dokumente konnten nicht hochgeladen werden.",
-      "deleted": "Dokument gelöscht.",
-      "deleteError": "Dokument konnte nicht gelöscht werden.",
-      "downloadError": "Dokument konnte nicht geöffnet werden."
     }
   },
   "upload": {
@@ -108,8 +96,8 @@
       "image": "Fügen Sie Bilder zur internen Bibliothek hinzu."
     },
     "hint": {
-      "document": "PDF, DOC, XLS, PPT, CSV, HTML – bis zu {{max}} Dateien, max. {{size}} MB pro Datei",
-      "image": "PNG, JPG, WEBP, GIF, SVG – bis zu {{max}} Dateien, max. {{size}} MB pro Datei"
+      "document": "PDF, DOC, XLS, PPT, CSV, HTML – bis zu {{max}} Dateien",
+      "image": "PNG, JPG, WEBP, GIF, SVG – bis zu {{max}} Dateien"
     },
     "fileFieldLabel": "Datei hochladen",
     "dropIdle": "Ziehen Sie Ihre Datei hierher",
@@ -126,10 +114,7 @@
     "notesPlaceholder": "Fügen Sie hier relevante Notizen hinzu…",
     "cancel": "Abbrechen",
     "submit": "Datei hochladen",
-    "submitWithCount": "Hochladen ({{count}})",
-    "uploading": "Wird hochgeladen…",
-    "errorTooLarge_one": "Diese Datei überschreitet das Limit von {{size}} MB und wurde nicht hinzugefügt.",
-    "errorTooLarge_other": "{{count}} Dateien überschreiten das Limit von {{size}} MB und wurden nicht hinzugefügt."
+    "submitWithCount": "Hochladen ({{count}})"
   },
   "confirmDelete": {
     "title": "Datei löschen",

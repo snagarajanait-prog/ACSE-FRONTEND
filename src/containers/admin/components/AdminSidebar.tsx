@@ -14,9 +14,8 @@
  * so it takes an `onNavigate` to let the drawer close after a pick.
  *
  * Count badges must be right on every page, including Settings (where the files
- * hook isn't mounted). When live `counts` aren't passed, the sidebar fetches the
- * document list itself (RTK Query serves it from cache once loaded) and counts
- * that; the fetch is skipped on the files page, where `counts` is already live.
+ * hook isn't mounted), so when live `counts` aren't passed the sidebar reads a
+ * snapshot from storage itself.
  */
 
 import { useMemo } from 'react'
@@ -26,7 +25,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { ROUTE_PATHS } from '@/constants/constants'
 import type { AdminSection } from '@/containers/admin/types'
-import { DOCUMENTS_LIST_PARAMS, useListDocumentsQuery } from '@/redux/api/documentsApi'
+import { countBySection } from '@/containers/admin/utils/persistence'
 import { useMyPermissionsQuery } from '@/redux/api/pagesApi'
 import { cn } from '@/utils/cn'
 
@@ -60,14 +59,7 @@ interface AdminSidebarProps {
 
 export default function AdminSidebar({ active, counts, onNavigate }: AdminSidebarProps) {
   const { t } = useTranslation('admin')
-
-  // Off the files page (no live `counts`), read the badge count from the document
-  // list; skipped otherwise so the files page's own fetch isn't duplicated.
-  const { data: docs } = useListDocumentsQuery(DOCUMENTS_LIST_PARAMS, { skip: counts !== undefined })
-  const resolvedCounts = useMemo<Record<AdminSection, number>>(
-    () => counts ?? { document: docs?.documents.length ?? 0, image: 0 },
-    [counts, docs],
-  )
+  const resolvedCounts = useMemo(() => counts ?? countBySection(), [counts])
 
   // The backend decides what this user may navigate to. RTK Query dedupes across
   // the desktop rail + mobile drawer (both mount this), so it's one request.

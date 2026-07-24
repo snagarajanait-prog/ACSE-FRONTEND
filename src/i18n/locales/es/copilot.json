@@ -147,11 +147,7 @@
     "codeError": "Ese código no es correcto. Compruébalo e inténtalo de nuevo.",
     "verifying": "Verificando…",
     "differentEmail": "Usar otro correo electrónico",
-    "cancel": "Cancelar",
-    "toast": {
-      "codeSent": "Código de verificación generado.",
-      "verified": "Correo verificado."
-    }
+    "cancel": "Cancelar"
   },
   "receiptMenu": {
     "about": "Acerca de \"{{title}}\" — y descargar como PDF",

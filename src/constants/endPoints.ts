@@ -24,12 +24,4 @@ export const paths = {
     /** Exchanges the code for an assistant token once the visitor keys it in. */
     verifyCode: '/assistant/verify-code',
   },
-  documents: {
-    /**
-     * Admin document library. `POST` uploads (multipart), `GET` lists (paginated).
-     * Per-document ops append the id: `/documents/:id` (DELETE) and
-     * `/documents/:id/download` (GET a fresh download URL) — built in `documentsApi`.
-     */
-    root: '/documents',
-  },
 } as const
