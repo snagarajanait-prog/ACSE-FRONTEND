@@ -9,7 +9,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
-import { FileText, Image as ImageIcon, UploadCloud, X } from 'lucide-react'
+import { FileText, Image as ImageIcon, Loader2, UploadCloud, X } from 'lucide-react'
 import { Trans, useTranslation } from 'react-i18next'
 import type { AdminSection } from '@/containers/admin/types'
 import { formatBytes } from '@/containers/admin/utils/format'
@@ -19,6 +19,10 @@ import Modal from '@/containers/admin/components/Modal'
 
 const MAX_FILES = 25
 
+/** The backend caps each upload at 5 MB (down from 25 MB) — reject bigger files up front. */
+const MAX_FILE_MB = 5
+const MAX_FILE_BYTES = MAX_FILE_MB * 1024 * 1024
+
 const ACCEPT: Record<AdminSection, string> = {
   document: '.pdf,.doc,.docx,.xls,.xlsx,.xlsm,.ppt,.pptx,.txt,.csv,.html',
   image: 'image/png,image/jpeg,image/webp,image/gif,image/svg+xml',
@@ -27,11 +31,19 @@ const ACCEPT: Record<AdminSection, string> = {
 interface UploadModalProps {
   open: boolean
   section: AdminSection
+  /** An upload is in flight — buttons lock and the primary shows a spinner. */
+  submitting?: boolean
   onClose: () => void
   onSubmit: (payload: UploadPayload) => void
 }
 
-export default function UploadModal({ open, section, onClose, onSubmit }: UploadModalProps) {
+export default function UploadModal({
+  open,
+  section,
+  submitting = false,
+  onClose,
+  onSubmit,
+}: UploadModalProps) {
   const { t } = useTranslation('admin')
   const inputRef = useRef<HTMLInputElement>(null)
   const [picked, setPicked] = useState<File[]>([])
@@ -49,11 +61,21 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
   }, [open])
 
   function addPicked(list: FileList | null) {
-    if (!list || list.length === 0) return
+    // Snapshot the files NOW, synchronously. The setPicked updater below runs
+    // after this event completes — by then the browse input has been cleared
+    // (`e.target.value = ''`) and a drop's `dataTransfer` is gone, so a deferred
+    // `Array.from(list)` would read an empty FileList and silently add nothing.
+    const incoming = list ? Array.from(list) : []
+    if (incoming.length === 0) return
+
+    // Keep only files within the backend's per-file size cap; flag the rest.
+    const withinLimit = incoming.filter((f) => f.size <= MAX_FILE_BYTES)
+    const tooBig = incoming.length - withinLimit.length
+
     setPicked((prev) => {
       const seen = new Set(prev.map((f) => `${f.name}:${f.size}`))
       const next = [...prev]
-      for (const file of Array.from(list)) {
+      for (const file of withinLimit) {
         const key = `${file.name}:${file.size}`
         if (!seen.has(key) && next.length < MAX_FILES) {
           seen.add(key)
@@ -62,7 +84,7 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
       }
       return next
     })
-    setError('')
+    setError(tooBig > 0 ? t('upload.errorTooLarge', { size: MAX_FILE_MB, count: tooBig }) : '')
   }
 
   function removeAt(index: number) {
@@ -88,20 +110,30 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex h-10 items-center rounded-lg border border-slate-200 px-4 text-sm font-medium text-slate-600 outline-none transition-colors hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-brand-cyan dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/5"
+            disabled={submitting}
+            className="inline-flex h-10 items-center rounded-lg border border-slate-200 px-4 text-sm font-medium text-slate-600 outline-none transition-colors hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-brand-cyan disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/5"
           >
             {t('upload.cancel')}
           </button>
           <button
             type="button"
             onClick={submit}
-            disabled={picked.length === 0}
+            disabled={picked.length === 0 || submitting}
             className="inline-flex h-10 items-center gap-2 rounded-lg bg-gradient-to-r from-brand-cyan to-[#1b7fa8] px-4 text-sm font-semibold text-white shadow-sm outline-none transition hover:brightness-110 focus-visible:ring-2 focus-visible:ring-brand-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <UploadCloud className="h-4 w-4" aria-hidden />
-            {picked.length > 0
-              ? t('upload.submitWithCount', { count: picked.length })
-              : t('upload.submit')}
+            {submitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                {t('upload.uploading')}
+              </>
+            ) : (
+              <>
+                <UploadCloud className="h-4 w-4" aria-hidden />
+                {picked.length > 0
+                  ? t('upload.submitWithCount', { count: picked.length })
+                  : t('upload.submit')}
+              </>
+            )}
           </button>
         </>
       }
@@ -144,7 +176,7 @@ export default function UploadModal({ open, section, onClose, onSubmit }: Upload
                 i18nKey="upload.browsePrompt"
                 components={{ 1: <span className="font-medium text-brand-cyan" /> }}
               />{' '}
-              · {t(`upload.hint.${section}`, { max: MAX_FILES })}
+              · {t(`upload.hint.${section}`, { max: MAX_FILES, size: MAX_FILE_MB })}
             </span>
           </button>
           <input

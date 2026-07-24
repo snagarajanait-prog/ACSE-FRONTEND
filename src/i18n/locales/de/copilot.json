@@ -147,7 +147,11 @@
     "codeError": "Dieser Code ist nicht korrekt. Bitte prüfen Sie ihn und versuchen Sie es erneut.",
     "verifying": "Wird überprüft…",
     "differentEmail": "Eine andere E-Mail-Adresse verwenden",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "toast": {
+      "codeSent": "Bestätigungscode generiert.",
+      "verified": "E-Mail bestätigt."
+    }
   },
   "receiptMenu": {
     "about": "Über \"{{title}}\" – und als PDF herunterladen",

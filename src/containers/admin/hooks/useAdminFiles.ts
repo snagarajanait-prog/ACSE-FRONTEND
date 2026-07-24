@@ -1,28 +1,30 @@
 /**
  * All the state behind the admin panel. The screen (`index.tsx`) reads like a
- * table of contents; every piece of logic — filtering, sorting, the working set,
+ * table of contents; every piece of logic — the working set, filtering, sorting,
  * uploads, deletes, downloads — lives here.
  *
- * There is no API. The working set (seed + uploads − deletions) is persisted to
- * localStorage so a refresh keeps your changes. Real file bytes only exist for
- * uploads made THIS session (a blob map held in a ref, not serialisable), so a
- * download after a refresh falls back to a generated placeholder.
+ * The file set is the real backend document library (see `documentsApi`): the
+ * list is fetched, uploads POST multipart, downloads mint a fresh URL, deletes
+ * remove server-side. Search, sort and the section split are still derived
+ * client-side over the fetched page, so the table behaves exactly as before —
+ * only the data is now real.
  */
 
-import { useCallback, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+import { toast } from 'sonner'
 import { useTranslation } from 'react-i18next'
 import i18n from '@/i18n'
-import { STORAGE_KEYS } from '@/constants/constants'
-import type {
-  AdminSection,
-  FileRecord,
-  SortKey,
-  SortState,
-} from '@/containers/admin/types'
+import type { AdminSection, FileRecord, SortKey, SortState } from '@/containers/admin/types'
 import { fileType } from '@/containers/admin/utils/format'
-import { loadFiles } from '@/containers/admin/utils/persistence'
-import { downloadTextFile } from '@/utils/download'
-import { storage } from '@/utils/storage'
+import {
+  DOCUMENTS_LIST_PARAMS,
+  useDeleteDocumentMutation,
+  useGetDownloadUrlMutation,
+  useListDocumentsQuery,
+  useUploadDocumentMutation,
+  type ApiDocument,
+} from '@/redux/api/documentsApi'
+import type { ApiError } from '@/types'
 
 /** Shape the upload form hands back. */
 export interface UploadPayload {
@@ -30,16 +32,28 @@ export interface UploadPayload {
   notes: string
 }
 
-/** Collision-resistant enough for an in-browser demo; no crypto needed. */
-function makeId(section: AdminSection): string {
-  const prefix = section === 'image' ? 'IMG' : 'DOC'
-  return `${prefix}-${Date.now().toString(36)}-${Math.floor(Math.random() * 1e4)}`
+/**
+ * Backend document → table row. The section is derived from the file kind so an
+ * image lands in the image library and everything else in documents — mirroring
+ * how the "Uploaded Type" badge is worked out (see `fileType`).
+ */
+function toFileRecord(doc: ApiDocument): FileRecord {
+  return {
+    id: doc.id,
+    section: fileType(doc.fileName) === 'image' ? 'image' : 'document',
+    fileName: doc.fileName,
+    category: doc.category,
+    uploadedBy: doc.uploadedBy?.name ?? 'Unknown',
+    uploadedAt: doc.uploadedAt,
+    size: doc.sizeBytes,
+    notes: doc.notes || undefined,
+  }
 }
 
 /**
  * The active library (`section`) is CONTROLLED — the page derives it from the
  * URL (`?lib=`) so the two libraries are distinct, linkable destinations. The
- * hook owns everything else: the working set, search, sort, uploads, deletes.
+ * hook owns everything else: the fetched set, search, sort, uploads, deletes.
  */
 export function useAdminFiles(section: AdminSection) {
   const { t } = useTranslation('admin')
@@ -54,82 +68,77 @@ export function useAdminFiles(section: AdminSection) {
     [t],
   )
 
-  const [files, setFiles] = useState<FileRecord[]>(loadFiles)
+  const { data, isLoading, isError, refetch } = useListDocumentsQuery(DOCUMENTS_LIST_PARAMS)
+  const [uploadDocument, { isLoading: uploading }] = useUploadDocumentMutation()
+  const [deleteDocument] = useDeleteDocumentMutation()
+  const [getDownloadUrl] = useGetDownloadUrlMutation()
+
+  const files = useMemo<FileRecord[]>(
+    () => (data?.documents ?? []).map(toFileRecord),
+    [data],
+  )
+
   const [query, setQuery] = useState('')
   const [sort, setSort] = useState<SortState>({ key: 'uploadedAt', dir: 'desc' })
   const [uploadOpen, setUploadOpen] = useState(false)
   const [pendingDelete, setPendingDelete] = useState<FileRecord | null>(null)
 
-  // Real bytes for uploads made this session, keyed by record id. Not persisted:
-  // File objects can't survive JSON, and holding data URLs for every upload would
-  // blow the storage quota.
-  const blobs = useRef<Map<string, File>>(new Map())
-
-  /** Persist and update in one place, so the two can never drift. */
-  const commit = useCallback((next: FileRecord[]) => {
-    setFiles(next)
-    storage.set(STORAGE_KEYS.adminFiles, next)
-  }, [])
-
   const addFiles = useCallback(
-    ({ files: picked, notes }: UploadPayload) => {
-      const now = new Date().toISOString()
-      const created = picked.map<FileRecord>((file) => {
-        const id = makeId(section)
-        blobs.current.set(id, file)
-        return {
-          id,
-          section,
-          fileName: file.name,
-          category: 'Other',
-          uploadedBy: 'Unknown',
-          uploadedAt: now,
-          size: file.size,
-          notes: notes.trim() || undefined,
-        }
-      })
-      // Newest first, matching the default sort.
-      commit([...created, ...files])
-      setUploadOpen(false)
+    async ({ files: picked, notes }: UploadPayload) => {
+      // One request per file (the API takes a single `file`); run them together
+      // and report the tally. Invalidation refetches the list on each success.
+      const results = await Promise.allSettled(
+        picked.map((file) => uploadDocument({ file, notes }).unwrap()),
+      )
+      const ok = results.filter((r) => r.status === 'fulfilled').length
+      const failed = results.length - ok
+
+      if (ok > 0) {
+        toast.success(i18n.t('admin:files.toast.uploaded', { count: ok }))
+        setUploadOpen(false)
+      }
+      if (failed > 0) {
+        toast.error(i18n.t('admin:files.toast.uploadError', { count: failed }))
+      }
     },
-    [section, files, commit],
+    [uploadDocument],
   )
 
-  const confirmDelete = useCallback(() => {
+  const confirmDelete = useCallback(async () => {
     if (!pendingDelete) return
-    blobs.current.delete(pendingDelete.id)
-    commit(files.filter((f) => f.id !== pendingDelete.id))
+    const target = pendingDelete
     setPendingDelete(null)
-  }, [pendingDelete, files, commit])
-
-  const download = useCallback((record: FileRecord) => {
-    const blob = blobs.current.get(record.id)
-    if (blob) {
-      const url = URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = record.fileName
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      requestAnimationFrame(() => URL.revokeObjectURL(url))
-      return
+    try {
+      await deleteDocument(target.id).unwrap()
+      toast.success(i18n.t('admin:files.toast.deleted'))
+    } catch (err) {
+      toast.error((err as ApiError)?.message || i18n.t('admin:files.toast.deleteError'))
     }
-    // Seed rows (and anything from a prior session) have no real bytes — hand
-    // over a readable placeholder rather than a broken/empty download.
-    const stub = [
-      i18n.t('admin:files.stub.file', { name: record.fileName }),
-      i18n.t('admin:files.stub.category', { category: record.category }),
-      i18n.t('admin:files.stub.uploadedBy', { name: record.uploadedBy }),
-      i18n.t('admin:files.stub.uploadedAt', { date: record.uploadedAt }),
-      record.notes ? i18n.t('admin:files.stub.notes', { notes: record.notes }) : '',
-      '',
-      i18n.t('admin:files.stub.placeholder'),
-    ]
-      .filter(Boolean)
-      .join('\n')
-    downloadTextFile(stub, `${record.fileName}.txt`, 'text/plain')
-  }, [])
+  }, [pendingDelete, deleteDocument])
+
+  const download = useCallback(
+    async (record: FileRecord) => {
+      // Open the tab synchronously — still inside the click — so the async URL
+      // fetch below doesn't get the popup blocked; redirect it once minted (or
+      // close it on failure). `noopener` can't be set here: it would null the
+      // handle we need to steer, so we sever `opener` after navigating instead.
+      const win = window.open('', '_blank')
+      try {
+        const info = await getDownloadUrl(record.id).unwrap()
+        if (win) {
+          win.opener = null
+          win.location.href = info.url
+        } else {
+          // Popup blocked outright — fall back to a same-gesture-less open.
+          window.open(info.url, '_blank', 'noopener,noreferrer')
+        }
+      } catch (err) {
+        win?.close()
+        toast.error((err as ApiError)?.message || i18n.t('admin:files.toast.downloadError'))
+      }
+    },
+    [getDownloadUrl],
+  )
 
   const toggleSort = useCallback((key: SortKey) => {
     setSort((prev) =>
@@ -183,6 +192,11 @@ export function useAdminFiles(section: AdminSection) {
     counts,
     visible,
     totalInSection: counts[section],
+    // First load has no cached data yet; a background refetch never shows here.
+    loading: isLoading,
+    error: isError,
+    refetch,
+    uploading,
     uploadOpen,
     openUpload: useCallback(() => setUploadOpen(true), []),
     closeUpload: useCallback(() => setUploadOpen(false), []),

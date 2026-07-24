@@ -96,6 +96,10 @@ export const config = {
     sendCode: url(paths.assistant.sendCode),
     verifyCode: url(paths.assistant.verifyCode),
   },
+
+  documents: {
+    root: url(paths.documents.root),
+  },
 } as const
 
 export default config

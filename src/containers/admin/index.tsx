@@ -11,6 +11,7 @@
  * deletes — lives in `useAdminFiles`.
  */
 
+import { Loader2, RefreshCw } from 'lucide-react'
 import { Trans, useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import AdminGate from '@/containers/admin/auth/AdminGate'
@@ -69,11 +70,17 @@ function Admin() {
           onDownload={admin.download}
           onDelete={admin.requestDelete}
           empty={
-            <EmptyState
-              searching={searching}
-              onUpload={admin.openUpload}
-              onClearSearch={() => admin.setQuery('')}
-            />
+            admin.loading ? (
+              <LoadingState />
+            ) : admin.error ? (
+              <ErrorState onRetry={admin.refetch} />
+            ) : (
+              <EmptyState
+                searching={searching}
+                onUpload={admin.openUpload}
+                onClearSearch={() => admin.setQuery('')}
+              />
+            )
           }
         />
       </div>
@@ -81,6 +88,7 @@ function Admin() {
       <UploadModal
         open={admin.uploadOpen}
         section={section}
+        submitting={admin.uploading}
         onClose={admin.closeUpload}
         onSubmit={admin.addFiles}
       />
@@ -91,6 +99,37 @@ function Admin() {
         onConfirm={admin.confirmDelete}
       />
     </AdminShell>
+  )
+}
+
+/** Shown inside the table while the first page of documents is loading. */
+function LoadingState() {
+  const { t } = useTranslation('admin')
+  return (
+    <div className="flex flex-col items-center justify-center gap-3 text-center">
+      <Loader2 className="h-6 w-6 animate-spin text-brand-cyan" aria-hidden />
+      <p className="text-sm text-slate-500 dark:text-slate-400">{t('files.loading')}</p>
+    </div>
+  )
+}
+
+/** Shown inside the table when the document list fails to load. */
+function ErrorState({ onRetry }: { onRetry: () => void }) {
+  const { t } = useTranslation('admin')
+  return (
+    <div className="flex flex-col items-center justify-center gap-3 text-center">
+      <p className="text-sm font-medium text-brand-navy dark:text-slate-200">
+        {t('files.loadError')}
+      </p>
+      <button
+        type="button"
+        onClick={onRetry}
+        className="inline-flex h-9 items-center gap-2 rounded-lg border border-slate-200 px-3.5 text-sm font-medium text-slate-600 outline-none transition-colors hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-brand-cyan dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/5"
+      >
+        <RefreshCw className="h-4 w-4" aria-hidden />
+        {t('files.retry')}
+      </button>
+    </div>
   )
 }
 
