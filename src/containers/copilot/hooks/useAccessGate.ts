@@ -96,6 +96,8 @@ export function useAccessGate(): AccessGate {
           accountId: account.id,
           via: 'challenge',
           assistantToken: res.assistantToken,
+          // Keep the verified session — the chatbot POSTs it as `sessionId`.
+          assistantSessionId: verifySessionId,
         }),
       )
     },

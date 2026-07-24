@@ -16,7 +16,7 @@ import { getIcon } from '@/containers/copilot/utils/iconMap'
 import { postChatbotMessage, streamChat } from '@/lib/mlChat'
 import { findAccount, findCustomer, type Account, type Customer } from '@/data/customers'
 import { getScenario, type ChatStep } from '@/data/scenarios'
-import { useCases, type UseCase } from '@/data/useCases'
+import { findUseCase, useCases, type UseCase } from '@/data/useCases'
 import { DATA_SOURCE_META, type DataSource } from '@/redux/dataSourceSlice'
 import { clearScenario } from '@/redux/demoSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
@@ -172,9 +172,8 @@ export interface ChatEngine {
 
 export function useChatEngine(): ChatEngine {
   const dispatch = useAppDispatch()
-  const { selectedCustomerId, selectedAccountId, activeScenarioId } = useAppSelector(
-    (s) => s.demoSlice,
-  )
+  const { selectedCustomerId, selectedAccountId, activeScenarioId, assistantSessionId } =
+    useAppSelector((s) => s.demoSlice)
   const source = useAppSelector((s) => s.dataSourceSlice.source)
 
   const customer = findCustomer(selectedCustomerId)
@@ -203,13 +202,9 @@ export function useChatEngine(): ChatEngine {
   // Aborts an in-flight ML stream when the run is torn down or superseded.
   const streamAbortRef = useRef<AbortController | null>(null)
   // True while the live conversation is a real chatbot thread, so consecutive
-  // turns share one conversation id (and one `sessionId`) instead of each opening
-  // its own segment. Cleared whenever a scripted run / context switch / reset
-  // starts something else.
+  // turns share one conversation id instead of each opening its own segment.
+  // Cleared whenever a scripted run / context switch / reset starts something else.
   const chatConvActiveRef = useRef(false)
-  // The backend `sessionId` for the active chatbot conversation — minted fresh
-  // when a new thread opens and reused by its follow-up turns for continuity.
-  const sessionIdRef = useRef('')
 
   const abortStream = useCallback(() => {
     streamAbortRef.current?.abort()
@@ -419,25 +414,34 @@ export function useChatEngine(): ChatEngine {
   )
 
   /**
-   * A real chatbot turn. POST the prompt to the backend (`/chatbot/message`,
-   * authed) and read the reply off the ML SSE stream, rendering tokens live. The
-   * two share a per-message `requestId`; every turn of a conversation reuses the
-   * same minted `sessionId` (see `lib/mlChat`). The visible reply is answer-only —
-   * the stream drops `reasoning`/`done`, so the model's thinking never shows.
+   * A real chatbot turn. POST the prompt to the backend (`/chatbot/message`) and
+   * read the reply off the ML SSE stream, rendering tokens live. The two share a
+   * per-message `requestId`; the `sessionId` is the VERIFIED session from the email
+   * gate (`assistantSessionId`) — the backend rejects any id it did not mint
+   * ("Session not found"), so there is nothing to generate here. The visible reply
+   * is answer-only — the stream drops `reasoning`/`done` (see `lib/mlChat`).
    */
   const sendToChatbot = useCallback(
     async (prompt: string) => {
+      const sessionId = assistantSessionId
+      if (!sessionId) {
+        // No verified session (the email gate never minted one) — the backend would
+        // reject a made-up id, so surface the unavailable state instead of failing.
+        push({ kind: 'user', text: prompt })
+        push({ kind: 'ai', text: i18n.t('copilot:chat.mlError') })
+        toast.error(i18n.t('copilot:chat.mlError'))
+        return
+      }
+
       const myRun = ++runRef.current
       // The chatbot thread is ONE continuous conversation: only the opening turn
-      // starts a fresh segment and mints the `sessionId`; later turns append to it
-      // and reuse the id so the backend keeps context. A scripted run, a context
-      // switch or a reset clears the flag so the next turn opens a new conversation.
+      // starts a fresh segment; later turns append to it. The backend `sessionId`
+      // is the same throughout (it came from the verified gate), so continuity is
+      // inherent. A scripted run / context switch / reset clears the flag.
       if (!chatConvActiveRef.current) {
         convRef.current += 1
         chatConvActiveRef.current = true
-        sessionIdRef.current = crypto.randomUUID()
       }
-      const sessionId = sessionIdRef.current
       settleOtp(null)
       settleUser(null)
       abortStream()
@@ -527,16 +531,25 @@ export function useChatEngine(): ChatEngine {
         }
       }
     },
-    [push, resolve, settleOtp, settleUser, abortStream],
+    [assistantSessionId, push, resolve, settleOtp, settleUser, abortStream],
   )
 
   const startScenario = useCallback(
     (id: string, userText?: string) => {
+      // A use-case pill is just a canned prompt. With a verified session, send it
+      // to the real chatbot API — same as if the customer had typed it — so the
+      // pills hit `/chatbot/message` too, not only free-typed messages.
+      const prompt = userText || findUseCase(id)?.prompt
+      if (prompt && assistantSessionId) {
+        void sendToChatbot(prompt)
+        return
+      }
+      // No verified session (or unknown id): fall back to the scripted storyboard.
       const scenario = getScenario(id)
       if (!scenario) return
       void play(scenario.steps, userText, scenario.id)
     },
-    [play],
+    [assistantSessionId, sendToChatbot, play],
   )
 
   /** Imperative reset (the "New chat" control). */

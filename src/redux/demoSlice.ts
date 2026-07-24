@@ -31,6 +31,11 @@ export interface GrantPayload {
    * the session path (that mode inherits an already-authenticated session).
    */
   assistantToken?: string | null
+  /**
+   * The verified `send-code` session id. The chatbot POSTs it as `sessionId` — the
+   * backend only accepts a session it minted (a random id → "Session not found").
+   */
+  assistantSessionId?: string | null
 }
 
 /** A contact-form submission captured by the landing page. */
@@ -66,6 +71,8 @@ interface DemoState {
   verifiedVia: VerifiedVia | null
   /** Assistant token from `verify-code`; authorizes the chat backend. */
   assistantToken: string | null
+  /** Verified `send-code` session id; the chatbot sends it as `sessionId`. */
+  assistantSessionId: string | null
   /** A use-case the user asked to auto-play (storyboard), or null. */
   activeScenarioId: string | null
   /** Captured contact/demo-request leads. */
@@ -83,6 +90,7 @@ const initialState: DemoState = {
   verifyDisplayCode: null,
   verifiedVia: null,
   assistantToken: null,
+  assistantSessionId: null,
   activeScenarioId: null,
   leads: [],
 }
@@ -90,13 +98,14 @@ const initialState: DemoState = {
 /** Promote the pending pick to the live chat context and tear the gate down. */
 function grantContext(
   state: DemoState,
-  { customerId, accountId, via, assistantToken }: GrantPayload,
+  { customerId, accountId, via, assistantToken, assistantSessionId }: GrantPayload,
 ) {
   state.selectedCustomerId = customerId
   state.selectedAccountId = accountId
   state.verifiedVia = via
-  // Keep the challenge token; the session path passes none, so don't wipe it.
+  // Keep the challenge token + session; the session path passes none, so don't wipe.
   if (assistantToken) state.assistantToken = assistantToken
+  if (assistantSessionId) state.assistantSessionId = assistantSessionId
   state.pendingCustomerId = null
   state.pendingAccountId = null
   state.verifyStep = 'email'
@@ -119,6 +128,7 @@ function resetVerification(state: DemoState) {
   state.verifyDisplayCode = null
   state.verifiedVia = null
   state.assistantToken = null
+  state.assistantSessionId = null
 }
 
 const demoSlice = createSlice({
