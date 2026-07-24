@@ -13,7 +13,7 @@
 import config from '@/config'
 import { auth } from '@/middleware/auth'
 import { apiSlice } from '@/redux/api/apiSlice'
-import type { ApiEnvelope, Role, User } from '@/types'
+import type { ApiEnvelope, Organization, Role, User } from '@/types'
 
 export interface LoginPayload {
   email: string
@@ -33,7 +33,8 @@ interface ApiUser {
  * The login payload. `accessToken` and `refreshToken` are persisted (the latter
  * revokes the session at logout); `tokenType` and `expiresIn` (seconds) come
  * along for the token-refresh flow that `lib/http` already reserves a spot for —
- * not wired up yet.
+ * not wired up yet. `organization` is the caller's org (name drives the app-wide
+ * brand); optional so a backend that omits it can't break sign-in.
  */
 interface LoginData {
   accessToken: string
@@ -41,6 +42,7 @@ interface LoginData {
   tokenType: string
   expiresIn: number
   user: ApiUser
+  organization?: Organization
 }
 
 const KNOWN_ROLES: readonly Role[] = ['super_admin', 'admin', 'manager', 'agent']
@@ -68,7 +70,9 @@ export const authApi = apiSlice.injectEndpoints({
       transformResponse: (res: ApiEnvelope<LoginData>) => {
         auth.setToken(res.data.accessToken)
         auth.setRefreshToken(res.data.refreshToken)
-        return toUser(res.data.user)
+        // Carry the org along on the session user; the sign-in flow reads its name
+        // to seed the app brand (see `useAdminAuth`).
+        return { ...toUser(res.data.user), organization: res.data.organization }
       },
     }),
 

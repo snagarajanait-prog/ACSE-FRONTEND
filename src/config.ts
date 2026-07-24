@@ -91,6 +91,11 @@ export const config = {
   organizations: {
     profile: url(paths.organizations.profile),
   },
+
+  assistant: {
+    sendCode: url(paths.assistant.sendCode),
+    verifyCode: url(paths.assistant.verifyCode),
+  },
 } as const
 
 export default config
