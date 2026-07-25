@@ -3,9 +3,5 @@
     "title": "Dashboard",
     "signedInAs": "Signed in as {{name}}"
   },
-  "loading": "Loading…",
-  "metrics": {
-    "thousandsAbbrev": "{{value}}K",
-    "millionsAbbrev": "{{value}}M"
-  }
+  "loading": "Loading…"
 }

@@ -15,7 +15,6 @@ every rendered logo:
 | `logo/Main_logo.svg` | **Source of truth.** The brand lockup — an SVG wrapping a single 638×220 raster (~2.9 aspect). Imported by `components/Logo.tsx` (on-screen `<img>`) and `utils/pdfTheme.ts` (which lifts the embedded PNG data URI out for jsPDF, since `addImage` can't render SVG). |
 | `logo/acse-mark-silhouette.svg` | Mask for the loader's highlight sweep — a silhouette of the mark. Imported by `components/LogoAssembly.tsx`. |
 | `ACSE SVG.svg` | Vector export the animated loader is decomposed from — see `components/logo/pieces.tsx`. |
-| `ACSE PNG.png`, `acse-solutions-logo.png`, `acse-logo.png` | **Superseded** by `Main_logo.svg`. No longer imported by any code; kept only as historical brand masters. |
 
 ### The animated loader still uses the old artwork
 

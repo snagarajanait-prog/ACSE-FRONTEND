@@ -3,9 +3,5 @@
     "title": "Panel",
     "signedInAs": "Sesión iniciada como {{name}}"
   },
-  "loading": "Cargando…",
-  "metrics": {
-    "thousandsAbbrev": "{{value}} mil",
-    "millionsAbbrev": "{{value}} M"
-  }
+  "loading": "Cargando…"
 }
