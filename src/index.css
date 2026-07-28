@@ -98,6 +98,73 @@
   --logo-muted: 213 20% 82%;
 }
 
+/**
+ * The chart palette.
+ *
+ * Scoped to `.viz-root` rather than declared globally, and every chart primitive
+ * stamps that class on its own root — including the ones that are not wrapped in
+ * a `ChartFrame`. A `var(--viz-accent)` resolved outside the scope is not an
+ * error, it is an INVISIBLE bar, so the scope is what makes that class of bug
+ * loud instead of silent.
+ *
+ * The vocabulary is deliberately small and role-named, never hue-named:
+ *
+ *   accent   — the subject of the chart ("you"). One per chart.
+ *   context  — everything the subject is measured against.
+ *   critical / warning / good — status, and only status. A bar is never red
+ *              because red is next in a list; it is red because the value is bad.
+ *   ramp-1…5 — an ordered sequence (band meters, a prior period), light → deep.
+ *   grid / axis / surface — furniture. Always quieter than any data mark.
+ *   ink / ink-muted — type and markers drawn over the marks.
+ *
+ * Hexes, not the `hsl(var(--…))` triples above, because these are read straight
+ * into SVG `fill`/`stroke` and inline `background` where a bare triple is not a
+ * colour.
+ */
+.viz-root {
+  --viz-accent: #2ca5d9;
+  --viz-context: #94a3b8;
+  --viz-critical: #e33935;
+  --viz-warning: #d97706;
+  --viz-good: #059669;
+
+  --viz-ramp-1: #a8cfe3;
+  --viz-ramp-2: #6fb6dc;
+  --viz-ramp-3: #2ca5d9;
+  --viz-ramp-4: #1c7ba6;
+  --viz-ramp-5: #0f5b7c;
+
+  --viz-grid: #e2e8f0;
+  --viz-axis: #cbd5e1;
+  /* What a mark sits ON — used for the halo that separates a marker from the
+     fill underneath it, so it has to match the card, not the page. */
+  --viz-surface: #ffffff;
+  --viz-ink: #0a1e35;
+  --viz-ink-muted: #64748b;
+}
+
+.dark .viz-root {
+  /* Accent and critical stay in the brand's own hues but are lifted: the light
+     palette's values are mixed for white and go muddy on navy. */
+  --viz-accent: #45b6e6;
+  --viz-context: #7c8ea3;
+  --viz-critical: #f2635f;
+  --viz-warning: #fbbf24;
+  --viz-good: #34d399;
+
+  --viz-ramp-1: #33566b;
+  --viz-ramp-2: #3d7fa0;
+  --viz-ramp-3: #2ca5d9;
+  --viz-ramp-4: #6cc7ee;
+  --viz-ramp-5: #a5e2fb;
+
+  --viz-grid: rgb(255 255 255 / 0.09);
+  --viz-axis: rgb(255 255 255 / 0.18);
+  --viz-surface: #0c1c2c;
+  --viz-ink: #e2e8f0;
+  --viz-ink-muted: #94a3b8;
+}
+
 @theme inline {
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -554,6 +621,37 @@
   }
 }
 
+/**
+ * A bar arriving.
+ *
+ * Deliberately WITHOUT a transform-origin: the two directions are shared by
+ * every bar chart on the screen, and where a bar grows FROM is the call site's
+ * business — zero is the left edge for a horizontal bar, the baseline for a
+ * column, and an overshoot segment grows from the mark it runs past. Each mark
+ * declares its own `origin-*`, so this keyframe never fights it.
+ *
+ * `both` on the animation matters more than usual here: the global
+ * reduced-motion rule collapses every animation to 0.01ms, and a backwards fill
+ * is what leaves the bar at its FULL width rather than at scale zero.
+ */
+@keyframes viz-grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes viz-grow-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
 @keyframes digit-pop {
   0% {
     opacity: 0;
@@ -738,6 +836,18 @@
     border-radius: 50%;
     background: #7fd3f2;
     box-shadow: 0 0 calc(var(--orb-size) * 0.09) rgba(127, 211, 242, 0.9);
+  }
+
+  /* Chart marks growing in. Wrapped in `:where()` so they carry ZERO
+     specificity: a mark that needs a particular growth origin sets Tailwind's
+     `origin-left` in the JSX, and a normal class here would sort after it in
+     this layer and silently win. */
+  :where(.viz-grow-x) {
+    animation: viz-grow-x 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  :where(.viz-grow-y) {
+    animation: viz-grow-y 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   /* Thin scrollbars inside chat/panels. */

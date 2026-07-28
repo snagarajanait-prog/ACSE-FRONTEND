@@ -32,6 +32,14 @@ export const routes: RouteConfig[] = [
     isPublic: true,
   },
   {
+    // Bill Intelligence — one account's energy report, analysed in conversation.
+    // `isPublic` for the same reason as the copilot: it is shown in front of a
+    // client on any laptop, and it is wired to nothing an auth session gates.
+    path: ROUTE_PATHS.billIntelligence,
+    component: lazy(() => import('@/containers/billreport')),
+    isPublic: true,
+  },
+  {
     path: ROUTE_PATHS.dashboard,
     component: lazy(() => import('@/containers/dashboard')),
   },

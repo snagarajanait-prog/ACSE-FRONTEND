@@ -18,7 +18,8 @@ export const RANGE_LABEL: Record<UsageRange, string> = {
 }
 const RANGE_MONTHS: Record<UsageRange, number> = { "6M": 6, "1Y": 12, "2Y": 24 }
 
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+/** Exported for `insights.ts`, which has to name the month AFTER the last one. */
+export const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 // The demo's "current" period — the newest usage month the seed data represents.
 const END_MONTH = 5 // Jun
@@ -32,8 +33,14 @@ export interface HistPoint {
   monthIndex: number
 }
 
-/** FNV-1a hash → 32-bit seed. */
-function seedFrom(id: string): number {
+/**
+ * FNV-1a hash → 32-bit seed.
+ *
+ * Exported alongside `mulberry32` because `insights.ts` derives its own figures
+ * from the same account and MUST use the same seeding, or the two derived layers
+ * would disagree about the same account between renders.
+ */
+export function seedFrom(id: string): number {
   let h = 2166136261
   for (let i = 0; i < id.length; i++) {
     h ^= id.charCodeAt(i)
@@ -42,8 +49,8 @@ function seedFrom(id: string): number {
   return h >>> 0
 }
 
-/** Small deterministic PRNG (mulberry32). */
-function mulberry32(a: number): () => number {
+/** Small deterministic PRNG (mulberry32). See `seedFrom` for why it's exported. */
+export function mulberry32(a: number): () => number {
   return () => {
     a |= 0
     a = (a + 0x6d2b79f5) | 0

@@ -26,6 +26,12 @@ export const STORAGE_KEYS = {
   adminSettings: 'acse.admin.settings',
   /** Whether the copilot's desktop account sidebar is expanded (vs. collapsed to the rail). */
   copilotSidebar: 'acse.copilot.sidebar',
+  /**
+   * Whether Bill Intelligence's insights column is open. Only the xl+ COLUMN is
+   * remembered — the smaller-screen overlay is deliberately not persisted, so
+   * reopening the screen never lands on a modal sheet.
+   */
+  billInsights: 'acse.bill.insights',
 } as const
 
 /**
@@ -57,6 +63,8 @@ export const ROUTE_PATHS = {
   // its i18n namespace and the "Ask ACSE AI" affordances that navigate here.
   copilot: '/chat',
   dashboard: '/dashboard',
+  /** The Bill Intelligence demo — one account's report, analysed in conversation. */
+  billIntelligence: '/bill-intelligence',
   /** Internal file-upload admin panel. Public for now (no auth yet) — see routes.ts. */
   admin: '/admin',
   /** Admin → organisation profile & settings. */
